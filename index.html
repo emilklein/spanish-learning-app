@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Hola! - Aprende Español desde Cero</title>
+    <meta name="description" content="Aprende español desde lo más básico de forma interactiva con diálogos, árbol genealógico, plano de casa, rutinas diarias y pronunciación en audio.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo">
+                <span class="logo-emoji">🇪🇸</span>
+                <div class="logo-text">
+                    <h1>¡Hola!</h1>
+                    <p>Español Nivel Cero (A0)</p>
+                </div>
+            </div>
+            
+            <!-- Global Progress Tracker -->
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Tu Progreso General</span>
+                    <span id="global-progress-percentage">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="global-progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Settings / Audio Toggle -->
+            <div class="header-actions">
+                <button id="tts-toggle-btn" class="action-btn text-active" title="Activar/Desactivar Voz Automática">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.5A2.25 2.25 0 0 0 2.25 9.75v4.5A2.25 2.25 0 0 0 4.5 16.5h1.94l4.5 4.5c.944.945 2.56.276 2.56-1.06V4.06ZM17.78 9.22a.75.75 0 1 0-1.06 1.06L18.44 12l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L20.56 12l1.72-1.72a.75.75 0 0 0-1.06-1.06l-1.72 1.72-1.72-1.72Z" />
+                    </svg>
+                    <span id="tts-status-text">Voz Activa</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="app-nav">
+            <button class="nav-tab active" data-tab="dashboard">
+                <span class="tab-icon">🏠</span>
+                <span class="tab-label">Inicio</span>
+            </button>
+            <button class="nav-tab" data-tab="saludos" id="tab-saludos">
+                <span class="tab-icon">👋</span>
+                <span class="tab-label">1. Saludos</span>
+            </button>
+            <button class="nav-tab" data-tab="familia" id="tab-familia">
+                <span class="tab-icon">👨‍👩‍👧‍👦</span>
+                <span class="tab-label">2. Familia</span>
+            </button>
+            <button class="nav-tab" data-tab="casa" id="tab-casa">
+                <span class="tab-icon">🏡</span>
+                <span class="tab-label">3. La Casa</span>
+            </button>
+            <button class="nav-tab" data-tab="rutina" id="tab-rutina">
+                <span class="tab-icon">⏰</span>
+                <span class="tab-label">4. Rutina</span>
+            </button>
+            <button class="nav-tab" data-tab="gustos" id="tab-gustos">
+                <span class="tab-icon">❤️</span>
+                <span class="tab-label">5. Gustos</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="app-content">
+
+            <!-- TAB: DASHBOARD -->
+            <section id="pane-dashboard" class="tab-pane active">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h2>Aprende Español desde Cero</h2>
+                        <p>Bienvenido/a a tu viaje de aprendizaje. Este curso está diseñado especialmente para personas que no saben nada de español. Iremos paso a paso con lecciones interactivas, sonidos, y juegos prácticos.</p>
+                        <button class="primary-btn" onclick="document.getElementById('tab-saludos').click()">¡Empezar Lección 1!</button>
+                    </div>
+                    <div class="hero-illustration">
+                        <div class="spanish-flag-art">
+                            <div class="stripe red"></div>
+                            <div class="stripe yellow">
+                                <div class="crest-placeholder">🌞</div>
+                            </div>
+                            <div class="stripe red"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Path Grid -->
+                <div class="section-title">
+                    <h3>Tu Mapa de Aprendizaje</h3>
+                </div>
+                <div class="modules-grid">
+                    <!-- Mod 1 Card -->
+                    <div class="module-card" data-module="saludos" id="mod-card-saludos">
+                        <div class="module-badge">Nivel 0 - Lección 1</div>
+                        <h4>Saludos y Presentaciones</h4>
+                        <p>Aprende a decir hola, presentarte a ti mismo y dominar la diferencia clave entre los verbos <strong>Ser</strong> y <strong>Estar</strong>.</p>
+                        <div class="module-footer">
+                            <div class="module-progress">
+                                <span class="status-label" id="status-label-saludos">Pendiente</span>
+                                <div class="mini-bar"><div class="fill" id="fill-saludos" style="width: 0%;"></div></div>
+                            </div>
+                            <button class="start-btn" onclick="document.getElementById('tab-saludos').click()">Entrar</button>
+                        </div>
+                    </div>
+
+                    <!-- Mod 2 Card -->
+                    <div class="module-card locked" data-module="familia" id="mod-card-familia">
+                        <div class="module-badge">Lección 2</div>
+                        <h4>La Familia y Amigos</h4>
+                        <p>Aprende el árbol genealógico, a describir a tus seres queridos y presentarlos formal e informalmente en español.</p>
+                        <div class="module-footer">
+                            <div class="module-progress">
+                                <span class="status-label" id="status-label-familia">Bloqueado 🔒</span>
+                                <div class="mini-bar"><div class="fill" id="fill-familia" style="width: 0%;"></div></div>
+                            </div>
+                            <button class="start-btn" id="btn-start-familia" disabled onclick="document.getElementById('tab-familia').click()">Bloqueado</button>
+                        </div>
+                    </div>
+
+                    <!-- Mod 3 Card -->
+                    <div class="module-card locked" data-module="casa" id="mod-card-casa">
+                        <div class="module-badge">Lección 3</div>
+                        <h4>Mi Casa y Habitaciones</h4>
+                        <p>Conoce las partes de la casa, los muebles principales y cómo describir tu hogar con adjetivos básicos.</p>
+                        <div class="module-footer">
+                            <div class="module-progress">
+                                <span class="status-label" id="status-label-casa">Bloqueado 🔒</span>
+                                <div class="mini-bar"><div class="fill" id="fill-casa" style="width: 0%;"></div></div>
+                            </div>
+                            <button class="start-btn" id="btn-start-casa" disabled onclick="document.getElementById('tab-casa').click()">Bloqueado</button>
+                        </div>
+                    </div>
+
+                    <!-- Mod 4 Card -->
+                    <div class="module-card locked" data-module="rutina" id="mod-card-rutina">
+                        <div class="module-badge">Lección 4</div>
+                        <h4>Rutina Diaria y Verbos Reflexivos</h4>
+                        <p>Describe tu día a la perfección. Aprende las horas del día y la conjugación básica de los verbos reflexivos.</p>
+                        <div class="module-footer">
+                            <div class="module-progress">
+                                <span class="status-label" id="status-label-rutina">Bloqueado 🔒</span>
+                                <div class="mini-bar"><div class="fill" id="fill-rutina" style="width: 0%;"></div></div>
+                            </div>
+                            <button class="start-btn" id="btn-start-rutina" disabled onclick="document.getElementById('tab-rutina').click()">Bloqueado</button>
+                        </div>
+                    </div>
+
+                    <!-- Mod 5 Card -->
+                    <div class="module-card locked" data-module="gustos" id="mod-card-gustos">
+                        <div class="module-badge">Lección 5</div>
+                        <h4>Gustos, Preferencias y más</h4>
+                        <p>Aprende a expresar lo que te gusta y lo que no, practica colores, números y habla en una conversación simulada.</p>
+                        <div class="module-footer">
+                            <div class="module-progress">
+                                <span class="status-label" id="status-label-gustos">Bloqueado 🔒</span>
+                                <div class="mini-bar"><div class="fill" id="fill-gustos" style="width: 0%;"></div></div>
+                            </div>
+                            <button class="start-btn" id="btn-start-gustos" disabled onclick="document.getElementById('tab-gustos').click()">Bloqueado</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 1: SALUDOS Y PRESENTACIONES -->
+            <section id="pane-saludos" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Módulo 1: Saludos, Presentación y Ser/Estar</h2>
+                    <p>En este módulo aprenderás las bases absolutas de la comunicación en español.</p>
+                </div>
+
+                <!-- Step Tabs for Module 1 -->
+                <div class="module-subnav">
+                    <button class="subnav-btn active" data-subtab="saludos-vocab">Vocabulario Esencial</button>
+                    <button class="subnav-btn" data-subtab="saludos-presentacion">Presentarse</button>
+                    <button class="subnav-btn" data-subtab="saludos-serestar">Ser vs Estar</button>
+                    <button class="subnav-btn" data-subtab="saludos-quiz">Práctica</button>
+                </div>
+
+                <div class="subtab-content">
+                    <!-- SUBTAB 1.1: Vocabulario Esencial -->
+                    <div id="subpane-saludos-vocab" class="subtab-pane active">
+                        <div class="instruction-box">
+                            <p>💡 <strong>Instrucción:</strong> Haz clic en cada tarjeta para escuchar su pronunciación en español y ver su traducción en inglés.</p>
+                        </div>
+                        
+                        <div class="grid-2-col">
+                            <div>
+                                <h3 class="subsection-title">Saludos (Greetings)</h3>
+                                <div class="flashcards-grid">
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="¡Hola!">🔊</span>
+                                                <div class="card-main-word">¡Hola!</div>
+                                                <div class="card-category">Saludo general</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">Hello / Hi</div>
+                                                <p class="card-use">Se usa a cualquier hora del día.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="Buenos días">🔊</span>
+                                                <div class="card-main-word">Buenos días</div>
+                                                <div class="card-category">Por la mañana</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">Good morning</div>
+                                                <p class="card-use">Se usa desde el amanecer hasta el mediodía.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="Buenas tardes">🔊</span>
+                                                <div class="card-main-word">Buenas tardes</div>
+                                                <div class="card-category">Por la tarde</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">Good afternoon</div>
+                                                <p class="card-use">Se usa desde el mediodía hasta el atardecer (aprox. 8 PM).</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="Buenas noches">🔊</span>
+                                                <div class="card-main-word">Buenas noches</div>
+                                                <div class="card-category">Por la noche</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">Good evening / Good night</div>
+                                                <p class="card-use">Se usa cuando ya está oscuro o al ir a dormir.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="subsection-title">Respuestas y Despedidas (Responses & Farewells)</h3>
+                                <div class="flashcards-grid">
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="¿Cómo estás?">🔊</span>
+                                                <div class="card-main-word">¿Cómo estás?</div>
+                                                <div class="card-category">Pregunta</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">How are you?</div>
+                                                <p class="card-use">Pregunta informal para saber cómo está alguien.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="Muy bien, gracias">🔊</span>
+                                                <div class="card-main-word">Muy bien, gracias</div>
+                                                <div class="card-category">Respuesta</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">Very well, thank you</div>
+                                                <p class="card-use">Una respuesta educada y común.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="Adiós">🔊</span>
+                                                <div class="card-main-word">Adiós</div>
+                                                <div class="card-category">Despedida</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">Goodbye</div>
+                                                <p class="card-use">Despedida formal o estándar.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flashcard">
+                                        <div class="card-inner">
+                                            <div class="card-front">
+                                                <span class="card-sound" data-speak="Hasta luego">🔊</span>
+                                                <div class="card-main-word">Hasta luego</div>
+                                                <div class="card-category">Despedida</div>
+                                            </div>
+                                            <div class="card-back">
+                                                <div class="card-translation">See you later</div>
+                                                <p class="card-use">Muy común cuando se espera volver a ver a la persona.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 1.2: Presentarse -->
+                    <div id="subpane-saludos-presentacion" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>Cómo presentarse en Español</h3>
+                                <p>Para presentarte a ti mismo, usamos estas frases clave:</p>
+                                <ul>
+                                    <li>🗣️ <strong>Nombre:</strong> <code>Me llamo [Nombre]</code> o bien <code>Soy [Nombre]</code>.<br>
+                                        <span class="bubble-pronounce" data-speak="Me llamo Juan.">"Me llamo Juan" (My name is Juan) 🔊</span>
+                                    </li>
+                                    <li>🌎 <strong>Origen:</strong> <code>Soy de [País/Ciudad]</code>.<br>
+                                        <span class="bubble-pronounce" data-speak="Soy de España.">"Soy de España" (I am from Spain) 🔊</span>
+                                    </li>
+                                    <li>💼 <strong>Profesión:</strong> <code>Soy [Profesión]</code>.<br>
+                                        <span class="bubble-pronounce" data-speak="Soy estudiante.">"Soy estudiante" (I am a student) 🔊</span>
+                                    </li>
+                                    <li>🤝 <strong>Cortesía:</strong> <code>Mucho gusto</code> (Nice to meet you) o <code>Encantado / Encantada</code>.<br>
+                                        <span class="bubble-pronounce" data-speak="Mucho gusto, encantado.">"Mucho gusto, encantado" 🔊</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="interactive-sandbox">
+                                <h3>Interactive Sandbox: Genera tu Presentación</h3>
+                                <p>Rellena tus datos y haz clic para escuchar cómo se dice tu presentación en español perfecto.</p>
+                                <div class="form-group">
+                                    <label for="present-name">Tu Nombre:</label>
+                                    <input type="text" id="present-name" placeholder="Ej. Alex" class="input-styled" value="Alex">
+                                </div>
+                                <div class="form-group">
+                                    <label for="present-country">Tu País de Origen:</label>
+                                    <input type="text" id="present-country" placeholder="Ej. Inglaterra" class="input-styled" value="Inglaterra">
+                                </div>
+                                <div class="form-group">
+                                    <label for="present-job">Tu Profesión:</label>
+                                    <select id="present-job" class="input-styled">
+                                        <option value="estudiante">Estudiante (Student)</option>
+                                        <option value="profesor">Profesor / Profesora (Teacher)</option>
+                                        <option value="médico">Médico / Médica (Doctor)</option>
+                                        <option value="ingeniero">Ingeniero / Ingeniera (Engineer)</option>
+                                        <option value="artista">Artista (Artist)</option>
+                                        <option value="diseñador">Diseñador / Diseñadora (Designer)</option>
+                                    </select>
+                                </div>
+
+                                <div class="sandbox-result-box">
+                                    <p id="present-preview-text" class="preview-text">¡Hola! Me llamo Alex, soy de Inglaterra y soy estudiante. ¡Mucho gusto!</p>
+                                    <button class="speaker-btn" id="btn-speak-presentation">
+                                        🔊 Escuchar Presentación
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 1.3: Ser vs Estar -->
+                    <div id="subpane-saludos-serestar" class="subtab-pane">
+                        <div class="lesson-explanation">
+                            <h3>El Dilema en Español: Ser vs Estar</h3>
+                            <p>En inglés, ambos verbos se traducen como "to be". En español, tienen usos muy diferentes:</p>
+                        </div>
+                        
+                        <div class="grid-2-col">
+                            <div class="card-comparison ser-card">
+                                <h4>SER (Permanente / Identidad)</h4>
+                                <p>Se usa para características esenciales, origen, profesión, identidad y la hora.</p>
+                                <ul>
+                                    <li><strong>Origen:</strong> <span class="bubble-pronounce" data-speak="Yo soy de Chile.">Yo <strong>soy</strong> de Chile. 🔊</span></li>
+                                    <li><strong>Identidad:</strong> <span class="bubble-pronounce" data-speak="Él es mi hermano.">Él <strong>es</strong> mi hermano. 🔊</span></li>
+                                    <li><strong>Profesión:</strong> <span class="bubble-pronounce" data-speak="Nosotros somos ingenieros.">Nosotros <strong>somos</strong> ingenieros. 🔊</span></li>
+                                </ul>
+                                <div class="conjugation-table">
+                                    <h5>Conjugación:</h5>
+                                    <div>Yo <strong>soy</strong> | Tú <strong>eres</strong> | Él/Ella <strong>es</strong></div>
+                                    <div>Nosotros <strong>somos</strong> | Vosotros <strong>sois</strong> | Ellos/Ellas <strong>son</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="card-comparison estar-card">
+                                <h4>ESTAR (Temporal / Ubicación)</h4>
+                                <p>Se usa para la ubicación de cosas/personas, emociones, estados de salud y acciones en progreso.</p>
+                                <ul>
+                                    <li><strong>Ubicación:</strong> <span class="bubble-pronounce" data-speak="Yo estoy en la cocina.">Yo <strong>estoy</strong> en la cocina. 🔊</span></li>
+                                    <li><strong>Emoción:</strong> <span class="bubble-pronounce" data-speak="Tú estás feliz.">Tú <strong>estás</strong> feliz. 🔊</span></li>
+                                    <li><strong>Estado de salud:</strong> <span class="bubble-pronounce" data-speak="Él está enfermo.">Él <strong>está</strong> enfermo. 🔊</span></li>
+                                </ul>
+                                <div class="conjugation-table">
+                                    <h5>Conjugación:</h5>
+                                    <div>Yo <strong>estoy</strong> | Tú <strong>estás</strong> | Él/Ella <strong>está</strong></div>
+                                    <div>Nosotros <strong>estamos</strong> | Vosotros <strong>estáis</strong> | Ellos/Ellas <strong>están</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ser/Estar Mini game -->
+                        <div class="interactive-game-box">
+                            <h4>Desafío: Ser o Estar</h4>
+                            <p>Completa la frase seleccionando la opción correcta.</p>
+                            <div class="game-card">
+                                <div class="game-sentence" id="serestar-sentence">
+                                    Juan ________ de Colombia. (Juan is from Colombia).
+                                </div>
+                                <div class="game-options" id="serestar-options">
+                                    <!-- Botones generados dinámicamente en app.js con la conjugación correcta -->
+                                </div>
+                                <div id="serestar-feedback" class="feedback-msg"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 1.4: Quiz / Práctica -->
+                    <div id="subpane-saludos-quiz" class="subtab-pane">
+                        <div class="quiz-container" id="quiz-module1">
+                            <h3>Cuestionario de Saludos y Presentación</h3>
+                            <p>Responde estas 4 preguntas para validar tus conocimientos y desbloquear el siguiente módulo.</p>
+                            
+                            <div class="quiz-questions-wrapper">
+                                <!-- Q1 -->
+                                <div class="quiz-question-card active" data-q="1">
+                                    <div class="question-header">Pregunta 1 de 4</div>
+                                    <div class="question-title">¿Cuál es el saludo apropiado para las 8:00 AM?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Buenos días</button>
+                                        <button class="quiz-opt" data-correct="false">Buenas tardes</button>
+                                        <button class="quiz-opt" data-correct="false">Buenas noches</button>
+                                    </div>
+                                </div>
+                                <!-- Q2 -->
+                                <div class="quiz-question-card" data-q="2">
+                                    <div class="question-header">Pregunta 2 de 4</div>
+                                    <div class="question-title">Completa: "Yo ________ de España y vivo en Londres."</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">estoy</button>
+                                        <button class="quiz-opt" data-correct="true">soy</button>
+                                        <button class="quiz-opt" data-correct="false">llamo</button>
+                                    </div>
+                                </div>
+                                <!-- Q3 -->
+                                <div class="quiz-question-card" data-q="3">
+                                    <div class="question-header">Pregunta 3 de 4</div>
+                                    <div class="question-title">Completa: "María ________ cansada hoy." (María is tired today).</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">está</button>
+                                        <button class="quiz-opt" data-correct="false">es</button>
+                                        <button class="quiz-opt" data-correct="false">tiene</button>
+                                    </div>
+                                </div>
+                                <!-- Q4 -->
+                                <div class="quiz-question-card" data-q="4">
+                                    <div class="question-header">Pregunta 4 de 4</div>
+                                    <div class="question-title">¿Cómo se dice "Nice to meet you" en español?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">¿Cómo estás?</button>
+                                        <button class="quiz-opt" data-correct="true">Mucho gusto</button>
+                                        <button class="quiz-opt" data-correct="false">Hasta luego</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <div class="quiz-status-dots">
+                                    <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="quiz-result-summary" style="display: none;">
+                                    <h4>¡Excelente trabajo! 🎉</h4>
+                                    <p>Has respondido correctamente todas las preguntas. Módulo 1 Completado.</p>
+                                    <button class="primary-btn" id="btn-complete-m1">Continuar al Módulo 2</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: LA FAMILIA -->
+            <section id="pane-familia" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Módulo 2: La Familia y Personas</h2>
+                    <p>Aprende a hablar de tu familia, el árbol genealógico y a presentar a otras personas.</p>
+                </div>
+
+                <div class="module-subnav">
+                    <button class="subnav-btn active" data-subtab="familia-arbol">Árbol Genealógico</button>
+                    <button class="subnav-btn" data-subtab="familia-presentar">Presentar a Alguien</button>
+                    <button class="subnav-btn" data-subtab="familia-quiz">Práctica</button>
+                </div>
+
+                <div class="subtab-content">
+                    <!-- SUBTAB 2.1: Arbol Genealogico -->
+                    <div id="subpane-familia-arbol" class="subtab-pane active">
+                        <div class="instruction-box">
+                            <p>🌳 <strong>Árbol Genealógico Interactivo:</strong> Haz clic sobre cualquier miembro de la familia para escuchar cómo se dice en español y ver un ejemplo de su presentación.</p>
+                        </div>
+
+                        <!-- Family Tree Layout -->
+                        <div class="family-tree-container">
+                            <!-- Generation 1: Abuelos -->
+                            <div class="tree-level">
+                                <div class="tree-node" data-member="abuelo" id="node-abuelo">
+                                    <div class="node-avatar">👴</div>
+                                    <div class="node-title">El abuelo</div>
+                                    <div class="node-translation">Grandfather</div>
+                                </div>
+                                <div class="tree-node" data-member="abuela" id="node-abuela">
+                                    <div class="node-avatar">👵</div>
+                                    <div class="node-title">La abuela</div>
+                                    <div class="node-translation">Grandmother</div>
+                                </div>
+                            </div>
+
+                            <div class="tree-connector"></div>
+
+                            <!-- Generation 2: Padres / Tios -->
+                            <div class="tree-level">
+                                <div class="tree-node" data-member="padre" id="node-padre">
+                                    <div class="node-avatar">👨</div>
+                                    <div class="node-title">El padre</div>
+                                    <div class="node-translation">Father</div>
+                                </div>
+                                <div class="tree-node" data-member="madre" id="node-madre">
+                                    <div class="node-avatar">👩</div>
+                                    <div class="node-title">La madre</div>
+                                    <div class="node-translation">Mother</div>
+                                </div>
+                                <div class="tree-node" data-member="tio" id="node-tio">
+                                    <div class="node-avatar">🧔</div>
+                                    <div class="node-title">El tío</div>
+                                    <div class="node-translation">Uncle</div>
+                                </div>
+                            </div>
+
+                            <div class="tree-connector"></div>
+
+                            <!-- Generation 3: Hermanos / Primos -->
+                            <div class="tree-level">
+                                <div class="tree-node" data-member="hermano" id="node-hermano">
+                                    <div class="node-avatar">👦</div>
+                                    <div class="node-title">El hermano</div>
+                                    <div class="node-translation">Brother</div>
+                                </div>
+                                <div class="tree-node" data-member="hermana" id="node-hermana">
+                                    <div class="node-avatar">👧</div>
+                                    <div class="node-title">La hermana</div>
+                                    <div class="node-translation">Sister</div>
+                                </div>
+                                <div class="tree-node" data-member="primo" id="node-primo">
+                                    <div class="node-avatar">🧑</div>
+                                    <div class="node-title">El primo</div>
+                                    <div class="node-translation">Cousin</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Family Details Panel -->
+                        <div class="details-panel" id="family-member-details">
+                            <div class="details-placeholder" id="family-details-placeholder">
+                                Selecciona un miembro de la familia arriba para ver detalles.
+                            </div>
+                            <div class="details-content" id="family-details-content" style="display: none;">
+                                <div class="details-title-row">
+                                    <span id="detail-avatar" class="detail-avatar">👨</span>
+                                    <div>
+                                        <h4 id="detail-title">El padre (Father)</h4>
+                                        <p id="detail-pronunciation">Pronunciación: <button id="btn-speak-family-member" class="audio-mini-btn">🔊 Escuchar</button></p>
+                                    </div>
+                                </div>
+                                <div class="details-phrases">
+                                    <p><strong>Ejemplo en Oración:</strong></p>
+                                    <div class="example-phrase-box">
+                                        <p id="detail-phrase-es">"Mi padre es alto y tiene cincuenta años."</p>
+                                        <p id="detail-phrase-en" class="phrase-translation">"My father is tall and is fifty years old."</p>
+                                        <button class="audio-mini-btn" id="btn-speak-family-phrase">🔊 Escuchar Frase</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 2.2: Presentar a Alguien -->
+                    <div id="subpane-familia-presentar" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>Vocabulario para Presentar a Otros</h3>
+                                <p>Cuando presentas a un familiar, amigo o compañero, utilizas las siguientes fórmulas básicas:</p>
+                                <ul>
+                                    <li>👉 <strong>Presentación:</strong> <code>Este es mi [miembro/amigo]</code> (masculino) o <code>Esta es mi [miembro/amiga]</code> (femenino).</li>
+                                    <li>🗣️ <strong>Nombre:</strong> <code>Se llama [Nombre]</code>.</li>
+                                    <li>💼 <strong>Profesión:</strong> <code>Él es / Ella es [profesión]</code>.</li>
+                                    <li>🧑 <strong>Descripción física/personalidad:</strong> <code>Él es alto/amable</code> o <code>Ella es simpática/inteligente</code>.</li>
+                                </ul>
+                                <div class="vocab-table">
+                                    <div class="vocab-row"><span>amable</span> <span>kind</span></div>
+                                    <div class="vocab-row"><span>simpático/a</span> <span>nice / friendly</span></div>
+                                    <div class="vocab-row"><span>alto/a</span> <span>tall</span></div>
+                                    <div class="vocab-row"><span>bajo/a</span> <span>short</span></div>
+                                    <div class="vocab-row"><span>joven</span> <span>young</span></div>
+                                </div>
+                            </div>
+
+                            <div class="interactive-sandbox">
+                                <h3>Presenta a tu Amigo o Familiar</h3>
+                                <div class="form-group">
+                                    <label>Relación / Género:</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" name="rel-gender" value="m" checked> Masculino (Este es mi...)</label>
+                                        <label><input type="radio" name="rel-gender" value="f"> Femenino (Esta es mi...)</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rel-member">Miembro o Vínculo:</label>
+                                    <select id="rel-member" class="input-styled">
+                                        <option value="amigo">Amigo / Amiga</option>
+                                        <option value="hermano">Hermano / Hermana</option>
+                                        <option value="padre">Padre / Madre</option>
+                                        <option value="primo">Primo / Prima</option>
+                                        <option value="tío">Tío / Tía</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rel-name">Nombre de la persona:</label>
+                                    <input type="text" id="rel-name" placeholder="Ej. Carlos o Sofía" class="input-styled" value="Carlos">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rel-trait">Características:</label>
+                                    <select id="rel-trait" class="input-styled">
+                                        <option value="muy simpático|muy simpática">Muy simpático/a (Very friendly)</option>
+                                        <option value="inteligente y trabajador|inteligente y trabajadora">Inteligente y trabajador/a (Smart & hard-working)</option>
+                                        <option value="alto y divertido|alta y divertida">Alto/a y divertido/a (Tall & funny)</option>
+                                        <option value="bajo y muy amable|baja y muy amable">Bajo/a y muy amable (Short & very kind)</option>
+                                    </select>
+                                </div>
+
+                                <div class="sandbox-result-box">
+                                    <p id="rel-preview-text" class="preview-text">Este es mi amigo, se llama Carlos. Él es muy simpático.</p>
+                                    <button class="speaker-btn" id="btn-speak-rel-presentation">
+                                        🔊 Escuchar Presentación
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 2.3: Quiz Familia -->
+                    <div id="subpane-familia-quiz" class="subtab-pane">
+                        <div class="quiz-container" id="quiz-module2">
+                            <h3>Cuestionario de la Familia y Descripciones</h3>
+                            <p>Responde las siguientes preguntas para validar tus conocimientos de la lección 2.</p>
+                            
+                            <div class="quiz-questions-wrapper">
+                                <!-- Q1 -->
+                                <div class="quiz-question-card active" data-q="1">
+                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-title">¿Cómo se dice "The grandmother" en español?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">La madre</button>
+                                        <button class="quiz-opt" data-correct="true">La abuela</button>
+                                        <button class="quiz-opt" data-correct="false">La hermana</button>
+                                    </div>
+                                </div>
+                                <!-- Q2 -->
+                                <div class="quiz-question-card" data-q="2">
+                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-title">Para presentar a una mujer (amiga), ¿qué frase usamos?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">Este es mi amiga</button>
+                                        <button class="quiz-opt" data-correct="true">Esta es mi amiga</button>
+                                        <button class="quiz-opt" data-correct="false">Él es mi amiga</button>
+                                    </div>
+                                </div>
+                                <!-- Q3 -->
+                                <div class="quiz-question-card" data-q="3">
+                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-title">¿Cuál es el significado de la palabra "simpático"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Nice / Friendly</button>
+                                        <button class="quiz-opt" data-correct="false">Tall</button>
+                                        <button class="quiz-opt" data-correct="false">Sympathetic</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <div class="quiz-status-dots">
+                                    <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="quiz-result-summary" style="display: none;">
+                                    <h4>¡Excelente! 🌳</h4>
+                                    <p>Has dominado el vocabulario de la familia y amigos.</p>
+                                    <button class="primary-btn" id="btn-complete-m2">Continuar al Módulo 3</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: LA CASA -->
+            <section id="pane-casa" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Módulo 3: La Casa y Muebles</h2>
+                    <p>Aprende a nombrar las diferentes habitaciones de una casa, los muebles principales y a describir dónde vives.</p>
+                </div>
+
+                <div class="module-subnav">
+                    <button class="subnav-btn active" data-subtab="casa-vocab">Partes de la Casa</button>
+                    <button class="subnav-btn" data-subtab="casa-muebles">Juego: Ubica los Muebles</button>
+                    <button class="subnav-btn" data-subtab="casa-describir">Describir la Casa</button>
+                    <button class="subnav-btn" data-subtab="casa-quiz">Práctica</button>
+                </div>
+
+                <div class="subtab-content">
+                    <!-- SUBTAB 3.1: Partes de la casa -->
+                    <div id="subpane-casa-vocab" class="subtab-pane active">
+                        <div class="instruction-box">
+                            <p>🏠 Haz clic en cada habitación del plano interactivo para aprender su nombre en español, su traducción y escuchar la pronunciación.</p>
+                        </div>
+
+                        <!-- House Plan Vector/Layout -->
+                        <div class="house-layout">
+                            <div class="house-room room-dormitorio" data-room-name="el dormitorio" data-speak="el dormitorio">
+                                <span class="room-emoji">🛏️</span>
+                                <div class="room-name">El dormitorio</div>
+                                <div class="room-en">Bedroom</div>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="house-room room-baño" data-room-name="el baño" data-speak="el baño">
+                                <span class="room-emoji">🚿</span>
+                                <div class="room-name">El baño</div>
+                                <div class="room-en">Bathroom</div>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="house-room room-cocina" data-room-name="la cocina" data-speak="la cocina">
+                                <span class="room-emoji">🍳</span>
+                                <div class="room-name">La cocina</div>
+                                <div class="room-en">Kitchen</div>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="house-room room-salon" data-room-name="el salón" data-speak="el salón">
+                                <span class="room-emoji">🛋️</span>
+                                <div class="room-name">El salón / La sala</div>
+                                <div class="room-en">Living Room</div>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="house-room room-jardin" data-room-name="el jardín" data-speak="el jardín">
+                                <span class="room-emoji">🌳</span>
+                                <div class="room-name">El jardín</div>
+                                <div class="room-en">Garden</div>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 3.2: Ubicar los Muebles Game -->
+                    <div id="subpane-casa-muebles" class="subtab-pane">
+                        <div class="instruction-box">
+                            <p>🎮 <strong>Juego de Asociación:</strong> Selecciona el mueble en español y luego selecciona la habitación donde normalmente se ubica.</p>
+                        </div>
+
+                        <div class="furniture-game-container">
+                            <div class="furniture-column">
+                                <h4>Muebles (Furniture)</h4>
+                                <div class="item-list" id="furniture-items">
+                                    <button class="game-item" data-id="cama" data-room="dormitorio">🛏️ La cama (Bed)</button>
+                                    <button class="game-item" data-id="sofa" data-room="salon">🛋️ El sofá (Sofa)</button>
+                                    <button class="game-item" data-id="nevera" data-room="cocina">🧊 La nevera (Fridge)</button>
+                                    <button class="game-item" data-id="ducha" data-room="baño">🚿 La ducha (Shower)</button>
+                                    <button class="game-item" data-id="mesa" data-room="salon">🍽️ La mesa (Table)</button>
+                                    <button class="game-item" data-id="arbol" data-room="jardin">🌸 Las flores (Flowers)</button>
+                                </div>
+                            </div>
+
+                            <div class="target-rooms-column">
+                                <h4>Partes de la casa (Parts of the house)</h4>
+                                <div class="room-targets-grid" id="room-targets-container">
+                                    <div class="room-target" data-room="dormitorio">El Dormitorio</div>
+                                    <div class="room-target" data-room="salon">El Salón</div>
+                                    <div class="room-target" data-room="cocina">La Cocina</div>
+                                    <div class="room-target" data-room="baño">El Baño</div>
+                                    <div class="room-target" data-room="jardin">El Jardín</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="game-score-box">
+                            <p id="furniture-game-status">Selecciona un mueble para empezar.</p>
+                            <button id="reset-furniture-game" class="secondary-btn" style="display:none;">Volver a Jugar</button>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 3.3: Describir la Casa -->
+                    <div id="subpane-casa-describir" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>¿Cómo es tu casa? (Describir la casa)</h3>
+                                <p>Para decir dónde vives y cómo es tu casa, usamos el verbo <strong>vivir</strong> y varios adjetivos:</p>
+                                <ul>
+                                    <li>🏡 <strong>Dónde vivo:</strong> <code>Yo vivo en un piso</code> (apartment) o <code>Yo vivo en una casa</code>.</li>
+                                    <li>✨ <strong>Cómo es:</strong>
+                                        <ul>
+                                            <li><code>Mi casa es grande</code> (big) / <code>pequeña</code> (small).</li>
+                                            <li><code>Es moderna</code> (modern) / <code>antigua</code> (old).</li>
+                                            <li><code>Es luminosa</code> (bright) / <code>oscura</code> (dark).</li>
+                                        </ul>
+                                    </li>
+                                    <li>🛏️ <strong>Habitaciones:</strong> <code>Tiene tres dormitorios y un baño</code>.</li>
+                                </ul>
+                            </div>
+
+                            <div class="interactive-sandbox">
+                                <h3>Describe tu Casa en Español</h3>
+                                <div class="form-group">
+                                    <label for="home-type">Tipo de vivienda:</label>
+                                    <select id="home-type" class="input-styled">
+                                        <option value="una casa grande|a big house">Una casa (A house)</option>
+                                        <option value="un piso moderno|a modern apartment">Un piso (An apartment)</option>
+                                        <option value="una casa de campo|a country house">Una casa de campo (A cottage)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="home-rooms">Número de dormitorios:</label>
+                                    <input type="number" id="home-rooms" min="1" max="10" value="2" class="input-styled">
+                                </div>
+                                <div class="form-group">
+                                    <label for="home-garden">¿Tiene jardín?</label>
+                                    <select id="home-garden" class="input-styled">
+                                        <option value="con un jardín precioso|with a beautiful garden">Sí, un jardín (Yes, a garden)</option>
+                                        <option value="sin jardín|without a garden">No (No)</option>
+                                    </select>
+                                </div>
+
+                                <div class="sandbox-result-box">
+                                    <p id="home-preview-text" class="preview-text">Yo vivo en una casa grande. Tiene 2 dormitorios y es con un jardín precioso.</p>
+                                    <button class="speaker-btn" id="btn-speak-home">
+                                        🔊 Escuchar Descripción
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 3.4: Quiz Casa -->
+                    <div id="subpane-casa-quiz" class="subtab-pane">
+                        <div class="quiz-container" id="quiz-module3">
+                            <h3>Cuestionario sobre la Casa</h3>
+                            <p>Responde estas preguntas para evaluar tus conocimientos de la lección de la casa.</p>
+                            
+                            <div class="quiz-questions-wrapper">
+                                <!-- Q1 -->
+                                <div class="quiz-question-card active" data-q="1">
+                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-title">¿Dónde se coloca normalmente "la cama"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">La cocina</button>
+                                        <button class="quiz-opt" data-correct="true">El dormitorio</button>
+                                        <button class="quiz-opt" data-correct="false">El jardín</button>
+                                    </div>
+                                </div>
+                                <!-- Q2 -->
+                                <div class="quiz-question-card" data-q="2">
+                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-title">¿Cómo se dice "apartment" en España?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Piso</button>
+                                        <button class="quiz-opt" data-correct="false">Jardín</button>
+                                        <button class="quiz-opt" data-correct="false">Habitación</button>
+                                    </div>
+                                </div>
+                                <!-- Q3 -->
+                                <div class="quiz-question-card" data-q="3">
+                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-title">¿Cuál es el opuesto de una casa "grande"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">Moderna</button>
+                                        <button class="quiz-opt" data-correct="true">Pequeña</button>
+                                        <button class="quiz-opt" data-correct="false">Luminosa</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <div class="quiz-status-dots">
+                                    <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="quiz-result-summary" style="display: none;">
+                                    <h4>¡Excelente! 🏠</h4>
+                                    <p>Has completado el módulo de la casa con éxito.</p>
+                                    <button class="primary-btn" id="btn-complete-m3">Continuar al Módulo 4</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: RUTINA DIARIA Y REFLEXIVOS -->
+            <section id="pane-rutina" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Módulo 4: Actividades Diarias y Verbos Reflexivos</h2>
+                    <p>Aprende a detallar tus rutinas cotidianas y a dominar los verbos reflexivos en español.</p>
+                </div>
+
+                <div class="module-subnav">
+                    <button class="subnav-btn active" data-subtab="rutina-reflexivos">Verbos Reflexivos</button>
+                    <button class="subnav-btn" data-subtab="rutina-actividades">Actividades Diarias</button>
+                    <button class="subnav-btn" data-subtab="rutina-builder">Organizador del Día</button>
+                    <button class="subnav-btn" data-subtab="rutina-quiz">Práctica</button>
+                </div>
+
+                <div class="subtab-content">
+                    <!-- SUBTAB 4.1: Verbos Reflexivos -->
+                    <div id="subpane-rutina-reflexivos" class="subtab-pane active">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>¿Qué son los verbos reflexivos?</h3>
+                                <p>Son verbos donde la acción recae sobre la misma persona que la realiza. Por ejemplo, "yo me cepillo los dientes" (I brush my teeth).</p>
+                                <p>En infinitivo terminan en <strong>-se</strong> (ej. <em>levantarse</em>). Al conjugarlos, usamos **pronombres reflexivos**:</p>
+                                <div class="vocab-table">
+                                    <div class="vocab-row"><span>Yo</span> <span><strong>me</strong> levanto</span></div>
+                                    <div class="vocab-row"><span>Tú</span> <span><strong>te</strong> levantas</span></div>
+                                    <div class="vocab-row"><span>Él / Ella / Usted</span> <span><strong>se</strong> levanta</span></div>
+                                    <div class="vocab-row"><span>Nosotros/as</span> <span><strong>nos</strong> levantamos</span></div>
+                                    <div class="vocab-row"><span>Ellos / Ellas / Ustedes</span> <span><strong>se</strong> levantan</span></div>
+                                </div>
+                            </div>
+
+                            <div class="interactive-sandbox">
+                                <h3>Practica la Conjugación Reflexiva</h3>
+                                <p>Elige un pronombre y un verbo para formar oraciones reflexivas:</p>
+                                
+                                <div class="form-group">
+                                    <label for="reflex-pronoun">Sujeto (Subject):</label>
+                                    <select id="reflex-pronoun" class="input-styled">
+                                        <option value="me|levanto|ducho|cepillo">Yo (me)</option>
+                                        <option value="te|levantas|duchas|cepillas">Tú (te)</option>
+                                        <option value="se|levanta|ducha|cepilla">Él/Ella (se)</option>
+                                        <option value="nos|levantamos|duchamos|cepillamos">Nosotros (nos)</option>
+                                        <option value="se|levantan|duchan|cepillan">Ellos/Ellas (se)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="reflex-verb">Acción (Verb):</label>
+                                    <select id="reflex-verb" class="input-styled">
+                                        <option value="levantar">Levantarse (To get up)</option>
+                                        <option value="duchar">Ducharse (To shower)</option>
+                                        <option value="cepillo">Cepillarse los dientes (To brush teeth)</option>
+                                    </select>
+                                </div>
+
+                                <div class="sandbox-result-box">
+                                    <p id="reflex-preview-text" class="preview-text">Yo me levanto por la mañana.</p>
+                                    <button class="speaker-btn" id="btn-speak-reflex">
+                                        🔊 Escuchar Conjugación
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 4.2: Actividades Diarias -->
+                    <div id="subpane-rutina-actividades" class="subtab-pane">
+                        <div class="instruction-box">
+                            <p>⏰ Haz clic en cada rutina diaria para escuchar la pronunciación y aprender a describirlas.</p>
+                        </div>
+
+                        <div class="routine-cards-grid">
+                            <div class="routine-card" data-speak="me despierto a las siete">
+                                <div class="routine-emoji">⏰</div>
+                                <h5>Despertarse</h5>
+                                <p class="phrase-es">Me despierto a las 7:00</p>
+                                <p class="phrase-en">I wake up at 7:00</p>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="routine-card" data-speak="me cepillo los dientes">
+                                <div class="routine-emoji">🪥</div>
+                                <h5>Cepillarse</h5>
+                                <p class="phrase-es">Me cepillo los dientes</p>
+                                <p class="phrase-en">I brush my teeth</p>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="routine-card" data-speak="desayuno café con tostadas">
+                                <div class="routine-emoji">☕</div>
+                                <h5>Desayunar</h5>
+                                <p class="phrase-es">Desayuno café</p>
+                                <p class="phrase-en">I eat breakfast / drink coffee</p>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="routine-card" data-speak="conduzco al trabajo">
+                                <div class="routine-emoji">🚗</div>
+                                <h5>Conducir</h5>
+                                <p class="phrase-es">Conduzco al trabajo</p>
+                                <p class="phrase-en">I drive to work</p>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="routine-card" data-speak="voy a trabajar">
+                                <div class="routine-emoji">💼</div>
+                                <h5>Ir a trabajar</h5>
+                                <p class="phrase-es">Voy a trabajar</p>
+                                <p class="phrase-en">I go to work</p>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                            <div class="routine-card" data-speak="me acuesto temprano">
+                                <div class="routine-emoji">🛌</div>
+                                <h5>Acostarse</h5>
+                                <p class="phrase-es">Me acuesto a las 10:00</p>
+                                <p class="phrase-en">I go to bed at 10:00</p>
+                                <button class="play-audio-mini">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 4.3: Organizador de Rutina -->
+                    <div id="subpane-rutina-builder" class="subtab-pane">
+                        <div class="instruction-box">
+                            <p>📅 <strong>Crea tu Rutina:</strong> Elige las actividades que haces en cada momento del día para construir tu agenda y escuchar tu día completo en español.</p>
+                        </div>
+
+                        <div class="builder-container">
+                            <div class="builder-timeline">
+                                <div class="timeline-slot" data-time="mañana">
+                                    <h4>🌅 Por la Mañana (Morning)</h4>
+                                    <select class="routine-selector" id="sel-morning">
+                                        <option value="me despierto temprano y me ducho|I wake up early and shower">Me despierto temprano y me ducho</option>
+                                        <option value="me levanto tarde y desayuno rápido|I get up late and eat breakfast quickly">Me levanto tarde y desayuno rápido</option>
+                                        <option value="me cepillo los dientes y conduzco al trabajo|I brush my teeth and drive to work">Me cepillo los dientes y conduzco al trabajo</option>
+                                    </select>
+                                </div>
+                                <div class="timeline-slot" data-time="tarde">
+                                    <h4>☀️ Por la Tarde (Afternoon)</h4>
+                                    <select class="routine-selector" id="sel-afternoon">
+                                        <option value="almuerzo con mis compañeros de trabajo|I eat lunch with my coworkers">Almuerzo con mis compañeros de trabajo</option>
+                                        <option value="trabajo en la oficina y tomo café|I work in the office and drink coffee">Trabajo en la oficina y tomo café</option>
+                                        <option value="vuelvo a casa en coche|I return home by car">Vuelvo a casa en coche</option>
+                                    </select>
+                                </div>
+                                <div class="timeline-slot" data-time="noche">
+                                    <h4>🌙 Por la Noche (Night)</h4>
+                                    <select class="routine-selector" id="sel-night">
+                                        <option value="ceno en familia y veo la televisión|I have dinner with family and watch TV">Ceno en familia y veo la televisión</option>
+                                        <option value="me acuesto a las once de la noche|I go to bed at eleven PM">Me acuesto a las once de la noche</option>
+                                        <option value="leo un libro y me duermo rápido|I read a book and fall asleep quickly">Leo un libro y me duermo rápido</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="sandbox-result-box builder-result">
+                                <h3>Mi Rutina Generada:</h3>
+                                <p id="routine-preview-text" class="preview-text">Por la mañana me despierto temprano y me ducho. Por la tarde almuerzo con mis compañeros de trabajo. Por la noche ceno en familia y veo la televisión.</p>
+                                <button class="speaker-btn" id="btn-speak-routine">
+                                    🔊 Escuchar Mi Rutina Completa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 4.4: Quiz Rutina -->
+                    <div id="subpane-rutina-quiz" class="subtab-pane">
+                        <div class="quiz-container" id="quiz-module4">
+                            <h3>Cuestionario de Rutina Diaria</h3>
+                            <p>Valida tus conocimientos de verbos reflexivos y rutinas diarias.</p>
+                            
+                            <div class="quiz-questions-wrapper">
+                                <!-- Q1 -->
+                                <div class="quiz-question-card active" data-q="1">
+                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-title">¿Cuál es el pronombre reflexivo correcto para "Yo"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">se</button>
+                                        <button class="quiz-opt" data-correct="true">me</button>
+                                        <button class="quiz-opt" data-correct="false">te</button>
+                                    </div>
+                                </div>
+                                <!-- Q2 -->
+                                <div class="quiz-question-card" data-q="2">
+                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-title">¿Qué significa "Me cepillo los dientes"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">I wash my hands</button>
+                                        <button class="quiz-opt" data-correct="true">I brush my teeth</button>
+                                        <button class="quiz-opt" data-correct="false">I comb my hair</button>
+                                    </div>
+                                </div>
+                                <!-- Q3 -->
+                                <div class="quiz-question-card" data-q="3">
+                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-title">¿Cómo conjugas "levantarse" para la tercera persona singular (Él)?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Se levanta</button>
+                                        <button class="quiz-opt" data-correct="false">Me levanto</button>
+                                        <button class="quiz-opt" data-correct="false">Te levantas</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <div class="quiz-status-dots">
+                                    <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="quiz-result-summary" style="display: none;">
+                                    <h4>¡Fantástico! ⏰</h4>
+                                    <p>Ya sabes cómo estructurar y relatar tu rutina en español.</p>
+                                    <button class="primary-btn" id="btn-complete-m4">Continuar al Módulo 5</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: GUSTOS Y PREFERENCIAS -->
+            <section id="pane-gustos" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Módulo 5: Gustos y Preferencias</h2>
+                    <p>Aprende a expresar lo que te gusta y lo que no, e interactúa en un chat realista.</p>
+                </div>
+
+                <div class="module-subnav">
+                    <button class="subnav-btn active" data-subtab="gustos-vocab">Verbo Gustar</button>
+                    <button class="subnav-btn" data-subtab="gustos-chatbot">Chat Interactivo</button>
+                    <button class="subnav-btn" data-subtab="gustos-numbers">Temas Extra (Números/Colores)</button>
+                    <button class="subnav-btn" data-subtab="gustos-quiz">Práctica Final</button>
+                </div>
+
+                <div class="subtab-content">
+                    <!-- SUBTAB 5.1: Verbo Gustar -->
+                    <div id="subpane-gustos-vocab" class="subtab-pane active">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>El Verbo Gustar (To like)</h3>
+                                <p>En español, no decimos "Yo gusto algo". Sino que la estructura es "Algo me gusta a mí" (It pleases me).</p>
+                                <p>Dependiendo de quién experimenta el gusto, usamos los siguientes pronombres de objeto indirecto:</p>
+                                <div class="vocab-table">
+                                    <div class="vocab-row"><span>A mí (I)</span> <span><strong>Me gusta</strong></span></div>
+                                    <div class="vocab-row"><span>A ti (You)</span> <span><strong>Te gusta</strong></span></div>
+                                    <div class="vocab-row"><span>A él/ella (He/She)</span> <span><strong>Le gusta</strong></span></div>
+                                    <div class="vocab-row"><span>A nosotros/as (We)</span> <span><strong>Nos gusta</strong></span></div>
+                                    <div class="vocab-row"><span>A ellos/as (They)</span> <span><strong>Les gusta</strong></span></div>
+                                </div>
+                                <p>⚠️ Si lo que nos gusta es plural, añadimos una <strong>n</strong>: <code>Me gusta el café</code> ☕ vs <code>Me gusta<strong>n</strong> los libros</code> 📚.</p>
+                            </div>
+
+                            <div class="interactive-sandbox">
+                                <h3>¿Qué te gusta?</h3>
+                                <p>Construye tu frase de preferencia y escúchala:</p>
+                                <div class="form-group">
+                                    <label for="gustar-who">¿Para quién?</label>
+                                    <select id="gustar-who" class="input-styled">
+                                        <option value="Me gusta|I like">A mí (Me gusta)</option>
+                                        <option value="Te gusta|You like">A ti (Te gusta)</option>
+                                        <option value="Le gusta|He/She likes">A él/ella (Le gusta)</option>
+                                        <option value="Nos gusta|We like">A nosotros (Nos gusta)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gustar-what">¿Qué cosa?</label>
+                                    <select id="gustar-what" class="input-styled">
+                                        <option value="mucho la música española|Spanish music a lot">la música española (Spanish music)</option>
+                                        <option value="comer paella los domingos|to eat paella on Sundays">comer paella (to eat paella)</option>
+                                        <option value="viajar y conocer nuevos países|to travel and see new countries">viajar (to travel)</option>
+                                        <option value="el chocolate caliente|hot chocolate">el chocolate caliente (hot chocolate)</option>
+                                    </select>
+                                </div>
+
+                                <div class="sandbox-result-box">
+                                    <p id="gustar-preview-text" class="preview-text">Me gusta mucho la música española.</p>
+                                    <button class="speaker-btn" id="btn-speak-gustar">
+                                        🔊 Escuchar Preferencia
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 5.2: Chatbot Interactivo -->
+                    <div id="subpane-gustos-chatbot" class="subtab-pane">
+                        <div class="instruction-box">
+                            <p>💬 <strong>Chat Simulado:</strong> Responde a Sofía seleccionando las opciones. ¡Practica tus preferencias y saludos en tiempo real!</p>
+                        </div>
+
+                        <div class="chat-container">
+                            <div class="chat-header">
+                                <span class="chat-avatar">👩‍🏫</span>
+                                <div class="chat-info">
+                                    <h5>Sofía (Profesora)</h5>
+                                    <span>En línea</span>
+                                </div>
+                            </div>
+                            <div class="chat-messages" id="chat-messages-box">
+                                <!-- Welcome message -->
+                                <div class="message incoming">
+                                    <p>¡Hola! Soy Sofía. ¿Cómo estás hoy?</p>
+                                </div>
+                            </div>
+                            <div class="chat-input-area" id="chat-choices-area">
+                                <button class="chat-choice-btn" data-next="1" data-val="¡Hola Sofía! Estoy muy bien, gracias. ¿Y tú?">¡Hola Sofía! Estoy muy bien, gracias. ¿Y tú?</button>
+                                <button class="chat-choice-btn" data-next="1" data-val="Hola. Estoy un poco cansado/a.">Hola. Estoy un poco cansado/a.</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 5.3: Temas Extra -->
+                    <div id="subpane-gustos-numbers" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div>
+                                <h3 class="subsection-title">Números Esenciales (0 - 10)</h3>
+                                <div class="vocab-table">
+                                    <div class="vocab-row" data-speak="cero"><span>0</span> <span>cero 🔊</span></div>
+                                    <div class="vocab-row" data-speak="uno"><span>1</span> <span>uno 🔊</span></div>
+                                    <div class="vocab-row" data-speak="dos"><span>2</span> <span>dos 🔊</span></div>
+                                    <div class="vocab-row" data-speak="tres"><span>3</span> <span>tres 🔊</span></div>
+                                    <div class="vocab-row" data-speak="cuatro"><span>4</span> <span>cuatro 🔊</span></div>
+                                    <div class="vocab-row" data-speak="cinco"><span>5</span> <span>cinco 🔊</span></div>
+                                    <div class="vocab-row" data-speak="seis"><span>6</span> <span>seis 🔊</span></div>
+                                    <div class="vocab-row" data-speak="siete"><span>7</span> <span>siete 🔊</span></div>
+                                    <div class="vocab-row" data-speak="ocho"><span>8</span> <span>ocho 🔊</span></div>
+                                    <div class="vocab-row" data-speak="nueve"><span>9</span> <span>nueve 🔊</span></div>
+                                    <div class="vocab-row" data-speak="diez"><span>10</span> <span>diez 🔊</span></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="subsection-title">Colores Básicos</h3>
+                                <div class="colors-grid">
+                                    <div class="color-swatch bg-red" data-speak="rojo"><span>rojo (red) 🔊</span></div>
+                                    <div class="color-swatch bg-blue" data-speak="azul"><span>azul (blue) 🔊</span></div>
+                                    <div class="color-swatch bg-green" data-speak="verde"><span>verde (green) 🔊</span></div>
+                                    <div class="color-swatch bg-yellow" data-speak="amarillo"><span>amarillo (yellow) 🔊</span></div>
+                                    <div class="color-swatch bg-black" data-speak="negro"><span>negro (black) 🔊</span></div>
+                                    <div class="color-swatch bg-white" data-speak="blanco"><span>blanco (white) 🔊</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 5.4: Quiz Final -->
+                    <div id="subpane-gustos-quiz" class="subtab-pane">
+                        <div class="quiz-container" id="quiz-module5">
+                            <h3>Cuestionario Final del Curso</h3>
+                            <p>¡Última prueba! Responde correctamente para finalizar el nivel cero.</p>
+                            
+                            <div class="quiz-questions-wrapper">
+                                <!-- Q1 -->
+                                <div class="quiz-question-card active" data-q="1">
+                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-title">¿Cómo traduces "I like books"? (Plural)</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">Me gusta los libros</button>
+                                        <button class="quiz-opt" data-correct="true">Me gustan los libros</button>
+                                        <button class="quiz-opt" data-correct="false">A mí me gusta libros</button>
+                                    </div>
+                                </div>
+                                <!-- Q2 -->
+                                <div class="quiz-question-card" data-q="2">
+                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-title">¿Cuál es el número "cinco"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">3</button>
+                                        <button class="quiz-opt" data-correct="true">5</button>
+                                        <button class="quiz-opt" data-correct="false">7</button>
+                                    </div>
+                                </div>
+                                <!-- Q3 -->
+                                <div class="quiz-question-card" data-q="3">
+                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-title">¿Cómo dices "he likes"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Le gusta</button>
+                                        <button class="quiz-opt" data-correct="false">Me gusta</button>
+                                        <button class="quiz-opt" data-correct="false">Te gusta</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <div class="quiz-status-dots">
+                                    <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="quiz-result-summary" style="display: none;">
+                                    <h4>🎉 ¡Felicitaciones! 🎉</h4>
+                                    <p>Has completado con éxito todo el curso de Español Nivel Cero.</p>
+                                    <button class="primary-btn" id="btn-complete-course">¡Finalizar y ver Diploma!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Diseñado con ❤️ para aprender Español. © 2026 ¡Hola! App.</p>
+        </footer>
+    </div>
+
+    <!-- Celebration Modal (Diploma) -->
+    <div id="diploma-modal" class="modal-overlay">
+        <div class="modal-card">
+            <span class="modal-close" id="btn-close-modal">&times;</span>
+            <div class="diploma-frame">
+                <h2>📜 DIPLOMA DE ESPAÑOL 📜</h2>
+                <h3>Nivel Cero (A0)</h3>
+                <p class="cert-text">Certificamos que has completado con éxito todas las lecciones interactivas de vocabulario, pronunciación, gramática de Ser y Estar, familia, casa, rutina diaria y preferencias.</p>
+                <div class="student-name-box">
+                    <span id="diploma-student-name">Estudiante de Español</span>
+                </div>
+                <div class="diploma-footer">
+                    <div class="signature">
+                        <span class="signature-line">Sofía</span>
+                        <p>Profesora de ¡Hola!</p>
+                    </div>
+                    <div class="stamp">🇪🇸</div>
+                </div>
+            </div>
+            <button class="primary-btn mt-2" id="btn-restart-progress">Reiniciar Progreso</button>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
