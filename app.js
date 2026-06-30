@@ -1154,6 +1154,8 @@ function updateUI() {
 // Global state variables for practice
 state.practicaStreak = 0;
 state.practicaCorrect = 0;
+state.practicaCount = 0;            // Questions in current set
+state.practicaSessionCorrect = 0;   // Correct answers in current set (max 10)
 state.currentExercise = null;
 
 // Database for algorithmic generation
@@ -1183,19 +1185,39 @@ const bancoDeDatosPractica = {
         verbos: {
             ser: {
                 yo: "soy", tu: "eres", el: "es", ella: "es", nosotros: "somos", nosotras: "somos", ellos: "son", ellas: "son",
-                complements: ["de España y vivo en Londres", "médico en un hospital", "un estudiante muy trabajador", "el hermano mayor de Juan"]
+                complements: [
+                    { singular: "de España y vivo en Londres", plural: "de España y vivimos en Londres" },
+                    { singular: "médico en un hospital", plural: "médicos en un hospital" },
+                    { singular: "un estudiante muy trabajador", plural: "unos estudiantes muy trabajadores" },
+                    { singular: "el hermano mayor de Juan", plural: "los hermanos mayores de Juan" }
+                ]
             },
             estar: {
                 yo: "estoy", tu: "estás", el: "está", ella: "está", nosotros: "estamos", nosotras: "estamos", ellos: "están", ellas: "están",
-                complements: ["muy cansado hoy por el trabajo", "en el salón leyendo un libro", "en la cocina preparando la cena", "feliz con las lecciones"]
+                complements: [
+                    { singular: "muy cansado hoy por el trabajo", plural: "muy cansados hoy por el trabajo" },
+                    { singular: "en el salón leyendo un libro", plural: "en el salón leyendo un libro" },
+                    { singular: "en la cocina preparando la cena", plural: "en la cocina preparando la cena" },
+                    { singular: "feliz con las lecciones", plural: "felices con las lecciones" }
+                ]
             },
             tener: {
                 yo: "tengo", tu: "tienes", el: "tiene", ella: "tiene", nosotros: "tenemos", nosotras: "tenemos", ellos: "tienen", ellas: "tienen",
-                complements: ["veinte años y estudio derecho", "dos hermanos y una hermana", "un perro negro muy simpático", "una casa de campo antigua"]
+                complements: [
+                    { singular: "veinte años y estudio derecho", plural: "veinte años y estudiamos derecho" },
+                    { singular: "dos hermanos y una hermana", plural: "dos hermanos y una hermana" },
+                    { singular: "un perro negro muy simpático", plural: "un perro negro muy simpático" },
+                    { singular: "una casa de campo antigua", plural: "una casa de campo antigua" }
+                ]
             },
             ir: {
                 yo: "voy", tu: "vas", el: "va", ella: "va", nosotros: "vamos", nosotras: "vamos", ellos: "van", ellas: "van",
-                complements: ["al trabajo en coche todos los días", "a la escuela a aprender español", "al supermercado a comprar fruta", "de vacaciones los domingos"]
+                complements: [
+                    { singular: "al trabajo en coche todos los días", plural: "al trabajo en coche todos los días" },
+                    { singular: "a la escuela a aprender español", plural: "a la escuela a aprender español" },
+                    { singular: "al supermercado a comprar fruta", plural: "al supermercado a comprar fruta" },
+                    { singular: "de vacaciones los domingos", plural: "de vacaciones los domingos" }
+                ]
             }
         },
         pronombres: ["Yo", "Tú", "Él", "Ella", "Nosotros", "Nosotras", "Ellos", "Ellas"]
@@ -1287,13 +1309,23 @@ function initInfinitePractice() {
     const categorySelect = document.getElementById("practica-category-select");
     const helpToggleBtn = document.getElementById("help-toggle-btn");
     const nextBtn = document.getElementById("btn-practica-next");
+    const card = document.getElementById("practica-card");
 
     if (!categorySelect) return;
 
     // Change category listener
     categorySelect.addEventListener("change", () => {
         state.practicaStreak = 0;
+        state.practicaCount = 0;
+        state.practicaSessionCorrect = 0;
         document.getElementById("practica-streak").innerText = "0";
+        // Restore card structure
+        card.innerHTML = `
+            <div class="practica-instruction" id="practica-instruction"></div>
+            <div class="practica-sentence" id="practica-sentence"></div>
+            <div class="practica-options" id="practica-options"></div>
+            <div class="practica-feedback" id="practica-feedback"></div>
+        `;
         generateExercise(categorySelect.value);
     });
 
@@ -1313,7 +1345,11 @@ function initInfinitePractice() {
 
     // Next Question Button listener
     nextBtn.addEventListener("click", () => {
-        generateExercise(categorySelect.value);
+        if (state.practicaCount >= 10) {
+            showPracticeResults();
+        } else {
+            generateExercise(categorySelect.value);
+        }
     });
 
     // Generate initial exercise
@@ -1329,38 +1365,34 @@ function generateExercise(category) {
     const helpToggleBtn = document.getElementById("help-toggle-btn");
     const card = document.getElementById("practica-card");
 
-    feedback.innerText = "";
-    feedback.className = "practica-feedback";
-    card.style.borderColor = "var(--border-color)";
-    nextBtn.style.display = "none";
+    if (feedback) {
+        feedback.innerText = "";
+        feedback.className = "practica-feedback";
+    }
+    if (card) card.style.borderColor = "var(--border-color)";
+    if (nextBtn) nextBtn.style.display = "none";
     
     // Collapse help panel
-    helpContent.style.display = "none";
-    helpToggleBtn.classList.remove("open");
-
-    // Load static help tips
-    helpContent.innerHTML = ayudaGramaticalExplicacion[category];
+    if (helpContent && helpToggleBtn) {
+        helpContent.style.display = "none";
+        helpToggleBtn.classList.remove("open");
+        helpContent.innerHTML = ayudaGramaticalExplicacion[category];
+    }
 
     let exercise = {};
 
     if (category === "regulares") {
-        // Pick a regular verb
         const vList = bancoDeDatosPractica.regulares.verbos;
         const verb = vList[Math.floor(Math.random() * vList.length)];
-
-        // Pick a pronoun
         const pList = bancoDeDatosPractica.regulares.pronombres;
         const pronounObj = pList[Math.floor(Math.random() * pList.length)];
 
-        // Calculate correct ending
         const suffix = verb.terminacion; // ar, er, ir
         const ending = pronounObj.endings[suffix];
         const correctConjugation = verb.raiz + ending;
 
-        // Complement
         const complement = verb.complementos[Math.floor(Math.random() * verb.complementos.length)];
 
-        // Generate distractors
         const distractors = new Set();
         while (distractors.size < 3) {
             const randomPronoun = pList[Math.floor(Math.random() * pList.length)];
@@ -1380,17 +1412,13 @@ function generateExercise(category) {
         };
 
     } else if (category === "irregulares") {
-        // Pick a verb key
         const vKeys = ["ser", "estar", "tener", "ir"];
         const verbKey = vKeys[Math.floor(Math.random() * vKeys.length)];
         const verbObj = bancoDeDatosPractica.irregulares.verbos[verbKey];
-
-        // Pick a subject
         const pList = bancoDeDatosPractica.irregulares.pronombres;
         const subject = pList[Math.floor(Math.random() * pList.length)];
 
-        // Determine grammatical key for pronouns
-        let subKey = "el"; // default
+        let subKey = "el"; 
         if (subject === "Yo") subKey = "yo";
         else if (subject === "Tú") subKey = "tu";
         else if (subject === "Él") subKey = "el";
@@ -1401,9 +1429,12 @@ function generateExercise(category) {
         else if (subject === "Ellas") subKey = "ellas";
 
         const correctConjugation = verbObj[subKey];
-        const complement = verbObj.complements[Math.floor(Math.random() * verbObj.complements.length)];
+        
+        // Concordancia de número (singular vs plural)
+        const isPlural = ["Nosotros", "Nosotras", "Ellos", "Ellas"].includes(subject);
+        const compObj = verbObj.complements[Math.floor(Math.random() * verbObj.complements.length)];
+        const complement = isPlural ? compObj.plural : compObj.singular;
 
-        // Get distractors from other persons of same verb
         const distractors = new Set();
         const allForms = Object.keys(verbObj)
             .filter(k => k !== "complements")
@@ -1413,7 +1444,6 @@ function generateExercise(category) {
             if (form !== correctConjugation) distractors.add(form);
         });
 
-        // Convert to array and slice 3
         const distractorArray = Array.from(distractors).sort(() => 0.5 - Math.random()).slice(0, 3);
 
         exercise = {
@@ -1425,15 +1455,11 @@ function generateExercise(category) {
         };
 
     } else if (category === "reflexivos") {
-        // Pick a reflexive verb
         const vList = bancoDeDatosPractica.reflexivos.verbos;
         const verbObj = vList[Math.floor(Math.random() * vList.length)];
-
-        // Pick subject
         const pList = bancoDeDatosPractica.reflexivos.pronombres;
         const subject = pList[Math.floor(Math.random() * pList.length)];
 
-        // Determine key
         let subKey = "el";
         if (subject === "Yo") subKey = "yo";
         else if (subject === "Tú") subKey = "tu";
@@ -1445,7 +1471,6 @@ function generateExercise(category) {
         const correctForm = verbObj.pronombres[subKey];
         const complement = verbObj.complementos[Math.floor(Math.random() * verbObj.complementos.length)];
 
-        // Distractors from other conjugations of same verb
         const distractors = new Set();
         const allForms = Object.keys(verbObj.pronombres).map(k => verbObj.pronombres[k]);
         allForms.forEach(form => {
@@ -1463,7 +1488,6 @@ function generateExercise(category) {
         };
 
     } else if (category === "vocabulario") {
-        // Pick from list of static templates
         const vList = bancoDeDatosPractica.vocabulario;
         const rawExercise = vList[Math.floor(Math.random() * vList.length)];
 
@@ -1478,23 +1502,24 @@ function generateExercise(category) {
 
     state.currentExercise = exercise;
 
-    // Shuffle options
     const shuffledOptions = [...exercise.options].sort(() => 0.5 - Math.random());
 
-    // Render elements in DOM
-    document.getElementById("practica-instruction").innerText = exercise.instruction;
-    document.getElementById("practica-sentence").innerHTML = exercise.sentence.replace("________", `<strong style="color: var(--accent-orange); text-decoration: underline;">________</strong>`);
+    const instEl = document.getElementById("practica-instruction");
+    const sentEl = document.getElementById("practica-sentence");
+    if (instEl) instEl.innerText = exercise.instruction;
+    if (sentEl) sentEl.innerHTML = exercise.sentence.replace("________", `<strong style="color: var(--accent-orange); text-decoration: underline;">________</strong>`);
 
     const optionsContainer = document.getElementById("practica-options");
-    optionsContainer.innerHTML = "";
-
-    shuffledOptions.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.className = "option-btn";
-        btn.innerText = opt;
-        btn.addEventListener("click", () => checkInfinitePracticeAnswer(btn, opt));
-        optionsContainer.appendChild(btn);
-    });
+    if (optionsContainer) {
+        optionsContainer.innerHTML = "";
+        shuffledOptions.forEach(opt => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.addEventListener("click", () => checkInfinitePracticeAnswer(btn, opt));
+            optionsContainer.appendChild(btn);
+        });
+    }
 }
 
 // Check Practice Answer
@@ -1505,53 +1530,119 @@ function checkInfinitePracticeAnswer(choiceBtn, option) {
     const card = document.getElementById("practica-card");
     const optionsContainer = document.getElementById("practica-options");
 
-    // Disable all option buttons
-    optionsContainer.querySelectorAll(".option-btn").forEach(btn => {
-        btn.disabled = true;
-        if (btn.innerText === exercise.correct) {
-            btn.style.borderColor = "var(--accent-teal)";
-            btn.style.color = "var(--accent-teal)";
-            btn.style.background = "rgba(20, 184, 166, 0.1)";
-        } else {
-            btn.style.opacity = "0.5";
-        }
-    });
+    if (optionsContainer) {
+        optionsContainer.querySelectorAll(".option-btn").forEach(btn => {
+            btn.disabled = true;
+            if (btn.innerText === exercise.correct) {
+                btn.style.borderColor = "var(--accent-teal)";
+                btn.style.color = "var(--accent-teal)";
+                btn.style.background = "rgba(20, 184, 166, 0.1)";
+            } else {
+                btn.style.opacity = "0.5";
+            }
+        });
+    }
 
     const isCorrect = option === exercise.correct;
+    state.practicaCount++; // Aumenta el total de preguntas respondidas en este set
 
     if (isCorrect) {
-        // Success
         state.practicaStreak++;
-        state.practicaCorrect++;
+        state.practicaCorrect++;         // Histórico
+        state.practicaSessionCorrect++;  // De la sesión de 10
         
-        feedback.innerText = "¡Excelente! Respuesta correcta. 🎉";
-        feedback.className = "practica-feedback correct";
-        card.style.borderColor = "var(--accent-teal)";
+        if (feedback) {
+            feedback.innerText = "¡Excelente! Respuesta correcta. 🎉";
+            feedback.className = "practica-feedback correct";
+        }
+        if (card) card.style.borderColor = "var(--accent-teal)";
         
-        // Speak sentence
         const completedSentence = exercise.sentence.replace("________", exercise.correct);
         speakWord(completedSentence);
 
     } else {
-        // Error
         state.practicaStreak = 0;
         
-        feedback.innerText = `Incorrecto. ${exercise.explanation}`;
-        feedback.className = "practica-feedback incorrect";
-        card.style.borderColor = "var(--accent-red)";
+        if (feedback) {
+            feedback.innerText = `Incorrecto. ${exercise.explanation}`;
+            feedback.className = "practica-feedback incorrect";
+        }
+        if (card) card.style.borderColor = "var(--accent-red)";
         
-        choiceBtn.style.borderColor = "var(--accent-red)";
-        choiceBtn.style.color = "var(--accent-red)";
-        choiceBtn.style.background = "rgba(244, 63, 94, 0.1)";
-        choiceBtn.style.opacity = "1";
+        if (choiceBtn) {
+            choiceBtn.style.borderColor = "var(--accent-red)";
+            choiceBtn.style.color = "var(--accent-red)";
+            choiceBtn.style.background = "rgba(244, 63, 94, 0.1)";
+            choiceBtn.style.opacity = "1";
+        }
 
         speakWord("Incorrecto");
     }
 
-    // Update scoreboard
-    document.getElementById("practica-streak").innerText = state.practicaStreak;
-    document.getElementById("practica-correct").innerText = state.practicaCorrect;
+    // Actualiza racha y correctas globales en la UI
+    const streakEl = document.getElementById("practica-streak");
+    const correctEl = document.getElementById("practica-correct");
+    if (streakEl) streakEl.innerText = state.practicaStreak;
+    if (correctEl) correctEl.innerText = state.practicaCorrect;
 
-    // Show next button
-    nextBtn.style.display = "inline-block";
+    // Configura el botón para el siguiente paso
+    if (nextBtn) {
+        if (state.practicaCount >= 10) {
+            nextBtn.innerText = "Ver Resultados del Set 📊";
+        } else {
+            nextBtn.innerText = "Siguiente Ejercicio ➡️";
+        }
+        nextBtn.style.display = "inline-block";
+    }
+}
+
+// Show practice results screen
+function showPracticeResults() {
+    const card = document.getElementById("practica-card");
+    const nextBtn = document.getElementById("btn-practica-next");
+    if (nextBtn) nextBtn.style.display = "none";
+
+    const percent = Math.round((state.practicaSessionCorrect / 10) * 100);
+    let congrats = "";
+    if (percent === 100) congrats = "¡Perfecto! Eres un maestro/a de la gramática. 🏆";
+    else if (percent >= 80) congrats = "¡Excelente trabajo! Vas por muy buen camino. 🎉";
+    else if (percent >= 50) congrats = "Buen intento. Sigue practicando para mejorar. 👍";
+    else congrats = "No te rindas. Vuelve a intentarlo para reforzar tus conocimientos. 💪";
+
+    if (card) {
+        card.innerHTML = `
+            <div style="font-size: 3rem; margin-bottom: 15px;">📊</div>
+            <h4 style="color: var(--accent-teal); font-size: 1.4rem; margin-bottom: 10px;">¡Set Completado!</h4>
+            <p style="font-size: 1.1rem; margin-bottom: 5px; font-weight:600; color: var(--text-primary);">Aciertos: ${state.practicaSessionCorrect} / 10 (${percent}%)</p>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); font-size: 0.95rem;">${congrats}</p>
+            <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
+                <button class="primary-btn" id="btn-restart-practica-set">Repetir Categoría</button>
+                <button class="secondary-btn" id="btn-go-home-practica">Ir al Inicio</button>
+            </div>
+        `;
+
+        speakWord(`Set completado. Tu puntuación es ${state.practicaSessionCorrect} de diez.`);
+
+        card.querySelector("#btn-restart-practica-set").addEventListener("click", () => {
+            state.practicaCount = 0;
+            state.practicaSessionCorrect = 0;
+            state.practicaStreak = 0;
+            const streakEl = document.getElementById("practica-streak");
+            if (streakEl) streakEl.innerText = "0";
+            
+            // Restore card structure
+            card.innerHTML = `
+                <div class="practica-instruction" id="practica-instruction"></div>
+                <div class="practica-sentence" id="practica-sentence"></div>
+                <div class="practica-options" id="practica-options"></div>
+                <div class="practica-feedback" id="practica-feedback"></div>
+            `;
+            generateExercise(document.getElementById("practica-category-select").value);
+        });
+
+        card.querySelector("#btn-go-home-practica").addEventListener("click", () => {
+            const dashboardTab = document.querySelector(".nav-tab[data-tab='dashboard']");
+            if (dashboardTab) dashboardTab.click();
+        });
+    }
 }
