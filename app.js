@@ -174,6 +174,15 @@ function initTTS() {
             speakWord(textToSpeak);
         }
     });
+
+    // Add explicit click handler to static data-speak elements to ensure touch device bubbling
+    document.querySelectorAll(".vocab-row[data-speak], .color-swatch[data-speak]").forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent double trigger with body handler
+            const textToSpeak = el.getAttribute("data-speak");
+            speakWord(textToSpeak);
+        });
+    });
 }
 
 function speakWord(text) {

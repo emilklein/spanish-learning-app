@@ -1159,6 +1159,15 @@ code {
     color: var(--text-secondary);
 }
 
+.vocab-row[data-speak] {
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.vocab-row[data-speak]:hover {
+    background: rgba(249, 115, 22, 0.08);
+}
+
 /* House Layout / Map Styling */
 .house-layout {
     background: var(--bg-card);
