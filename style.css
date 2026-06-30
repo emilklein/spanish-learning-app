@@ -1760,3 +1760,209 @@ code {
     20%, 60% { transform: translateX(-6px); }
     40%, 80% { transform: translateX(6px); }
 }
+
+/* ==========================================================================
+   Grammar Boxes & Tables
+   ========================================================================== */
+.grammar-box {
+    margin-top: 20px;
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+}
+.grammar-box h5 {
+    color: var(--accent-orange);
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+.grammar-tip {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-style: italic;
+}
+.grammar-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+    margin-top: 5px;
+}
+.grammar-table th, .grammar-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.grammar-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+.grammar-table tr[data-speak] {
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+.grammar-table tr[data-speak]:hover {
+    background: rgba(249, 115, 22, 0.08);
+    color: var(--accent-orange);
+}
+.grammar-table td strong {
+    color: var(--accent-teal);
+}
+
+/* ==========================================================================
+   Infinite Practice Section (Gimnasio de Práctica)
+   ========================================================================== */
+.practica-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.select-category-group {
+    flex-grow: 1;
+    max-width: 500px;
+    margin-bottom: 0;
+}
+.score-card {
+    display: flex;
+    gap: 15px;
+}
+.score-item {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 100px;
+}
+.score-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.score-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+}
+.practica-arena {
+    margin-bottom: 24px;
+}
+.practica-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-premium);
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: border-color 0.4s ease;
+}
+.practica-instruction {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+.practica-sentence {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+.practica-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+.practica-feedback {
+    margin-top: 24px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    min-height: 24px;
+}
+.practica-feedback.correct {
+    color: var(--accent-teal);
+}
+.practica-feedback.incorrect {
+    color: var(--accent-red);
+}
+
+/* Collapsible help panel */
+.help-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+.help-toggle-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 15px 20px;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition-smooth);
+}
+.help-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+.help-toggle-btn .arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+.help-toggle-btn.open .arrow {
+    transform: rotate(180deg);
+}
+.help-content {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    background: rgba(15, 23, 42, 0.4);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: left;
+}
+.help-content h5 {
+    color: var(--accent-teal);
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+.help-content ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+.help-content li {
+    margin-bottom: 6px;
+}
+.practica-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}

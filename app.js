@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initFurnitureGame();
     initChatbot();
     initModal();
+    initInfinitePractice();
     updateUI();
 });
 
@@ -279,7 +280,7 @@ function initTabNavigation() {
 }
 
 function isModuleLocked(moduleName) {
-    if (moduleName === "dashboard" || moduleName === "saludos") return false;
+    if (moduleName === "dashboard" || moduleName === "saludos" || moduleName === "practica") return false;
     if (moduleName === "familia") return state.progress.saludos < 100;
     if (moduleName === "casa") return state.progress.familia < 100;
     if (moduleName === "rutina") return state.progress.casa < 100;
@@ -1103,4 +1104,413 @@ function updateUI() {
 
     if (globalPercentEl) globalPercentEl.innerText = `${globalPercent}%`;
     if (globalFillBar) globalFillBar.style.width = `${globalPercent}%`;
+}
+
+// ==========================================================================
+// PESTAÑA: PRÁCTICA INFINITA (DYNAMIC GRAMMAR & VOCABULARY ENGINE)
+// ==========================================================================
+
+// Global state variables for practice
+state.practicaStreak = 0;
+state.practicaCorrect = 0;
+state.currentExercise = null;
+
+// Database for algorithmic generation
+const bancoDeDatosPractica = {
+    regulares: {
+        verbos: [
+            { infinitivo: "hablar", raiz: "habl", terminacion: "ar", complementos: ["español con mis amigos", "con mi madre los fines de semana", "inglés en la clase de idiomas"] },
+            { infinitivo: "comer", raiz: "com", terminacion: "er", complementos: ["paella en el almuerzo", "una manzana verde por las mañanas", "tapas deliciosas en el bar"] },
+            { infinitivo: "vivir", raiz: "viv", terminacion: "ir", complementos: ["en un piso luminoso en Sevilla", "en una casa con un jardín precioso", "en Madrid desde el año pasado"] },
+            { infinitivo: "estudiar", raiz: "estudi", terminacion: "ar", complementos: ["gramática en la biblioteca", "español por las noches", "mucho para aprobar el examen"] },
+            { infinitivo: "escribir", raiz: "escrib", terminacion: "ir", complementos: ["una carta larga a mi abuelo", "un correo de trabajo", "un mensaje en mi teléfono"] },
+            { infinitivo: "leer", raiz: "le", terminacion: "er", complementos: ["un libro de aventuras", "el periódico por la mañana", "muchos artículos interesantes"] },
+            { infinitivo: "trabajar", raiz: "trabaj", terminacion: "ar", complementos: ["en una oficina de diseño", "muchas horas al día", "en un hospital de Madrid"] }
+        ],
+        pronombres: [
+            { sujeto: "Yo", endings: { ar: "o", er: "o", ir: "o" } },
+            { sujeto: "Tú", endings: { ar: "as", er: "es", ir: "es" } },
+            { sujeto: "Él", endings: { ar: "a", er: "e", ir: "e" } },
+            { sujeto: "Ella", endings: { ar: "a", er: "e", ir: "e" } },
+            { sujeto: "Nosotros", endings: { ar: "amos", er: "emos", ir: "imos" } },
+            { sujeto: "Nosotras", endings: { ar: "amos", er: "emos", ir: "imos" } },
+            { sujeto: "Ellos", endings: { ar: "an", er: "en", ir: "en" } },
+            { sujeto: "Ellas", endings: { ar: "an", er: "en", ir: "en" } }
+        ]
+    },
+    irregulares: {
+        verbos: {
+            ser: {
+                yo: "soy", tu: "eres", el: "es", ella: "es", nosotros: "somos", nosotras: "somos", ellos: "son", ellas: "son",
+                complements: ["de España y vivo en Londres", "médico en un hospital", "un estudiante muy trabajador", "el hermano mayor de Juan"]
+            },
+            estar: {
+                yo: "estoy", tu: "estás", el: "está", ella: "está", nosotros: "estamos", nosotras: "estamos", ellos: "están", ellas: "están",
+                complements: ["muy cansado hoy por el trabajo", "en el salón leyendo un libro", "en la cocina preparando la cena", "feliz con las lecciones"]
+            },
+            tener: {
+                yo: "tengo", tu: "tienes", el: "tiene", ella: "tiene", nosotros: "tenemos", nosotras: "tenemos", ellos: "tienen", ellas: "tienen",
+                complements: ["veinte años y estudio derecho", "dos hermanos y una hermana", "un perro negro muy simpático", "una casa de campo antigua"]
+            },
+            ir: {
+                yo: "voy", tu: "vas", el: "va", ella: "va", nosotros: "vamos", nosotras: "vamos", ellos: "van", ellas: "van",
+                complements: ["al trabajo en coche todos los días", "a la escuela a aprender español", "al supermercado a comprar fruta", "de vacaciones los domingos"]
+            }
+        },
+        pronombres: ["Yo", "Tú", "Él", "Ella", "Nosotros", "Nosotras", "Ellos", "Ellas"]
+    },
+    reflexivos: {
+        verbos: [
+            { infinitivo: "despertarse", raiz: "despiert", pronombres: { yo: "me despierto", tu: "te despiertas", el: "se despierta", ella: "se despierta", nosotros: "nos despertamos", nosotras: "nos despertamos", ellos: "se despiertan", ellas: "se despiertan" }, complementos: ["temprano a las seis", "tarde los domingos por la mañana"] },
+            { infinitivo: "levantarse", raiz: "levant", pronombres: { yo: "me levanto", tu: "te levantas", el: "se levanta", ella: "se levanta", nosotros: "nos levantamos", nosotras: "nos levantamos", ellos: "se levantan", ellas: "se levantan" }, complementos: ["inmediatamente de la cama", "muy despacio por las mañanas"] },
+            { infinitivo: "ducharse", raiz: "duch", pronombres: { yo: "me ducho", tu: "te duchas", el: "se ducha", ella: "se ducha", nosotros: "nos duchamos", nosotras: "nos duchamos", ellos: "se duchan", ellas: "se duchan" }, complementos: ["con agua caliente", "antes de ir a dormir por la noche"] },
+            { infinitivo: "cepillarse", raiz: "cepill", pronombres: { yo: "me cepillo los dientes", tu: "te cepillas los dientes", el: "se cepilla los dientes", ella: "se cepilla los dientes", nosotros: "nos cepillamos los dientes", nosotras: "nos cepillamos los dientes", ellos: "se cepillan los dientes", ellas: "se cepillan los dientes" }, complementos: ["después de desayunar", "tres veces al día"] },
+            { infinitivo: "acostarse", raiz: "acuest", pronombres: { yo: "me acuesto", tu: "te acuestas", el: "se acuesta", ella: "se acuesta", nosotros: "nos acostamos", nosotras: "nos acostamos", ellos: "se acuestan", ellas: "se acuestan" }, complementos: ["temprano a las diez", "tarde el fin de semana"] }
+        ],
+        pronombres: ["Yo", "Tú", "Él", "Ella", "Nosotros", "Nosotras", "Ellos", "Ellas"]
+    },
+    vocabulario: [
+        { instruction: "Traduce el número al español:", sentence: "El número 11 es ________.", correct: "once", distractors: ["doce", "quince", "nueve"] },
+        { instruction: "Traduce el número al español:", sentence: "El número 12 es ________.", correct: "doce", distractors: ["dos", "diez", "trece"] },
+        { instruction: "Traduce el número al español:", sentence: "El número 15 es ________.", correct: "quince", distractors: ["cinco", "catorce", "dieceiséis"] },
+        { instruction: "Traduce el número al español:", sentence: "El número 20 es ________.", correct: "veinte", distractors: ["diez", "veinticinco", "nueve"] },
+        { instruction: "Selecciona el color correcto:", sentence: "The red apple -> La manzana es ________.", correct: "roja", distractors: ["azul", "verde", "amarillo"] },
+        { instruction: "Selecciona el color correcto:", sentence: "The blue car -> El coche es ________.", correct: "azul", distractors: ["rojo", "negro", "blanco"] },
+        { instruction: "Selecciona el color correcto:", sentence: "The yellow sun -> El sol es ________.", correct: "amarillo", distractors: ["morado", "verde", "gris"] },
+        { instruction: "Completa la relación de parentesco:", sentence: "El padre de mi padre es mi ________.", correct: "abuelo", distractors: ["tío", "hermano", "primo"] },
+        { instruction: "Completa la relación de parentesco:", sentence: "La hermana de mi madre es mi ________.", correct: "tía", distractors: ["abuela", "prima", "hermana"] },
+        { instruction: "Completa la relación de parentesco:", sentence: "El hijo de mi tío es mi ________.", correct: "primo", distractors: ["hermano", "padre", "abuelo"] },
+        { instruction: "Identifica la parte de la casa:", sentence: "Nosotros cocinamos la comida en la ________.", correct: "cocina", distractors: ["dormitorio", "baño", "jardín"] },
+        { instruction: "Identifica la parte de la casa:", sentence: "Yo duermo en la cama de mi ________.", correct: "dormitorio", distractors: ["salón", "cocina", "baño"] },
+        { instruction: "Identifica la parte de la casa:", sentence: "Nosotros nos relajamos y vemos televisión en el ________.", correct: "salón", distractors: ["cocina", "baño", "jardín"] },
+        { instruction: "Completa con el adjetivo posesivo correcto:", sentence: "Yo tengo una hermana. ________ hermana se llama Laura.", correct: "Mi", distractors: ["Tu", "Su", "Nuestro"] },
+        { instruction: "Completa con el adjetivo posesivo correcto:", sentence: "Tú tienes un perro. ________ perro es muy inteligente.", correct: "Tu", distractors: ["Mi", "Su", "Nuestra"] },
+        { instruction: "Completa con el adjetivo posesivo correcto:", sentence: "Ellas tienen una tía. ________ tía vive en Barcelona.", correct: "Su", distractors: ["Mi", "Tu", "Nuestra"] }
+    ]
+};
+
+// Help descriptions to populate help panel
+const ayudaGramaticalExplicacion = {
+    regulares: `
+        <h5>💡 Verbos Regulares en Presente</h5>
+        <p>Los verbos regulares se conjugan eliminando la terminación del infinitivo (<strong>-ar, -er, -ir</strong>) y añadiendo las desinencias correspondientes al sujeto:</p>
+        <table class="grammar-table" style="font-size:0.8rem; margin:10px 0;">
+            <thead>
+                <tr><th>Sujeto</th><th>-AR (hablar)</th><th>-ER (comer)</th><th>-IR (vivir)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Yo</td><td>-o (hablo)</td><td>-o (como)</td><td>-o (vivo)</td></tr>
+                <tr><td>Tú</td><td>-as (hablas)</td><td>-es (comes)</td><td>-es (vives)</td></tr>
+                <tr><td>Él/Ella</td><td>-a (habla)</td><td>-e (come)</td><td>-e (vive)</td></tr>
+                <tr><td>Nosotros/as</td><td>-amos (hablamos)</td><td>-emos (comemos)</td><td>-imos (vivimos)</td></tr>
+                <tr><td>Ellos/as</td><td>-an (hablan)</td><td>-en (comen)</td><td>-en (viven)</td></tr>
+            </tbody>
+        </table>
+        <p>Identifica la terminación del infinitivo del ejercicio y empareja el sujeto con el sufijo correcto.</p>
+    `,
+    irregulares: `
+        <h5>💡 Verbos Irregulares Clave</h5>
+        <p>En el nivel cero, hay 4 verbos irregulares esenciales cuyos patrones debes aprender de memoria:</p>
+        <ul>
+            <li><strong>Ser (Identity/Origin):</strong> yo soy, tú eres, él/ella es, nosotros somos, ellos/ellas son.</li>
+            <li><strong>Estar (Location/States):</strong> yo estoy, tú estás, él/ella está, nosotros estamos, ellos/ellas están.</li>
+            <li><strong>Tener (Possession/Age):</strong> yo tengo, tú tienes, él/ella tiene, nosotros tenemos, ellos/ellas tienen.</li>
+            <li><strong>Ir (Movement):</strong> yo voy, tú vas, él/ella va, nosotros vamos, ellos/ellas van.</li>
+        </ul>
+    `,
+    reflexivos: `
+        <h5>💡 Verbos Reflexivos</h5>
+        <p>Un verbo es reflexivo cuando la persona realiza y recibe la acción al mismo tiempo (ej: <em>despertarse, ducharse</em>).</p>
+        <p>Requiere siempre un **pronombre reflexivo** colocado antes del verbo conjugado:</p>
+        <ul>
+            <li><strong>Yo:</strong> me (me despierto)</li>
+            <li><strong>Tú:</strong> te (te despiertas)</li>
+            <li><strong>Él / Ella:</strong> se (se ducha)</li>
+            <li><strong>Nosotros/as:</strong> nos (nos cepillamos)</li>
+            <li><strong>Ellos / Ellas:</strong> se (se acuestan)</li>
+        </ul>
+    `,
+    vocabulario: `
+        <h5>💡 Vocabulario A0</h5>
+        <p>Recomendaciones rápidas:</p>
+        <ul>
+            <li><strong>Parentescos:</strong> El padre de mi padre = abuelo. La hermana de mi madre = tía. El hijo de mi tío = primo.</li>
+            <li><strong>Números:</strong> 11 (once), 12 (doce), 13 (trece), 14 (catorce), 15 (quince), 16 (dieciséis), 17 (diecisiete), 18 (dieciocho), 19 (diecinueve), 20 (veinte).</li>
+            <li><strong>Posesivos:</strong> mi/mis (yo), tu/tus (tú), su/sus (él/ella/ellos/ellas), nuestro/a (nosotros).</li>
+        </ul>
+    `
+};
+
+// Initialize Infinite Practice Tab
+function initInfinitePractice() {
+    const categorySelect = document.getElementById("practica-category-select");
+    const helpToggleBtn = document.getElementById("help-toggle-btn");
+    const nextBtn = document.getElementById("btn-practica-next");
+
+    if (!categorySelect) return;
+
+    // Change category listener
+    categorySelect.addEventListener("change", () => {
+        state.practicaStreak = 0;
+        document.getElementById("practica-streak").innerText = "0";
+        generateExercise(categorySelect.value);
+    });
+
+    // Collapsible Help Panel listener
+    helpToggleBtn.addEventListener("click", () => {
+        const helpContent = document.getElementById("help-content");
+        const isOpen = helpContent.style.display === "block";
+
+        if (isOpen) {
+            helpContent.style.display = "none";
+            helpToggleBtn.classList.remove("open");
+        } else {
+            helpContent.style.display = "block";
+            helpToggleBtn.classList.add("open");
+        }
+    });
+
+    // Next Question Button listener
+    nextBtn.addEventListener("click", () => {
+        generateExercise(categorySelect.value);
+    });
+
+    // Generate initial exercise
+    generateExercise(categorySelect.value);
+}
+
+// Generate Algorithmic Exercise
+function generateExercise(category) {
+    // Reset view states
+    const feedback = document.getElementById("practica-feedback");
+    const nextBtn = document.getElementById("btn-practica-next");
+    const helpContent = document.getElementById("help-content");
+    const helpToggleBtn = document.getElementById("help-toggle-btn");
+    const card = document.getElementById("practica-card");
+
+    feedback.innerText = "";
+    feedback.className = "practica-feedback";
+    card.style.borderColor = "var(--border-color)";
+    nextBtn.style.display = "none";
+    
+    // Collapse help panel
+    helpContent.style.display = "none";
+    helpToggleBtn.classList.remove("open");
+
+    // Load static help tips
+    helpContent.innerHTML = ayudaGramaticalExplicacion[category];
+
+    let exercise = {};
+
+    if (category === "regulares") {
+        // Pick a regular verb
+        const vList = bancoDeDatosPractica.regulares.verbos;
+        const verb = vList[Math.floor(Math.random() * vList.length)];
+
+        // Pick a pronoun
+        const pList = bancoDeDatosPractica.regulares.pronombres;
+        const pronounObj = pList[Math.floor(Math.random() * pList.length)];
+
+        // Calculate correct ending
+        const suffix = verb.terminacion; // ar, er, ir
+        const ending = pronounObj.endings[suffix];
+        const correctConjugation = verb.raiz + ending;
+
+        // Complement
+        const complement = verb.complementos[Math.floor(Math.random() * verb.complementos.length)];
+
+        // Generate distractors
+        const distractors = new Set();
+        while (distractors.size < 3) {
+            const randomPronoun = pList[Math.floor(Math.random() * pList.length)];
+            const randomEnding = randomPronoun.endings[suffix];
+            const candidate = verb.raiz + randomEnding;
+            if (candidate !== correctConjugation) {
+                distractors.add(candidate);
+            }
+        }
+
+        exercise = {
+            instruction: `Conjuga el verbo regular "${verb.infinitivo}" en presente simple:`,
+            sentence: `${pronounObj.sujeto} ________ ${complement}.`,
+            correct: correctConjugation,
+            options: [correctConjugation, ...Array.from(distractors)],
+            explanation: `El verbo '${verb.infinitivo}' es de la conjugación -${suffix.toUpperCase()}. Para el sujeto '${pronounObj.sujeto}', la terminación es '-${ending}' resultando en '${correctConjugation}'.`
+        };
+
+    } else if (category === "irregulares") {
+        // Pick a verb key
+        const vKeys = ["ser", "estar", "tener", "ir"];
+        const verbKey = vKeys[Math.floor(Math.random() * vKeys.length)];
+        const verbObj = bancoDeDatosPractica.irregulares.verbos[verbKey];
+
+        // Pick a subject
+        const pList = bancoDeDatosPractica.irregulares.pronombres;
+        const subject = pList[Math.floor(Math.random() * pList.length)];
+
+        // Determine grammatical key for pronouns
+        let subKey = "el"; // default
+        if (subject === "Yo") subKey = "yo";
+        else if (subject === "Tú") subKey = "tu";
+        else if (subject === "Él") subKey = "el";
+        else if (subject === "Ella") subKey = "ella";
+        else if (subject === "Nosotros") subKey = "nosotros";
+        else if (subject === "Nosotras") subKey = "nosotras";
+        else if (subject === "Ellos") subKey = "ellos";
+        else if (subject === "Ellas") subKey = "ellas";
+
+        const correctConjugation = verbObj[subKey];
+        const complement = verbObj.complements[Math.floor(Math.random() * verbObj.complements.length)];
+
+        // Get distractors from other persons of same verb
+        const distractors = new Set();
+        const allForms = Object.keys(verbObj)
+            .filter(k => k !== "complements")
+            .map(k => verbObj[k]);
+
+        allForms.forEach(form => {
+            if (form !== correctConjugation) distractors.add(form);
+        });
+
+        // Convert to array and slice 3
+        const distractorArray = Array.from(distractors).sort(() => 0.5 - Math.random()).slice(0, 3);
+
+        exercise = {
+            instruction: `Conjuga el verbo irregular "${verbKey.toUpperCase()}" en presente:`,
+            sentence: `${subject} ________ ${complement}.`,
+            correct: correctConjugation,
+            options: [correctConjugation, ...distractorArray],
+            explanation: `El verbo '${verbKey}' es irregular. Para el sujeto '${subject}', la forma correcta en presente es '${correctConjugation}'.`
+        };
+
+    } else if (category === "reflexivos") {
+        // Pick a reflexive verb
+        const vList = bancoDeDatosPractica.reflexivos.verbos;
+        const verbObj = vList[Math.floor(Math.random() * vList.length)];
+
+        // Pick subject
+        const pList = bancoDeDatosPractica.reflexivos.pronombres;
+        const subject = pList[Math.floor(Math.random() * pList.length)];
+
+        // Determine key
+        let subKey = "el";
+        if (subject === "Yo") subKey = "yo";
+        else if (subject === "Tú") subKey = "tu";
+        else if (subject === "Él") subKey = "el";
+        else if (subject === "Ella") subKey = "ella";
+        else if (subject === "Nosotros" || subject === "Nosotras") subKey = "nosotros";
+        else if (subject === "Ellos" || subject === "Ellas") subKey = "ellos";
+
+        const correctForm = verbObj.pronombres[subKey];
+        const complement = verbObj.complementos[Math.floor(Math.random() * verbObj.complementos.length)];
+
+        // Distractors from other conjugations of same verb
+        const distractors = new Set();
+        const allForms = Object.keys(verbObj.pronombres).map(k => verbObj.pronombres[k]);
+        allForms.forEach(form => {
+            if (form !== correctForm) distractors.add(form);
+        });
+
+        const distractorArray = Array.from(distractors).sort(() => 0.5 - Math.random()).slice(0, 3);
+
+        exercise = {
+            instruction: `Completa con el verbo reflexivo "${verbObj.infinitivo}":`,
+            sentence: `${subject} ________ ${complement}.`,
+            correct: correctForm,
+            options: [correctForm, ...distractorArray],
+            explanation: `Para el verbo reflexivo '${verbObj.infinitivo}', el pronombre y conjugación correspondiente a '${subject}' es '${correctForm}'.`
+        };
+
+    } else if (category === "vocabulario") {
+        // Pick from list of static templates
+        const vList = bancoDeDatosPractica.vocabulario;
+        const rawExercise = vList[Math.floor(Math.random() * vList.length)];
+
+        exercise = {
+            instruction: rawExercise.instruction,
+            sentence: rawExercise.sentence,
+            correct: rawExercise.correct,
+            options: [rawExercise.correct, ...rawExercise.distractors],
+            explanation: `La respuesta correcta es '${rawExercise.correct}'.`
+        };
+    }
+
+    state.currentExercise = exercise;
+
+    // Shuffle options
+    const shuffledOptions = [...exercise.options].sort(() => 0.5 - Math.random());
+
+    // Render elements in DOM
+    document.getElementById("practica-instruction").innerText = exercise.instruction;
+    document.getElementById("practica-sentence").innerHTML = exercise.sentence.replace("________", `<strong style="color: var(--accent-orange); text-decoration: underline;">________</strong>`);
+
+    const optionsContainer = document.getElementById("practica-options");
+    optionsContainer.innerHTML = "";
+
+    shuffledOptions.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = opt;
+        btn.addEventListener("click", () => checkInfinitePracticeAnswer(btn, opt));
+        optionsContainer.appendChild(btn);
+    });
+}
+
+// Check Practice Answer
+function checkInfinitePracticeAnswer(choiceBtn, option) {
+    const exercise = state.currentExercise;
+    const feedback = document.getElementById("practica-feedback");
+    const nextBtn = document.getElementById("btn-practica-next");
+    const card = document.getElementById("practica-card");
+    const optionsContainer = document.getElementById("practica-options");
+
+    // Disable all option buttons
+    optionsContainer.querySelectorAll(".option-btn").forEach(btn => {
+        btn.disabled = true;
+        if (btn.innerText === exercise.correct) {
+            btn.style.borderColor = "var(--accent-teal)";
+            btn.style.color = "var(--accent-teal)";
+            btn.style.background = "rgba(20, 184, 166, 0.1)";
+        } else {
+            btn.style.opacity = "0.5";
+        }
+    });
+
+    const isCorrect = option === exercise.correct;
+
+    if (isCorrect) {
+        // Success
+        state.practicaStreak++;
+        state.practicaCorrect++;
+        
+        feedback.innerText = "¡Excelente! Respuesta correcta. 🎉";
+        feedback.className = "practica-feedback correct";
+        card.style.borderColor = "var(--accent-teal)";
+        
+        // Speak sentence
+        const completedSentence = exercise.sentence.replace("________", exercise.correct);
+        speakWord(completedSentence);
+
+    } else {
+        // Error
+        state.practicaStreak = 0;
+        
+        feedback.innerText = `Incorrecto. ${exercise.explanation}`;
+        feedback.className = "practica-feedback incorrect";
+        card.style.borderColor = "var(--accent-red)";
+        
+        choiceBtn.style.borderColor = "var(--accent-red)";
+        choiceBtn.style.color = "var(--accent-red)";
+        choiceBtn.style.background = "rgba(244, 63, 94, 0.1)";
+        choiceBtn.style.opacity = "1";
+
+        speakWord("Incorrecto");
+    }
+
+    // Update scoreboard
+    document.getElementById("practica-streak").innerText = state.practicaStreak;
+    document.getElementById("practica-correct").innerText = state.practicaCorrect;
+
+    // Show next button
+    nextBtn.style.display = "inline-block";
 }
