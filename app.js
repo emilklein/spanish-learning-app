@@ -1162,13 +1162,13 @@ state.currentExercise = null;
 const bancoDeDatosPractica = {
     regulares: {
         verbos: [
-            { infinitivo: "hablar", raiz: "habl", terminacion: "ar", complementos: ["español con mis amigos", "con mi madre los fines de semana", "inglés en la clase de idiomas"] },
-            { infinitivo: "comer", raiz: "com", terminacion: "er", complementos: ["paella en el almuerzo", "una manzana verde por las mañanas", "tapas deliciosas en el bar"] },
-            { infinitivo: "vivir", raiz: "viv", terminacion: "ir", complementos: ["en un piso luminoso en Sevilla", "en una casa con un jardín precioso", "en Madrid desde el año pasado"] },
-            { infinitivo: "estudiar", raiz: "estudi", terminacion: "ar", complementos: ["gramática en la biblioteca", "español por las noches", "mucho para aprobar el examen"] },
-            { infinitivo: "escribir", raiz: "escrib", terminacion: "ir", complementos: ["una carta larga a mi abuelo", "un correo de trabajo", "un mensaje en mi teléfono"] },
-            { infinitivo: "leer", raiz: "le", terminacion: "er", complementos: ["un libro de aventuras", "el periódico por la mañana", "muchos artículos interesantes"] },
-            { infinitivo: "trabajar", raiz: "trabaj", terminacion: "ar", complementos: ["en una oficina de diseño", "muchas horas al día", "en un hospital de Madrid"] }
+            { infinitivo: "hablar", raiz: "habl", terminacion: "ar", complementos: ["español en casa", "con la profesora", "mucho en clase"] },
+            { infinitivo: "comer", raiz: "com", terminacion: "er", complementos: ["paella los domingos", "manzanas rojas", "tapas en el bar"] },
+            { infinitivo: "vivir", raiz: "viv", terminacion: "ir", complementos: ["en Sevilla", "en una casa bonita", "en un piso moderno"] },
+            { infinitivo: "estudiar", raiz: "estudi", terminacion: "ar", complementos: ["español por las tardes", "mucho en la biblioteca", "gramática"] },
+            { infinitivo: "escribir", raiz: "escrib", terminacion: "ir", complementos: ["un correo", "un mensaje en el móvil", "una carta"] },
+            { infinitivo: "leer", raiz: "le", terminacion: "er", complementos: ["un libro de aventuras", "el periódico", "un correo electrónico"] },
+            { infinitivo: "trabajar", raiz: "trabaj", terminacion: "ar", complementos: ["en una oficina", "en el hospital", "muchas horas"] }
         ],
         pronombres: [
             { sujeto: "Yo", endings: { ar: "o", er: "o", ir: "o" } },
@@ -1186,41 +1186,50 @@ const bancoDeDatosPractica = {
             ser: {
                 yo: "soy", tu: "eres", el: "es", ella: "es", nosotros: "somos", nosotras: "somos", ellos: "son", ellas: "son",
                 complements: [
-                    { singular: "de España y vivo en Londres", plural: "de España y vivimos en Londres" },
-                    { singular: "médico en un hospital", plural: "médicos en un hospital" },
-                    { singular: "un estudiante muy trabajador", plural: "unos estudiantes muy trabajadores" },
-                    { singular: "el hermano mayor de Juan", plural: "los hermanos mayores de Juan" }
+                    { singular_masc: "de España", singular_fem: "de España", plural_masc: "de España", plural_fem: "de España" },
+                    { singular_masc: "médico en un hospital", singular_fem: "médica en un hospital", plural_masc: "médicos en un hospital", plural_fem: "médicas en un hospital" },
+                    { singular_masc: "un estudiante muy trabajador", singular_fem: "una estudiante muy trabajadora", plural_masc: "unos estudiantes muy trabajadores", plural_fem: "unas estudiantes muy trabajadoras" },
+                    { singular_masc: "el hermano mayor de Juan", singular_fem: "la hermana mayor de Juan", plural_masc: "los hermanos mayores de Juan", plural_fem: "las hermanas mayores de Juan" }
                 ]
             },
             estar: {
                 yo: "estoy", tu: "estás", el: "está", ella: "está", nosotros: "estamos", nosotras: "estamos", ellos: "están", ellas: "están",
                 complements: [
-                    { singular: "muy cansado hoy por el trabajo", plural: "muy cansados hoy por el trabajo" },
-                    { singular: "en el salón leyendo un libro", plural: "en el salón leyendo un libro" },
-                    { singular: "en la cocina preparando la cena", plural: "en la cocina preparando la cena" },
-                    { singular: "feliz con las lecciones", plural: "felices con las lecciones" }
+                    { singular_masc: "muy cansado hoy", singular_fem: "muy cansada hoy", plural_masc: "muy cansados hoy", plural_fem: "muy cansadas hoy" },
+                    { singular_masc: "en el salón leyendo un libro", singular_fem: "en el salón leyendo un libro", plural_masc: "en el salón leyendo un libro", plural_fem: "en el salón leyendo un libro" },
+                    { singular_masc: "en la cocina preparando la cena", singular_fem: "en la cocina preparando la cena", plural_masc: "en la cocina preparando la cena", plural_fem: "en la cocina preparando la cena" },
+                    { singular_masc: "feliz con las lecciones", singular_fem: "feliz con las lecciones", plural_masc: "felices con las lecciones", plural_fem: "felices con las lecciones" }
                 ]
             },
             tener: {
                 yo: "tengo", tu: "tienes", el: "tiene", ella: "tiene", nosotros: "tenemos", nosotras: "tenemos", ellos: "tienen", ellas: "tienen",
                 complements: [
-                    { singular: "veinte años y estudio derecho", plural: "veinte años y estudiamos derecho" },
-                    { singular: "dos hermanos y una hermana", plural: "dos hermanos y una hermana" },
-                    { singular: "un perro negro muy simpático", plural: "un perro negro muy simpático" },
-                    { singular: "una casa de campo antigua", plural: "una casa de campo antigua" }
+                    { singular_masc: "veinte años", singular_fem: "veinte años", plural_masc: "veinte años", plural_fem: "veinte años" },
+                    { singular_masc: "dos hermanos y una hermana", singular_fem: "dos hermanos y una hermana", plural_masc: "dos hermanos y una hermana", plural_fem: "dos hermanos y una hermana" },
+                    { singular_masc: "un perro negro muy simpático", singular_fem: "un perro negro muy simpático", plural_masc: "un perro negro muy simpático", plural_fem: "un perro negro muy simpático" },
+                    { singular_masc: "una casa de campo antigua", singular_fem: "una casa de campo antigua", plural_masc: "una casa de campo antigua", plural_fem: "una casa de campo antigua" }
                 ]
             },
             ir: {
                 yo: "voy", tu: "vas", el: "va", ella: "va", nosotros: "vamos", nosotras: "vamos", ellos: "van", ellas: "van",
                 complements: [
-                    { singular: "al trabajo en coche todos los días", plural: "al trabajo en coche todos los días" },
-                    { singular: "a la escuela a aprender español", plural: "a la escuela a aprender español" },
-                    { singular: "al supermercado a comprar fruta", plural: "al supermercado a comprar fruta" },
-                    { singular: "de vacaciones los domingos", plural: "de vacaciones los domingos" }
+                    { singular_masc: "al trabajo en coche", singular_fem: "al trabajo en coche", plural_masc: "al trabajo en coche", plural_fem: "al trabajo en coche" },
+                    { singular_masc: "a la escuela a aprender español", singular_fem: "a la escuela a aprender español", plural_masc: "a la escuela a aprender español", plural_fem: "a la escuela a aprender español" },
+                    { singular_masc: "al supermercado a comprar fruta", singular_fem: "al supermercado a comprar fruta", plural_masc: "al supermercado a comprar fruta", plural_fem: "al supermercado a comprar fruta" },
+                    { singular_masc: "de vacaciones hoy", singular_fem: "de vacaciones hoy", plural_masc: "de vacaciones hoy", plural_fem: "de vacaciones hoy" }
                 ]
             }
         },
-        pronombres: ["Yo", "Tú", "Él", "Ella", "Nosotros", "Nosotras", "Ellos", "Ellas"]
+        pronombres: [
+            { sujeto: "Yo", gender: "masc", number: "singular" },
+            { sujeto: "Tú", gender: "masc", number: "singular" },
+            { sujeto: "Él", gender: "masc", number: "singular" },
+            { sujeto: "Ella", gender: "fem", number: "singular" },
+            { sujeto: "Nosotros", gender: "masc", number: "plural" },
+            { sujeto: "Nosotras", gender: "fem", number: "plural" },
+            { sujeto: "Ellos", gender: "masc", number: "plural" },
+            { sujeto: "Ellas", gender: "fem", number: "plural" }
+        ]
     },
     reflexivos: {
         verbos: [
@@ -1416,7 +1425,10 @@ function generateExercise(category) {
         const verbKey = vKeys[Math.floor(Math.random() * vKeys.length)];
         const verbObj = bancoDeDatosPractica.irregulares.verbos[verbKey];
         const pList = bancoDeDatosPractica.irregulares.pronombres;
-        const subject = pList[Math.floor(Math.random() * pList.length)];
+        
+        // Pick a random pronoun object
+        const pronounObj = pList[Math.floor(Math.random() * pList.length)];
+        const subject = pronounObj.sujeto;
 
         let subKey = "el"; 
         if (subject === "Yo") subKey = "yo";
@@ -1430,10 +1442,10 @@ function generateExercise(category) {
 
         const correctConjugation = verbObj[subKey];
         
-        // Concordancia de número (singular vs plural)
-        const isPlural = ["Nosotros", "Nosotras", "Ellos", "Ellas"].includes(subject);
+        // Choose complement according to pronoun gender and number
         const compObj = verbObj.complements[Math.floor(Math.random() * verbObj.complements.length)];
-        const complement = isPlural ? compObj.plural : compObj.singular;
+        const key = `${pronounObj.number}_${pronounObj.gender}`; // e.g. "singular_masc", "plural_fem"
+        const complement = compObj[key];
 
         const distractors = new Set();
         const allForms = Object.keys(verbObj)
