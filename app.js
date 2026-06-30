@@ -98,7 +98,7 @@ const state = {
     furnitureGame: {
         selectedItem: null,
         matchesCount: 0,
-        totalItems: 6
+        totalItems: 12
     },
 
     // Chatbot workflow with Sofia
@@ -627,30 +627,64 @@ function showFamilyMember(memberKey) {
 
 // --- House Furniture Match Game ---
 function initFurnitureGame() {
-    const items = document.querySelectorAll("#furniture-items .game-item");
+    const mueblesDatabase = [
+        { id: "cama", room: "dormitorio", label: "La cama" },
+        { id: "sofa", room: "salon", label: "El sofá" },
+        { id: "nevera", room: "cocina", label: "La nevera" },
+        { id: "ducha", room: "baño", label: "La ducha" },
+        { id: "mesa", room: "salon", label: "La mesa" },
+        { id: "flores", room: "jardin", label: "Las flores" },
+        { id: "espejo", room: "baño", label: "El espejo" },
+        { id: "armario", room: "dormitorio", label: "El armario" },
+        { id: "microondas", room: "cocina", label: "El microondas" },
+        { id: "inodoro", room: "baño", label: "El inodoro" },
+        { id: "sillon", room: "salon", label: "El sillón" },
+        { id: "planta", room: "jardin", label: "La planta" }
+    ];
+
+    const container = document.getElementById("furniture-items");
     const targets = document.querySelectorAll(".room-target");
     const statusText = document.getElementById("furniture-game-status");
     const resetBtn = document.getElementById("reset-furniture-game");
 
-    items.forEach(item => {
-        item.addEventListener("click", () => {
-            if (item.classList.contains("correct-placement")) return;
+    if (!container) return;
+
+    // Helper to render and bind furniture items
+    const renderFurnitureItems = () => {
+        container.innerHTML = "";
+        
+        // Shuffle items
+        const shuffled = [...mueblesDatabase].sort(() => 0.5 - Math.random());
+        
+        shuffled.forEach(mueble => {
+            const btn = document.createElement("button");
+            btn.className = "game-item";
+            btn.setAttribute("data-id", mueble.id);
+            btn.setAttribute("data-room", mueble.room);
+            btn.innerText = mueble.label;
             
-            // Highlight selected item
-            items.forEach(i => i.classList.remove("selected-item"));
-            item.classList.add("selected-item");
-            state.furnitureGame.selectedItem = item;
+            btn.addEventListener("click", () => {
+                if (btn.classList.contains("correct-placement")) return;
+                
+                // Highlight selected item
+                const allItems = container.querySelectorAll(".game-item");
+                allItems.forEach(i => i.classList.remove("selected-item"));
+                btn.classList.add("selected-item");
+                state.furnitureGame.selectedItem = btn;
 
-            // Strip emojis and punctuation dynamically (works with table 🍽️, flowers 🌸, bed 🛏️, etc.)
-            const name = item.innerText.split(" (")[0].replace(/[^\w\sáéíóúüñÁÉÍÓÚÜÑ]/gu, '').trim();
-            speakWord(name);
+                speakWord(mueble.label);
+                statusText.innerText = `Seleccionaste: ${mueble.label}. Ahora haz clic en la habitación donde va.`;
 
-            statusText.innerText = `Seleccionaste: ${name}. Ahora haz clic en la habitación donde va.`;
+                // Highlight target rooms to guide user
+                targets.forEach(t => t.classList.add("waiting-placement"));
+            });
 
-            // Highlight target rooms to guide user
-            targets.forEach(t => t.classList.add("waiting-placement"));
+            container.appendChild(btn);
         });
-    });
+    };
+
+    // Initial render
+    renderFurnitureItems();
 
     targets.forEach(target => {
         target.addEventListener("click", () => {
@@ -671,7 +705,7 @@ function initFurnitureGame() {
                 selected.classList.add("correct-placement");
                 target.classList.add("placement-success");
                 
-                const itemName = selected.innerText.split(" (")[0].replace(/[^\w\sáéíóúüñÁÉÍÓÚÜÑ]/gu, '').trim();
+                const itemName = selected.innerText;
                 const roomLabel = target.innerText;
 
                 statusText.innerText = `¡Correcto! ${itemName} va en ${roomLabel.toLowerCase()}.`;
@@ -691,7 +725,6 @@ function initFurnitureGame() {
                 statusText.innerText = `Ups, ese mueble no va ahí. ¡Intenta de nuevo!`;
                 speakWord("Intenta otra vez.");
                 
-                // Shake target effect is done via CSS animation
                 setTimeout(() => {
                     target.classList.remove("placement-error");
                 }, 800);
@@ -705,9 +738,8 @@ function initFurnitureGame() {
         resetBtn.style.display = "none";
         statusText.innerText = "Selecciona un mueble para empezar.";
 
-        items.forEach(i => {
-            i.classList.remove("selected-item", "correct-placement");
-        });
+        // Re-render and shuffle all items
+        renderFurnitureItems();
 
         targets.forEach(t => {
             t.classList.remove("waiting-placement", "placement-success", "placement-error");
