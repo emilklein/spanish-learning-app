@@ -440,6 +440,13 @@
                             <h4>Desafío: Ser o Estar</h4>
                             <p>Completa la frase seleccionando la opción correcta.</p>
                             <div class="game-card">
+                                <div class="exercise-header-meta">
+                                    <span>Pregunta <span id="serestar-current-num">1</span> de 10</span>
+                                    <span class="lives-indicator" id="serestar-lives-indicator">🎯 Aciertos: 0</span>
+                                </div>
+                                <div class="exercise-progress-wrapper">
+                                    <div class="exercise-progress-fill" id="serestar-progress-fill" style="width: 10%;"></div>
+                                </div>
                                 <div class="game-sentence" id="serestar-sentence">
                                     Juan ________ de Colombia. (Juan is from Colombia).
                                 </div>
@@ -455,12 +462,20 @@
                     <div id="subpane-saludos-quiz" class="subtab-pane">
                         <div class="quiz-container" id="quiz-module1">
                             <h3>Cuestionario de Saludos y Presentación</h3>
-                            <p>Responde estas 4 preguntas para validar tus conocimientos y desbloquear el siguiente módulo.</p>
+                            <p>Responde estas preguntas para validar tus conocimientos y desbloquear el siguiente módulo.</p>
                             
+                            <div class="exercise-header-meta">
+                                <span>Pregunta <span class="current-q-num">1</span> de <span class="total-q-num">6</span></span>
+                                <span class="lives-indicator">🎯 Aciertos: 0</span>
+                            </div>
+                            <div class="exercise-progress-wrapper">
+                                <div class="exercise-progress-fill" style="width: 16.66%;"></div>
+                            </div>
+
                             <div class="quiz-questions-wrapper">
                                 <!-- Q1 -->
                                 <div class="quiz-question-card active" data-q="1">
-                                    <div class="question-header">Pregunta 1 de 4</div>
+                                    <div class="question-header">Pregunta 1 de 6</div>
                                     <div class="question-title">¿Cuál es el saludo apropiado para las 8:00 AM?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="true">Buenos días</button>
@@ -470,7 +485,7 @@
                                 </div>
                                 <!-- Q2 -->
                                 <div class="quiz-question-card" data-q="2">
-                                    <div class="question-header">Pregunta 2 de 4</div>
+                                    <div class="question-header">Pregunta 2 de 6</div>
                                     <div class="question-title">Completa: "Yo ________ de España y vivo en Londres."</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">estoy</button>
@@ -480,7 +495,7 @@
                                 </div>
                                 <!-- Q3 -->
                                 <div class="quiz-question-card" data-q="3">
-                                    <div class="question-header">Pregunta 3 de 4</div>
+                                    <div class="question-header">Pregunta 3 de 6</div>
                                     <div class="question-title">Completa: "María ________ cansada hoy." (María is tired today).</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="true">está</button>
@@ -490,7 +505,7 @@
                                 </div>
                                 <!-- Q4 -->
                                 <div class="quiz-question-card" data-q="4">
-                                    <div class="question-header">Pregunta 4 de 4</div>
+                                    <div class="question-header">Pregunta 4 de 6</div>
                                     <div class="question-title">¿Cómo se dice "Nice to meet you" en español?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">¿Cómo estás?</button>
@@ -498,11 +513,33 @@
                                         <button class="quiz-opt" data-correct="false">Hasta luego</button>
                                     </div>
                                 </div>
+                                <!-- Q5 -->
+                                <div class="quiz-question-card" data-q="5">
+                                    <div class="question-header">Pregunta 5 de 6</div>
+                                    <div class="question-title">¿Cómo respondes de manera formal a "¿Cómo está usted?"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Estoy bien, gracias. ¿Y usted?</button>
+                                        <button class="quiz-opt" data-correct="false">Hola, ¿qué tal?</button>
+                                        <button class="quiz-opt" data-correct="false">Muy mal, ¿y tú?</button>
+                                    </div>
+                                </div>
+                                <!-- Q6 -->
+                                <div class="quiz-question-card" data-q="6">
+                                    <div class="question-header">Pregunta 6 de 6</div>
+                                    <div class="question-title">Completa la oración: "Ellos ________ en el hotel esta semana." (Location)</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">están</button>
+                                        <button class="quiz-opt" data-correct="false">son</button>
+                                        <button class="quiz-opt" data-correct="false">es</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="quiz-navigation">
                                 <div class="quiz-status-dots">
                                     <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
@@ -733,10 +770,18 @@
                             <h3>Cuestionario de la Familia y Descripciones</h3>
                             <p>Responde las siguientes preguntas para validar tus conocimientos de la lección 2.</p>
                             
+                            <div class="exercise-header-meta">
+                                <span>Pregunta <span class="current-q-num">1</span> de <span class="total-q-num">6</span></span>
+                                <span class="lives-indicator">🎯 Aciertos: 0</span>
+                            </div>
+                            <div class="exercise-progress-wrapper">
+                                <div class="exercise-progress-fill" style="width: 16.66%;"></div>
+                            </div>
+
                             <div class="quiz-questions-wrapper">
                                 <!-- Q1 -->
                                 <div class="quiz-question-card active" data-q="1">
-                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-header">Pregunta 1 de 6</div>
                                     <div class="question-title">¿Cómo se dice "The grandmother" en español?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">La madre</button>
@@ -746,7 +791,7 @@
                                 </div>
                                 <!-- Q2 -->
                                 <div class="quiz-question-card" data-q="2">
-                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-header">Pregunta 2 de 6</div>
                                     <div class="question-title">Para presentar a una mujer (amiga), ¿qué frase usamos?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">Este es mi amiga</button>
@@ -756,7 +801,7 @@
                                 </div>
                                 <!-- Q3 -->
                                 <div class="quiz-question-card" data-q="3">
-                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-header">Pregunta 3 de 6</div>
                                     <div class="question-title">¿Cuál es el significado de la palabra "simpático"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="true">Nice / Friendly</button>
@@ -764,11 +809,44 @@
                                         <button class="quiz-opt" data-correct="false">Sympathetic</button>
                                     </div>
                                 </div>
+                                <!-- Q4 -->
+                                <div class="quiz-question-card" data-q="4">
+                                    <div class="question-header">Pregunta 4 de 6</div>
+                                    <div class="question-title">¿Cuál es el adjetivo posesivo correcto para "Nosotros (our)" con un sustantivo femenino singular?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">nuestra</button>
+                                        <button class="quiz-opt" data-correct="false">nuestro</button>
+                                        <button class="quiz-opt" data-correct="false">nuestros</button>
+                                    </div>
+                                </div>
+                                <!-- Q5 -->
+                                <div class="quiz-question-card" data-q="5">
+                                    <div class="question-header">Pregunta 5 de 6</div>
+                                    <div class="question-title">Completa: "Mis hermanos ________ una casa en el campo." (Possession)</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">tienen</button>
+                                        <button class="quiz-opt" data-correct="false">son</button>
+                                        <button class="quiz-opt" data-correct="false">están</button>
+                                    </div>
+                                </div>
+                                <!-- Q6 -->
+                                <div class="quiz-question-card" data-q="6">
+                                    <div class="question-header">Pregunta 6 de 6</div>
+                                    <div class="question-title">¿Cómo presentas a tu primo Carlos de forma correcta?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Este es mi primo Carlos</button>
+                                        <button class="quiz-opt" data-correct="false">Esta es mi primo Carlos</button>
+                                        <button class="quiz-opt" data-correct="false">Él es mi prima Carlos</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="quiz-navigation">
                                 <div class="quiz-status-dots">
                                     <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                 </div>
@@ -843,6 +921,14 @@
                     <div id="subpane-casa-muebles" class="subtab-pane">
                         <div class="instruction-box">
                             <p>🎮 <strong>Juego de Asociación:</strong> Selecciona el mueble en español y luego selecciona la habitación donde normalmente se ubica.</p>
+                        </div>
+
+                        <div class="exercise-header-meta" style="margin-top: 15px;">
+                            <span>Muebles colocados: <span id="furniture-placed-num">0</span> de 12</span>
+                            <span class="lives-indicator" id="furniture-lives-indicator">🎯 Completado: 0%</span>
+                        </div>
+                        <div class="exercise-progress-wrapper" style="margin-bottom: 25px;">
+                            <div class="exercise-progress-fill" id="furniture-progress-fill" style="width: 0%;"></div>
                         </div>
 
                         <div class="furniture-game-container">
@@ -965,10 +1051,18 @@
                             <h3>Cuestionario sobre la Casa</h3>
                             <p>Responde estas preguntas para evaluar tus conocimientos de la lección de la casa.</p>
                             
+                            <div class="exercise-header-meta">
+                                <span>Pregunta <span class="current-q-num">1</span> de <span class="total-q-num">6</span></span>
+                                <span class="lives-indicator">🎯 Aciertos: 0</span>
+                            </div>
+                            <div class="exercise-progress-wrapper">
+                                <div class="exercise-progress-fill" style="width: 16.66%;"></div>
+                            </div>
+
                             <div class="quiz-questions-wrapper">
                                 <!-- Q1 -->
                                 <div class="quiz-question-card active" data-q="1">
-                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-header">Pregunta 1 de 6</div>
                                     <div class="question-title">¿Dónde se coloca normalmente "la cama"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">La cocina</button>
@@ -978,7 +1072,7 @@
                                 </div>
                                 <!-- Q2 -->
                                 <div class="quiz-question-card" data-q="2">
-                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-header">Pregunta 2 de 6</div>
                                     <div class="question-title">¿Cómo se dice "apartment" en España?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="true">Piso</button>
@@ -988,7 +1082,7 @@
                                 </div>
                                 <!-- Q3 -->
                                 <div class="quiz-question-card" data-q="3">
-                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-header">Pregunta 3 de 6</div>
                                     <div class="question-title">¿Cuál es el opuesto de una casa "grande"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">Moderna</button>
@@ -996,11 +1090,44 @@
                                         <button class="quiz-opt" data-correct="false">Luminosa</button>
                                     </div>
                                 </div>
+                                <!-- Q4 -->
+                                <div class="quiz-question-card" data-q="4">
+                                    <div class="question-header">Pregunta 4 de 6</div>
+                                    <div class="question-title">¿Cómo dices "The mirror is in the bathroom"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">El espejo está en el baño</button>
+                                        <button class="quiz-opt" data-correct="false">El espejo es en el baño</button>
+                                        <button class="quiz-opt" data-correct="false">La nevera está en el baño</button>
+                                    </div>
+                                </div>
+                                <!-- Q5 -->
+                                <div class="quiz-question-card" data-q="5">
+                                    <div class="question-header">Pregunta 5 de 6</div>
+                                    <div class="question-title">¿Qué mueble sirve para guardar la ropa?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">El armario</button>
+                                        <button class="quiz-opt" data-correct="false">La ducha</button>
+                                        <button class="quiz-opt" data-correct="false">El sofá</button>
+                                    </div>
+                                </div>
+                                <!-- Q6 -->
+                                <div class="quiz-question-card" data-q="6">
+                                    <div class="question-header">Pregunta 6 de 6</div>
+                                    <div class="question-title">¿Qué parte de la casa es exterior y suele tener plantas o césped?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">El jardín</button>
+                                        <button class="quiz-opt" data-correct="false">El salón</button>
+                                        <button class="quiz-opt" data-correct="false">La cocina</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="quiz-navigation">
                                 <div class="quiz-status-dots">
                                     <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                 </div>
@@ -1204,10 +1331,18 @@
                             <h3>Cuestionario de Rutina Diaria</h3>
                             <p>Valida tus conocimientos de verbos reflexivos y rutinas diarias.</p>
                             
+                            <div class="exercise-header-meta">
+                                <span>Pregunta <span class="current-q-num">1</span> de <span class="total-q-num">6</span></span>
+                                <span class="lives-indicator">🎯 Aciertos: 0</span>
+                            </div>
+                            <div class="exercise-progress-wrapper">
+                                <div class="exercise-progress-fill" style="width: 16.66%;"></div>
+                            </div>
+
                             <div class="quiz-questions-wrapper">
                                 <!-- Q1 -->
                                 <div class="quiz-question-card active" data-q="1">
-                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-header">Pregunta 1 de 6</div>
                                     <div class="question-title">¿Cuál es el pronombre reflexivo correcto para "Yo"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">se</button>
@@ -1217,7 +1352,7 @@
                                 </div>
                                 <!-- Q2 -->
                                 <div class="quiz-question-card" data-q="2">
-                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-header">Pregunta 2 de 6</div>
                                     <div class="question-title">¿Qué significa "Me cepillo los dientes"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">I wash my hands</button>
@@ -1227,7 +1362,7 @@
                                 </div>
                                 <!-- Q3 -->
                                 <div class="quiz-question-card" data-q="3">
-                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-header">Pregunta 3 de 6</div>
                                     <div class="question-title">¿Cómo conjugas "levantarse" para la tercera persona singular (Él)?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="true">Se levanta</button>
@@ -1235,11 +1370,44 @@
                                         <button class="quiz-opt" data-correct="false">Te levantas</button>
                                     </div>
                                 </div>
+                                <!-- Q4 -->
+                                <div class="quiz-question-card" data-q="4">
+                                    <div class="question-header">Pregunta 4 de 6</div>
+                                    <div class="question-title">Completa: "Nosotros ________ acostamos tarde los sábados."</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">nos</button>
+                                        <button class="quiz-opt" data-correct="false">se</button>
+                                        <button class="quiz-opt" data-correct="false">os</button>
+                                    </div>
+                                </div>
+                                <!-- Q5 -->
+                                <div class="quiz-question-card" data-q="5">
+                                    <div class="question-header">Pregunta 5 de 6</div>
+                                    <div class="question-title">¿Cómo traduces "I drive to work"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Conduzco al trabajo</button>
+                                        <button class="quiz-opt" data-correct="false">Voy a trabajar</button>
+                                        <button class="quiz-opt" data-correct="false">Desayuno café</button>
+                                    </div>
+                                </div>
+                                <!-- Q6 -->
+                                <div class="quiz-question-card" data-q="6">
+                                    <div class="question-header">Pregunta 6 de 6</div>
+                                    <div class="question-title">¿Cuál es el infinitivo del verbo reflexivo para "to wake up"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">despertarse</button>
+                                        <button class="quiz-opt" data-correct="false">despierto</button>
+                                        <button class="quiz-opt" data-correct="false">levantarse</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="quiz-navigation">
                                 <div class="quiz-status-dots">
                                     <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                 </div>
@@ -1385,10 +1553,18 @@
                             <h3>Cuestionario Final del Curso</h3>
                             <p>¡Última prueba! Responde correctamente para finalizar el nivel cero.</p>
                             
+                            <div class="exercise-header-meta">
+                                <span>Pregunta <span class="current-q-num">1</span> de <span class="total-q-num">6</span></span>
+                                <span class="lives-indicator">🎯 Aciertos: 0</span>
+                            </div>
+                            <div class="exercise-progress-wrapper">
+                                <div class="exercise-progress-fill" style="width: 16.66%;"></div>
+                            </div>
+
                             <div class="quiz-questions-wrapper">
                                 <!-- Q1 -->
                                 <div class="quiz-question-card active" data-q="1">
-                                    <div class="question-header">Pregunta 1 de 3</div>
+                                    <div class="question-header">Pregunta 1 de 6</div>
                                     <div class="question-title">¿Cómo traduces "I like books"? (Plural)</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">Me gusta los libros</button>
@@ -1398,7 +1574,7 @@
                                 </div>
                                 <!-- Q2 -->
                                 <div class="quiz-question-card" data-q="2">
-                                    <div class="question-header">Pregunta 2 de 3</div>
+                                    <div class="question-header">Pregunta 2 de 6</div>
                                     <div class="question-title">¿Cuál es el número "cinco"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="false">3</button>
@@ -1408,7 +1584,7 @@
                                 </div>
                                 <!-- Q3 -->
                                 <div class="quiz-question-card" data-q="3">
-                                    <div class="question-header">Pregunta 3 de 3</div>
+                                    <div class="question-header">Pregunta 3 de 6</div>
                                     <div class="question-title">¿Cómo dices "he likes"?</div>
                                     <div class="quiz-options-list">
                                         <button class="quiz-opt" data-correct="true">Le gusta</button>
@@ -1416,11 +1592,44 @@
                                         <button class="quiz-opt" data-correct="false">Te gusta</button>
                                     </div>
                                 </div>
+                                <!-- Q4 -->
+                                <div class="quiz-question-card" data-q="4">
+                                    <div class="question-header">Pregunta 4 de 6</div>
+                                    <div class="question-title">¿Cómo traduces "We like Spanish music"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Nos gusta la música española</button>
+                                        <button class="quiz-opt" data-correct="false">Les gusta la música española</button>
+                                        <button class="quiz-opt" data-correct="false">Me gusta la música española</button>
+                                    </div>
+                                </div>
+                                <!-- Q5 -->
+                                <div class="quiz-question-card" data-q="5">
+                                    <div class="question-header">Pregunta 5 de 6</div>
+                                    <div class="question-title">¿Qué número es "quince"?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">15</button>
+                                        <button class="quiz-opt" data-correct="false">5</button>
+                                        <button class="quiz-opt" data-correct="false">50</button>
+                                    </div>
+                                </div>
+                                <!-- Q6 -->
+                                <div class="quiz-question-card" data-q="6">
+                                    <div class="question-header">Pregunta 6 de 6</div>
+                                    <div class="question-title">¿Qué color es "blue" en español?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">azul</button>
+                                        <button class="quiz-opt" data-correct="false">amarillo</button>
+                                        <button class="quiz-opt" data-correct="false">rojo</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="quiz-navigation">
                                 <div class="quiz-status-dots">
                                     <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                 </div>
@@ -1466,6 +1675,13 @@
 
                 <div class="practica-arena">
                     <div class="practica-card" id="practica-card">
+                        <div class="exercise-header-meta">
+                            <span>Pregunta <span id="practica-current-num">1</span> de 10</span>
+                            <span class="lives-indicator" id="practica-lives-indicator">🎯 Aciertos: 0 / 10</span>
+                        </div>
+                        <div class="exercise-progress-wrapper" style="margin-bottom: 20px;">
+                            <div class="exercise-progress-fill" id="practica-progress-fill" style="width: 10%;"></div>
+                        </div>
                         <div class="practica-instruction" id="practica-instruction">Instrucción de la pregunta</div>
                         <div class="practica-sentence" id="practica-sentence">La frase a completar con ________.</div>
                         <div class="practica-options" id="practica-options">

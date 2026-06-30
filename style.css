@@ -1975,3 +1975,72 @@ code {
     justify-content: center;
     margin-bottom: 40px;
 }
+
+/* ==========================================================================
+   INTERACTIVE CARDS & PROGRESS INDICATORS (PREMIUM UI/UX REDESIGN)
+   ========================================================================== */
+
+/* 1. Custom modern styling for Interactive Cards */
+.quiz-container, .interactive-game-box, .interactive-sandbox, .practica-card, .routine-card, .game-card {
+    border-radius: 1rem !important; /* rounded-xl */
+    border: 1px solid var(--border-color) !important;
+    background: var(--bg-card) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.quiz-container:hover, .interactive-game-box:hover, .interactive-sandbox:hover, .practica-card:hover, .routine-card:hover, .game-card:hover {
+    transform: translateY(-3px) !important;
+    border-color: var(--accent-teal) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(20, 184, 166, 0.2) !important;
+}
+
+/* 2. Specific elements like quiz options, routine card options, and tree nodes */
+.quiz-opt, .option-btn, .game-item, .tree-node, .routine-card {
+    border-radius: 12px !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.quiz-opt:hover, .option-btn:hover, .game-item:hover, .tree-node:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--accent-teal) !important;
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15) !important;
+}
+
+/* 3. Progress indicator wrapper & fill styles */
+.exercise-progress-wrapper {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 9999px;
+    height: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.exercise-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-teal), #06b6d4);
+    border-radius: 9999px;
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.exercise-header-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.exercise-header-meta .lives-indicator {
+    color: var(--accent-orange);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: bold;
+}

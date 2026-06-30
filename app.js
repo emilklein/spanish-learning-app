@@ -503,6 +503,19 @@ function initSerEstarGame() {
 
 function loadSerEstarQuestion() {
     const item = state.serEstarDatabase[state.serEstarIndex];
+    
+    // Update progress UI
+    const currentNum = document.getElementById("serestar-current-num");
+    const progressFill = document.getElementById("serestar-progress-fill");
+    const livesInd = document.getElementById("serestar-lives-indicator");
+    
+    if (currentNum) currentNum.innerText = state.serEstarIndex + 1;
+    if (progressFill) progressFill.style.width = `${((state.serEstarIndex + 1) / state.serEstarDatabase.length) * 100}%`;
+    if (livesInd && state.serEstarIndex === 0) {
+        state.serEstarScore = 0; // Reset local score if starting over
+        livesInd.innerText = `🎯 Aciertos: 0`;
+    }
+
     document.getElementById("serestar-sentence").innerText = item.sentence;
     document.getElementById("serestar-feedback").innerText = "";
     document.getElementById("serestar-feedback").className = "feedback-msg";
@@ -536,9 +549,12 @@ function checkSerEstar(answer) {
     });
 
     if (answer === item.correct) {
+        state.serEstarScore++;
         feedback.innerText = `¡Excelente! Correcto. ${item.explanation}`;
         feedback.className = "feedback-msg correct";
         speakWord("¡Correcto!");
+        const livesInd = document.getElementById("serestar-lives-indicator");
+        if (livesInd) livesInd.innerText = `🎯 Aciertos: ${state.serEstarScore}`;
     } else {
         feedback.innerText = `Incorrecto. La respuesta correcta es '${item.correct}'. ${item.explanation}`;
         feedback.className = "feedback-msg incorrect";
@@ -564,6 +580,7 @@ function checkSerEstar(answer) {
             card.innerHTML = `
                 <div style="font-size: 3rem; margin-bottom: 15px;">🎉</div>
                 <h4 style="color: var(--accent-teal); font-size: 1.4rem; margin-bottom: 10px;">¡Desafío Completado!</h4>
+                <p style="margin-bottom: 5px; font-weight:600; color: var(--text-primary);">Aciertos: ${state.serEstarScore} / 10</p>
                 <p style="margin-bottom: 20px; color: var(--text-secondary);">¡Felicidades! Has terminado el ejercicio de Ser y Estar con éxito.</p>
                 <button class="primary-btn" id="btn-restart-serestar">Volver a Jugar</button>
             `;
@@ -573,6 +590,13 @@ function checkSerEstar(answer) {
                 // Reset state and restore structure
                 state.serEstarIndex = 0;
                 card.innerHTML = `
+                    <div class="exercise-header-meta">
+                        <span>Pregunta <span id="serestar-current-num">1</span> de 10</span>
+                        <span class="lives-indicator" id="serestar-lives-indicator">🎯 Aciertos: 0</span>
+                    </div>
+                    <div class="exercise-progress-wrapper">
+                        <div class="exercise-progress-fill" id="serestar-progress-fill" style="width: 10%;"></div>
+                    </div>
                     <div class="game-sentence" id="serestar-sentence"></div>
                     <div class="game-options" id="serestar-options"></div>
                     <div id="serestar-feedback" class="feedback-msg"></div>
@@ -723,6 +747,16 @@ function initFurnitureGame() {
                 state.furnitureGame.matchesCount++;
                 state.furnitureGame.selectedItem = null;
 
+                // Update progress UI
+                const placedNum = document.getElementById("furniture-placed-num");
+                const progressFill = document.getElementById("furniture-progress-fill");
+                const livesInd = document.getElementById("furniture-lives-indicator");
+                const percent = Math.round((state.furnitureGame.matchesCount / state.furnitureGame.totalItems) * 100);
+                
+                if (placedNum) placedNum.innerText = state.furnitureGame.matchesCount;
+                if (progressFill) progressFill.style.width = `${percent}%`;
+                if (livesInd) livesInd.innerText = `🎯 Completado: ${percent}%`;
+
                 if (state.furnitureGame.matchesCount === state.furnitureGame.totalItems) {
                     statusText.innerText = "🎉 ¡Felicidades! Has colocado todos los muebles correctamente.";
                     speakWord("¡Excelente trabajo! Has completado el juego.");
@@ -746,6 +780,14 @@ function initFurnitureGame() {
         state.furnitureGame.selectedItem = null;
         resetBtn.style.display = "none";
         statusText.innerText = "Selecciona un mueble para empezar.";
+
+        // Reset progress UI
+        const placedNum = document.getElementById("furniture-placed-num");
+        const progressFill = document.getElementById("furniture-progress-fill");
+        const livesInd = document.getElementById("furniture-lives-indicator");
+        if (placedNum) placedNum.innerText = "0";
+        if (progressFill) progressFill.style.width = "0%";
+        if (livesInd) livesInd.innerText = "🎯 Completado: 0%";
 
         // Re-render and shuffle all items
         renderFurnitureItems();
@@ -903,6 +945,12 @@ function initQuizzes() {
         const quizContainer = document.getElementById(`quiz-module${m}`);
         if (!quizContainer) continue;
 
+        // If already initialized, don't bind again
+        if (quizContainer.dataset.initialized === "true") {
+            continue;
+        }
+        quizContainer.dataset.initialized = "true";
+
         const options = quizContainer.querySelectorAll(".quiz-opt");
         const statusDots = quizContainer.querySelectorAll(".quiz-status-dots .dot");
         const cards = quizContainer.querySelectorAll(".quiz-question-card");
@@ -910,6 +958,14 @@ function initQuizzes() {
         
         let currentQIndex = 0;
         let score = 0;
+
+        // Set initial progress bar and number
+        const progressFill = quizContainer.querySelector(".exercise-progress-fill");
+        const currentNum = quizContainer.querySelector(".current-q-num");
+        const livesIndicator = quizContainer.querySelector(".lives-indicator");
+        if (progressFill) progressFill.style.width = `${(1 / cards.length) * 100}%`;
+        if (currentNum) currentNum.innerText = "1";
+        if (livesIndicator) livesIndicator.innerText = `🎯 Aciertos: 0`;
 
         options.forEach(opt => {
             opt.addEventListener("click", () => {
@@ -930,6 +986,11 @@ function initQuizzes() {
                     speakWord("Incorrecto.");
                 }
 
+                // Update correct count indicator
+                if (livesIndicator) {
+                    livesIndicator.innerText = `🎯 Aciertos: ${score}`;
+                }
+
                 // Color the status dot
                 if (statusDots[currentQIndex]) {
                     statusDots[currentQIndex].classList.add(isCorrect ? "completed" : "active");
@@ -943,6 +1004,10 @@ function initQuizzes() {
                     if (currentQIndex < cards.length) {
                         cards[currentQIndex].classList.add("active");
                         if (statusDots[currentQIndex]) statusDots[currentQIndex].classList.add("active");
+                        
+                        // Update progress bar
+                        if (progressFill) progressFill.style.width = `${((currentQIndex + 1) / cards.length) * 100}%`;
+                        if (currentNum) currentNum.innerText = currentQIndex + 1;
                     } else {
                         // End of quiz
                         summary.style.display = "block";
@@ -992,13 +1057,12 @@ function initQuizzes() {
 
     // Set up course final button (Diploma popup)
     const btnCompleteCourse = document.getElementById("btn-complete-course");
-    if (btnCompleteCourse) {
+    const testQuizContainer = document.getElementById(`quiz-module5`);
+    if (btnCompleteCourse && testQuizContainer && testQuizContainer.dataset.diplomaInitialized !== "true") {
+        testQuizContainer.dataset.diplomaInitialized = "true";
         btnCompleteCourse.addEventListener("click", () => {
-            // Prompt student name
             const studentName = prompt("Introduce tu nombre para tu Diploma:", "Estudiante de Español") || "Estudiante de Español";
             document.getElementById("diploma-student-name").innerText = studentName;
-            
-            // Show diploma modal
             document.getElementById("diploma-modal").classList.add("active");
             speakWord("¡Felicitaciones! Has completado el curso de español básico.");
         });
@@ -1009,6 +1073,9 @@ function resetModuleQuiz(moduleNum) {
     const quizContainer = document.getElementById(`quiz-module${moduleNum}`);
     if (!quizContainer) return;
 
+    // Reset initialization flag so we can rebuild and rebind listeners cleanly
+    delete quizContainer.dataset.initialized;
+
     // Reset variables and view
     const cards = quizContainer.querySelectorAll(".quiz-question-card");
     const options = quizContainer.querySelectorAll(".quiz-opt");
@@ -1018,10 +1085,12 @@ function resetModuleQuiz(moduleNum) {
     summary.style.display = "none";
     quizContainer.querySelector(".quiz-status-dots").style.display = "flex";
 
-    // Clear class lists & enable
+    // Recreate/clone all option buttons to strip off previously bound event listeners
     options.forEach(opt => {
-        opt.disabled = false;
-        opt.classList.remove("correct-choice", "wrong-choice");
+        const newOpt = opt.cloneNode(true);
+        newOpt.disabled = false;
+        newOpt.classList.remove("correct-choice", "wrong-choice");
+        opt.parentNode.replaceChild(newOpt, opt);
     });
 
     statusDots.forEach(dot => {
@@ -1034,7 +1103,7 @@ function resetModuleQuiz(moduleNum) {
     cards[0].classList.add("active");
     statusDots[0].classList.add("active");
 
-    // Re-bind click event or reinitialize quiz tracker inside the closure scope
+    // Re-bind listeners
     initQuizzes();
 }
 
