@@ -10,7 +10,7 @@
     --bg-card-hover: #334155; /* Slightly lighter slate for hover states */
     
     /* Harmonious Accents (Colorblind Friendly) */
-    --accent-red: #ff5a79;    /* Bright Rose-Red / Coral Pink (High Contrast & Colorblind Friendly) */
+    --accent-red: #fde047;    /* Bright Yellow (Highly visible for colorblind students as error/accent) */
     --accent-orange: #f97316; /* Spanish Orange */
     --accent-gold: #eab308;   /* Saffron Gold */
     --accent-teal: #14b8a6;   /* Mediterranean Teal */
@@ -28,7 +28,7 @@
     /* Transitions & Shadows */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    --shadow-accent: 0 0 15px rgba(255, 90, 121, 0.3);
+    --shadow-accent: 0 0 15px rgba(253, 224, 71, 0.3);
     --border-radius: 16px;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 code {
-    background-color: rgba(255, 90, 121, 0.15);
+    background-color: rgba(253, 224, 71, 0.15);
     color: var(--accent-red);
     padding: 2px 6px;
     border-radius: 4px;
@@ -308,7 +308,7 @@ code {
 
 .primary-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 90, 121, 0.5);
+    box-shadow: 0 10px 20px rgba(253, 224, 71, 0.5);
 }
 
 .secondary-btn {
@@ -935,7 +935,7 @@ code {
 
 .quiz-opt.wrong-choice {
     border-color: var(--accent-red);
-    background: rgba(255, 90, 121, 0.15);
+    background: rgba(253, 224, 71, 0.15);
     color: var(--accent-red);
 }
 
@@ -1328,7 +1328,7 @@ code {
 
 .room-target.placement-error {
     border-color: var(--accent-red);
-    background: rgba(255, 90, 121, 0.05);
+    background: rgba(253, 224, 71, 0.05);
     animation: shake 0.3s ease-in-out;
 }
 
@@ -2102,7 +2102,7 @@ code {
 }
 
 .accent-red-text {
-    color: #ff5e7e !important;
+    color: #fde047 !important;
 }
 
 .warning-banner {
@@ -2234,4 +2234,45 @@ code {
     border-color: var(--accent-teal);
     color: #ffffff;
     box-shadow: 0 0 10px rgba(20, 184, 166, 0.3);
+}
+
+/* Subtle Interactive Dictionary Words */
+.dict-word {
+    position: relative;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.25);
+    cursor: help;
+    display: inline-block;
+    transition: var(--transition-smooth);
+}
+
+.dict-word:hover {
+    border-bottom: 1px dotted var(--accent-teal);
+    color: var(--accent-teal);
+    background-color: rgba(20, 184, 166, 0.08);
+}
+
+.dict-word::after {
+    content: attr(data-translate);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a;
+    color: #cbd5e1;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.dict-word:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
 }

@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initModal();
     initInfinitePractice();
     updateUI();
+    setupDictionaryTranslator();
 });
 
 // --- Text-To-Speech Engine (Web Speech API) ---
@@ -1871,7 +1872,7 @@ function checkInfinitePracticeAnswer(choiceBtn, option) {
         if (choiceBtn) {
             choiceBtn.style.borderColor = "var(--accent-red)";
             choiceBtn.style.color = "var(--accent-red)";
-            choiceBtn.style.background = "rgba(255, 90, 121, 0.1)";
+            choiceBtn.style.background = "rgba(253, 224, 71, 0.1)";
             choiceBtn.style.opacity = "1";
         }
 
@@ -1978,7 +1979,7 @@ function checkComoSeDice(btn, isCorrect, feedbackMsg) {
         speakWord("Incorrecto.");
         btn.style.borderColor = "var(--accent-red)";
         btn.style.color = "var(--accent-red)";
-        btn.style.background = "rgba(255, 90, 121, 0.1)";
+        btn.style.background = "rgba(253, 224, 71, 0.1)";
         btn.style.opacity = "1";
     }
 
@@ -2048,4 +2049,278 @@ function checkComoSeDice(btn, isCorrect, feedbackMsg) {
             });
         }
     };
+}
+
+// --- Dynamic Dictionary Translation System ---
+const translationDictionary = {
+    "hola": "hello / hi",
+    "me": "me / myself",
+    "llamo": "call myself (named)",
+    "soy": "I am",
+    "de": "from / of",
+    "y": "and",
+    "es": "is",
+    "mucho": "much / a lot",
+    "gusto": "pleasure / taste",
+    "encantado": "pleased / charmed (masc)",
+    "encantada": "pleased / charmed (fem)",
+    "buenos": "good (masc plural)",
+    "buenas": "good (fem plural)",
+    "días": "days",
+    "tardes": "afternoons",
+    "noches": "nights",
+    "el": "the (masc)",
+    "la": "the (fem)",
+    "los": "the (masc plural)",
+    "las": "the (fem plural)",
+    "un": "a / an (masc)",
+    "una": "a / an (fem)",
+    "unos": "some (masc)",
+    "unas": "some (fem)",
+    "yo": "I",
+    "tú": "you (informal)",
+    "él": "he",
+    "ella": "she",
+    "nosotros": "we (masc)",
+    "nosotras": "we (fem)",
+    "ellos": "they (masc)",
+    "ellas": "they (fem)",
+    "mi": "my",
+    "mis": "my (plural)",
+    "tu": "your",
+    "tus": "your (plural)",
+    "su": "his / her / their",
+    "sus": "his / her / their (plural)",
+    "en": "in / at / on",
+    "con": "with",
+    "por": "by / in / for",
+    "mañana": "morning / tomorrow",
+    "tarde": "afternoon / late",
+    "noche": "night / evening",
+    "abuelo": "grandfather",
+    "abuela": "grandmother",
+    "padre": "father",
+    "madre": "mother",
+    "tío": "uncle",
+    "tía": "aunt",
+    "hermano": "brother",
+    "hermana": "sister",
+    "primo": "cousin (masc)",
+    "prima": "cousin (fem)",
+    "se": "himself / herself / themselves",
+    "llama": "calls him/herself",
+    "llaman": "call themselves",
+    "cama": "bed",
+    "armario": "wardrobe / closet",
+    "mesita": "nightstand / little table",
+    "lámpara": "lamp",
+    "espejo": "mirror",
+    "almohada": "pillow",
+    "nevera": "fridge",
+    "mesa": "table",
+    "silla": "chair",
+    "microondas": "microwave",
+    "horno": "oven",
+    "sartén": "frying pan",
+    "ducha": "shower",
+    "inodoro": "toilet",
+    "lavabo": "sink",
+    "toalla": "towel",
+    "jabón": "soap",
+    "sofá": "sofa",
+    "sillón": "armchair",
+    "televisión": "television",
+    "alfombra": "rug / carpet",
+    "centro": "coffee / center",
+    "cuadro": "painting / frame",
+    "flores": "flowers",
+    "planta": "plant",
+    "árbol": "tree",
+    "piscina": "pool",
+    "hierba": "grass / lawn",
+    "dormitorio": "bedroom",
+    "cocina": "kitchen",
+    "baño": "bathroom",
+    "salón": "living room",
+    "jardín": "garden",
+    "sala": "living room / hall",
+    "piso": "apartment / floor",
+    "casa": "house",
+    "campo": "countryside / field",
+    "moderno": "modern (masc)",
+    "moderna": "modern (fem)",
+    "grande": "big",
+    "pequeño": "small (masc)",
+    "pequeña": "small (fem)",
+    "luminoso": "bright (masc)",
+    "luminosa": "bright (fem)",
+    "oscuro": "dark (masc)",
+    "oscura": "dark (fem)",
+    "tiene": "has",
+    "tienen": "have",
+    "tengo": "I have",
+    "tienes": "you have",
+    "tenemos": "we have",
+    "vivir": "to live",
+    "vivo": "I live",
+    "vives": "you live",
+    "vive": "he/she lives",
+    "vivimos": "we live",
+    "viven": "they live",
+    "hablar": "to speak",
+    "hablo": "I speak",
+    "hablas": "you speak",
+    "habla": "he/she speaks",
+    "hablamos": "we speak",
+    "hablan": "they speak",
+    "comer": "to eat",
+    "como": "I eat",
+    "comes": "you eat",
+    "come": "he/she eats",
+    "comemos": "we eat",
+    "comen": "they eat",
+    "estudiar": "to study",
+    "estudio": "I study",
+    "estudias": "you study",
+    "estudia": "he/she studies",
+    "estudiamos": "we study",
+    "estudian": "they study",
+    "trabajar": "to work",
+    "trabajo": "I work",
+    "trabajas": "you work",
+    "trabaja": "he/she works",
+    "trabajamos": "we work",
+    "trabajan": "they work",
+    "escribir": "to write",
+    "escribo": "I write",
+    "escribimos": "we write",
+    "leer": "to read",
+    "leo": "I read",
+    "leemos": "we read",
+    "despertar": "to wake up",
+    "despierto": "I wake up",
+    "despierta": "he/she wakes up",
+    "levantar": "to get up",
+    "levanto": "I get up",
+    "levanta": "he/she gets up",
+    "duchar": "to shower",
+    "ducho": "I shower",
+    "ducha": "he/she showers",
+    "cepillar": "to brush",
+    "cepillo": "I brush",
+    "cepilla": "he/she brushes",
+    "acostar": "to go to bed",
+    "acuesto": "I go to bed",
+    "acuesta": "he/she gets to bed",
+    "gusta": "pleases (likes singular)",
+    "gustan": "please (likes plural)",
+    "número": "number",
+    "cero": "zero",
+    "uno": "one",
+    "dos": "two",
+    "tres": "three",
+    "cuatro": "four",
+    "cinco": "five",
+    "seis": "six",
+    "siete": "seven",
+    "ocho": "eight",
+    "nueve": "nine",
+    "diez": "ten",
+    "rojo": "red (masc)",
+    "roja": "red (fem)",
+    "azul": "blue",
+    "verde": "green",
+    "amarillo": "yellow (masc)",
+    "amarilla": "yellow (fem)",
+    "negro": "black (masc)",
+    "negra": "black (fem)",
+    "blanco": "white (masc)",
+    "blanca": "white (fem)",
+    "bonito": "pretty (masc)",
+    "bonita": "pretty (fem)",
+    "simpático": "friendly / nice (masc)",
+    "simpática": "friendly / nice (fem)",
+    "inteligente": "smart / intelligent",
+    "trabajador": "hardworking (masc)",
+    "trabajadora": "hardworking (fem)",
+    "alto": "tall (masc)",
+    "alta": "tall (fem)",
+    "divertido": "funny (masc)",
+    "divertida": "funny (fem)",
+    "bajo": "short (masc)",
+    "baja": "short (fem)",
+    "amable": "kind / nice",
+    "doctor": "doctor (masc)",
+    "profesor": "teacher (masc)",
+    "profesora": "teacher (fem)",
+    "médico": "doctor (masc)",
+    "médica": "doctor (fem)",
+    "ingeniero": "engineer (masc)",
+    "ingeniera": "engineer (fem)",
+    "artista": "artist",
+    "diseñador": "designer (masc)",
+    "diseñadora": "designer (fem)",
+    "estudiante": "student",
+    "estudiantes": "students",
+    "hermanos": "brothers / siblings",
+    "hermanas": "sisters",
+    "padres": "parents",
+    "tíos": "uncles / aunts & uncles",
+    "primos": "cousins"
+};
+
+function setupDictionaryTranslator() {
+    // Select all paragraphs, list items, table cells, and vocabulary guides
+    const targets = document.querySelectorAll(
+        ".lesson-explanation p, .lesson-explanation li, .instruction-box p, " +
+        ".grammar-box td, .grammar-box p, .tab-pane .intro-card p, " +
+        ".tab-pane p:not([class]), .step-indicator"
+    );
+    
+    targets.forEach(el => {
+        // Skip elements that are inputs, select boxes, or contain buttons
+        if (el.querySelector("select, input, button") || el.closest("button") || el.closest("select")) return;
+        
+        wrapTextNodes(el);
+    });
+}
+
+function wrapTextNodes(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        // Match standard words with spanish letters (áéíóúñü)
+        const regex = /([a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]+)/g;
+        const parts = text.split(regex);
+        
+        const fragment = document.createDocumentFragment();
+        parts.forEach(part => {
+            if (regex.test(part)) {
+                const lowerWord = part.toLowerCase();
+                const translation = translationDictionary[lowerWord];
+                if (translation) {
+                    const span = document.createElement("span");
+                    span.className = "dict-word";
+                    span.setAttribute("data-translate", translation);
+                    span.textContent = part;
+                    fragment.appendChild(span);
+                } else {
+                    fragment.appendChild(document.createTextNode(part));
+                }
+            } else {
+                fragment.appendChild(document.createTextNode(part));
+            }
+        });
+        node.parentNode.replaceChild(fragment, node);
+    } else if (
+        node.nodeType === Node.ELEMENT_NODE && 
+        node.tagName !== "SPAN" && 
+        node.tagName !== "A" && 
+        node.tagName !== "BUTTON" &&
+        !node.classList.contains("vocab-tooltip") &&
+        !node.classList.contains("dict-word")
+    ) {
+        // Recursively wrap children, skipping existing spans, links, and buttons
+        const children = Array.from(node.childNodes);
+        children.forEach(child => wrapTextNodes(child));
+    }
 }
