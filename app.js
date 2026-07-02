@@ -230,16 +230,39 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // --- Text-To-Speech Engine (Web Speech API) ---
+let hoverSpeechTimeout = null;
+
+function speakWordDebounced(text, delay = 200) {
+    if (hoverSpeechTimeout) clearTimeout(hoverSpeechTimeout);
+    hoverSpeechTimeout = setTimeout(() => {
+        speakWord(text);
+    }, delay);
+}
+
 function initTTS() {
     const ttsBtn = document.getElementById("tts-toggle-btn");
     const ttsText = document.getElementById("tts-status-text");
+
+    // iOS/iPadOS/Android compatibility: Unlock SpeechSynthesis on first user interaction
+    const unlockTTS = () => {
+        try {
+            const u = new SpeechSynthesisUtterance("");
+            u.volume = 0;
+            window.speechSynthesis.speak(u);
+            document.removeEventListener("click", unlockTTS);
+            document.removeEventListener("touchstart", unlockTTS);
+        } catch (e) {
+            console.error("Failed to unlock SpeechSynthesis:", e);
+        }
+    };
+    document.addEventListener("click", unlockTTS);
+    document.addEventListener("touchstart", unlockTTS);
 
     // Load available voices
     const populateVoices = () => {
         try {
             state.voices = window.speechSynthesis.getVoices();
             if (state.voices && state.voices.length > 0) {
-                // Find Spanish voice, prefer Spain or Latin American accent if available
                 state.spanishVoice = state.voices.find(v => v.lang === "es-ES") || 
                                      state.voices.find(v => v.lang.startsWith("es-")) || 
                                      state.voices[0];
@@ -268,11 +291,10 @@ function initTTS() {
         }
     });
 
-    // Make elements with data-speak pronounceable
+    // Make elements with data-speak pronounceable on click
     document.body.addEventListener("click", (e) => {
         const speakEl = e.target.closest("[data-speak]");
         if (speakEl) {
-            // If it's a sound icon on a flashcard, prevent flipping the card
             if (e.target.classList.contains("card-sound")) {
                 e.stopPropagation();
             }
@@ -281,13 +303,60 @@ function initTTS() {
         }
     });
 
-    // Add explicit click handler to static data-speak elements to ensure touch device bubbling
+    // Add click handler for elements containing 🔊 or speaker-btn (like custom flip cards)
+    document.body.addEventListener("click", (e) => {
+        const speakerEl = e.target.closest(".speaker-btn, .card-sound, [class*='sound']");
+        if (speakerEl && !speakerEl.closest("[data-speak]")) {
+            e.stopPropagation();
+            let textToSpeak = speakerEl.getAttribute("data-speak") || 
+                              speakerEl.innerText || 
+                              speakerEl.textContent;
+            if (textToSpeak) {
+                textToSpeak = textToSpeak.replace(/🔊/g, "").replace("Pronunciar", "").trim();
+                speakWord(textToSpeak);
+            }
+        }
+    });
+
+    // Add explicit click handler to static elements
     document.querySelectorAll(".vocab-row[data-speak], .color-swatch[data-speak]").forEach(el => {
         el.addEventListener("click", (e) => {
-            e.stopPropagation(); // Prevent double trigger with body handler
+            e.stopPropagation();
             const textToSpeak = el.getAttribute("data-speak");
             speakWord(textToSpeak);
         });
+    });
+
+    // Hover speech logic using event delegation (for both static and dynamic elements)
+    const handleHoverSpeech = (e) => {
+        if (!state.ttsActive) return;
+        
+        let textToSpeak = "";
+        
+        const tooltipEl = e.target.closest(".vocab-tooltip, .dict-word");
+        if (tooltipEl) {
+            textToSpeak = tooltipEl.textContent.trim();
+        } else {
+            const speakEl = e.target.closest("[data-speak]");
+            if (speakEl) {
+                textToSpeak = speakEl.getAttribute("data-speak");
+            }
+        }
+        
+        if (textToSpeak) {
+            textToSpeak = textToSpeak.replace(/🔊/g, "").trim();
+            if (textToSpeak.length > 0) {
+                speakWordDebounced(textToSpeak, 250); // slight debounce delay
+            }
+        }
+    };
+
+    document.body.addEventListener("mouseover", (e) => {
+        const target = e.target.closest(".vocab-tooltip, .dict-word, [data-speak]");
+        if (target && !target.dataset.hoverBound) {
+            target.dataset.hoverBound = "true";
+            target.addEventListener("mouseenter", handleHoverSpeech);
+        }
     });
 }
 
@@ -299,23 +368,23 @@ function speakWord(text) {
 
         const utterance = new SpeechSynthesisUtterance(text);
         
-        // Asynchronous fallback: reload voices if they weren't loaded yet
-        if (!state.spanishVoice || !state.voices || state.voices.length === 0) {
-            state.voices = window.speechSynthesis.getVoices();
-            if (state.voices && state.voices.length > 0) {
-                state.spanishVoice = state.voices.find(v => v.lang === "es-ES") || 
-                                     state.voices.find(v => v.lang.startsWith("es-")) || 
-                                     state.voices[0];
-            }
+        // Enforce strict Spanish locale
+        utterance.lang = "es-ES";
+        utterance.rate = 0.82; // Slightly slower for foreign language learners
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+
+        // Voice fallback logic
+        if (!state.spanishVoice) {
+            const voices = window.speechSynthesis.getVoices();
+            state.spanishVoice = voices.find(v => v.lang === "es-ES") || 
+                                 voices.find(v => v.lang.startsWith("es-")) || 
+                                 voices[0];
         }
 
         if (state.spanishVoice) {
             utterance.voice = state.spanishVoice;
         }
-        
-        utterance.lang = "es-ES";
-        utterance.rate = 0.85; // Slightly slower for foreign language learners
-        utterance.pitch = 1.0;
 
         window.speechSynthesis.speak(utterance);
     } catch (err) {
