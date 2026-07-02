@@ -1871,7 +1871,7 @@ function checkInfinitePracticeAnswer(choiceBtn, option) {
         if (choiceBtn) {
             choiceBtn.style.borderColor = "var(--accent-red)";
             choiceBtn.style.color = "var(--accent-red)";
-            choiceBtn.style.background = "rgba(244, 63, 94, 0.1)";
+            choiceBtn.style.background = "rgba(255, 90, 121, 0.1)";
             choiceBtn.style.opacity = "1";
         }
 
@@ -1978,7 +1978,7 @@ function checkComoSeDice(btn, isCorrect, feedbackMsg) {
         speakWord("Incorrecto.");
         btn.style.borderColor = "var(--accent-red)";
         btn.style.color = "var(--accent-red)";
-        btn.style.background = "rgba(244, 63, 94, 0.1)";
+        btn.style.background = "rgba(255, 90, 121, 0.1)";
         btn.style.opacity = "1";
     }
 

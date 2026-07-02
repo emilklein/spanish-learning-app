@@ -9,8 +9,8 @@
     --bg-card: #1e293b;       /* Dark slate card containers */
     --bg-card-hover: #334155; /* Slightly lighter slate for hover states */
     
-    /* Harmonious Accents */
-    --accent-red: #f43f5e;    /* Warm Terracotta / Red */
+    /* Harmonious Accents (Colorblind Friendly) */
+    --accent-red: #ff5a79;    /* Bright Rose-Red / Coral Pink (High Contrast & Colorblind Friendly) */
     --accent-orange: #f97316; /* Spanish Orange */
     --accent-gold: #eab308;   /* Saffron Gold */
     --accent-teal: #14b8a6;   /* Mediterranean Teal */
@@ -28,7 +28,7 @@
     /* Transitions & Shadows */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    --shadow-accent: 0 0 15px rgba(244, 63, 94, 0.3);
+    --shadow-accent: 0 0 15px rgba(255, 90, 121, 0.3);
     --border-radius: 16px;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 code {
-    background-color: rgba(244, 63, 94, 0.15);
+    background-color: rgba(255, 90, 121, 0.15);
     color: var(--accent-red);
     padding: 2px 6px;
     border-radius: 4px;
@@ -308,7 +308,7 @@ code {
 
 .primary-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(244, 63, 94, 0.5);
+    box-shadow: 0 10px 20px rgba(255, 90, 121, 0.5);
 }
 
 .secondary-btn {
@@ -935,7 +935,7 @@ code {
 
 .quiz-opt.wrong-choice {
     border-color: var(--accent-red);
-    background: rgba(244, 63, 94, 0.15);
+    background: rgba(255, 90, 121, 0.15);
     color: var(--accent-red);
 }
 
@@ -1328,7 +1328,7 @@ code {
 
 .room-target.placement-error {
     border-color: var(--accent-red);
-    background: rgba(244, 63, 94, 0.05);
+    background: rgba(255, 90, 121, 0.05);
     animation: shake 0.3s ease-in-out;
 }
 
@@ -1591,7 +1591,7 @@ code {
     transform: scale(1.03);
 }
 
-.bg-red { background-color: #ef4444; color: #fff; }
+.bg-red { background-color: #ff4d6d; color: #fff; }
 .bg-blue { background-color: #3b82f6; color: #fff; }
 .bg-green { background-color: #22c55e; color: #fff; }
 .bg-yellow { background-color: #eab308; color: #000; text-shadow: none !important; }
