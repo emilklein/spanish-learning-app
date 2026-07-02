@@ -106,6 +106,110 @@ const state = {
     chatAnswers: {}
 };
 
+// --- Room Items/Furniture Database for Flip Cards ---
+const roomItemsDatabase = {
+    dormitorio: [
+        { es: "la cama", en: "the bed", emoji: "🛏️" },
+        { es: "el armario", en: "the wardrobe", emoji: "🚪" },
+        { es: "la mesita de noche", en: "the nightstand", emoji: "🗄️" },
+        { es: "la lámpara", en: "the lamp", emoji: "💡" },
+        { es: "el espejo", en: "the mirror", emoji: "🪞" },
+        { es: "la almohada", en: "the pillow", emoji: "🛌" }
+    ],
+    cocina: [
+        { es: "la nevera", en: "the fridge", emoji: "🥛" },
+        { es: "la mesa", en: "the table", emoji: "🪑" },
+        { es: "la silla", en: "the chair", emoji: "🪑" },
+        { es: "el microondas", en: "the microwave", emoji: "🍲" },
+        { es: "el horno", en: "the oven", emoji: "🔥" },
+        { es: "la sartén", en: "the frying pan", emoji: "🍳" }
+    ],
+    baño: [
+        { es: "la ducha", en: "the shower", emoji: "🚿" },
+        { es: "el espejo", en: "the mirror", emoji: "🪞" },
+        { es: "el inodoro", en: "the toilet", emoji: "🚽" },
+        { es: "el lavabo", en: "the sink", emoji: "🚰" },
+        { es: "la toalla", en: "the towel", emoji: "🧼" },
+        { es: "el jabón", en: "the soap", emoji: "🧼" }
+    ],
+    salon: [
+        { es: "el sofá", en: "the sofa", emoji: "🛋️" },
+        { es: "el sillón", en: "the armchair", emoji: "🪑" },
+        { es: "la televisión", en: "the television", emoji: "📺" },
+        { es: "la alfombra", en: "the rug", emoji: "🪵" },
+        { es: "la mesa de centro", en: "the coffee table", emoji: "🪑" },
+        { es: "el cuadro", en: "the painting", emoji: "🖼️" }
+    ],
+    jardin: [
+        { es: "las flores", en: "the flowers", emoji: "🌸" },
+        { es: "la planta", en: "the plant", emoji: "🪴" },
+        { es: "el árbol", en: "the tree", emoji: "🌳" },
+        { es: "la mesa de jardín", en: "the garden table", emoji: "🪑" },
+        { es: "la piscina", en: "the pool", emoji: "🏊" },
+        { es: "la hierba", en: "the grass", emoji: "🌱" }
+    ]
+};
+
+function initHouseFlipCards() {
+    const container = document.getElementById("house-flip-cards");
+    const filterNav = document.getElementById("house-room-filter");
+    if (!container || !filterNav) return;
+
+    const renderCards = (filter) => {
+        container.innerHTML = "";
+        let itemsToRender = [];
+        if (filter === "all") {
+            Object.keys(roomItemsDatabase).forEach(room => {
+                itemsToRender = itemsToRender.concat(roomItemsDatabase[room].map(item => ({ ...item, room })));
+            });
+        } else {
+            itemsToRender = roomItemsDatabase[filter].map(item => ({ ...item, room: filter }));
+        }
+
+        itemsToRender.forEach(item => {
+            const wrapper = document.createElement("div");
+            wrapper.className = `flip-card-wrapper`;
+            wrapper.setAttribute("data-room-type", item.room);
+
+            wrapper.innerHTML = `
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="flip-card-emoji">${item.emoji}</div>
+                        <div class="flip-card-word-es">${item.es}</div>
+                        <button class="speaker-btn card-sound" style="padding: 4px 8px; font-size: 0.8rem; margin-top: 8px;">🔊 Pronunciar</button>
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="flip-card-word-en">${item.en}</div>
+                    </div>
+                </div>
+            `;
+
+            wrapper.addEventListener("click", (e) => {
+                if (e.target.closest(".card-sound")) {
+                    e.stopPropagation();
+                    speakWord(item.es);
+                    return;
+                }
+                wrapper.classList.toggle("flipped");
+            });
+
+            container.appendChild(wrapper);
+        });
+    };
+
+    renderCards("all");
+
+    const filterBtns = filterNav.querySelectorAll(".room-filter-btn");
+    filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filterBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const filterValue = btn.getAttribute("data-filter");
+            renderCards(filterValue);
+        });
+    });
+}
+
 // --- Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
     loadProgress();
@@ -116,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initQuizzes();
     initSerEstarGame();
     initFamilyTree();
+    initHouseFlipCards();
     initFurnitureGame();
     initChatbot();
     initModal();
@@ -310,6 +415,11 @@ function initFlashcards() {
     });
 }
 
+// Helper for translation tooltips
+function getTranslationTooltip(word, english) {
+    return `<span class="vocab-tooltip" data-translate="${english}">${word}</span>`;
+}
+
 // --- Interactive Sandboxes ---
 function initSandboxes() {
     // Sandbox 1: Personal Introductions
@@ -334,12 +444,12 @@ function initSandboxes() {
             case "diseñador": jobSpan = "diseñador/a"; break;
         }
 
-        pPreview.innerText = `¡Hola! Me llamo ${name}, soy de ${country} y soy ${jobSpan}. ¡Mucho gusto!`;
+        pPreview.innerHTML = `¡Hola! Me ${getTranslationTooltip("llamo", "call myself")} ${name}, ${getTranslationTooltip("soy", "I am")} de ${country} y ${getTranslationTooltip("soy", "I am")} ${getTranslationTooltip(jobSpan, job)}. ¡Mucho ${getTranslationTooltip("gusto", "pleasure")}!`;
     };
 
     if (pName && pCountry && pJob) {
         [pName, pCountry, pJob].forEach(el => el.addEventListener("input", updatePresentationText));
-        btnSpeakP.addEventListener("click", () => speakWord(pPreview.innerText));
+        btnSpeakP.addEventListener("click", () => speakWord(pPreview.textContent));
     }
 
     // Sandbox 2: Present family member / friend
@@ -363,7 +473,6 @@ function initSandboxes() {
         if (gender === "m") {
             intro = "Este es mi";
             relation = memberVal; // amigo, hermano, padre, primo, tío
-            if (memberVal === "padre") relation = "padre";
             description = `Él es ${traitVal[0]}`;
         } else {
             intro = "Esta es mi";
@@ -378,13 +487,38 @@ function initSandboxes() {
             description = `Ella es ${traitVal[1]}`;
         }
 
-        relPreview.innerText = `${intro} ${relation}, se llama ${name}. ${description}.`;
+        // Gender warning check
+        const warningBanner = document.getElementById("family-gender-warning");
+        if (warningBanner) {
+            let showWarning = false;
+            let warningMsg = "";
+            
+            const nameLower = name.toLowerCase();
+            if (gender === "f" && (nameLower.endsWith("o") || nameLower === "carlos" || nameLower === "juan" || nameLower === "pedro")) {
+                showWarning = true;
+                warningMsg = `⚠️ <strong>Aviso de concordancia:</strong> Estás presentando a una mujer (${relation}), pero el nombre parece masculino. Asegúrate de usar la forma femenina de los adjetivos (ej: <em>simpática</em>).`;
+            } else if (gender === "m" && ((nameLower.endsWith("a") && !nameLower.endsWith("ia") && !nameLower.endsWith("ca")) || nameLower === "maria" || nameLower === "lucia" || nameLower === "ana")) {
+                showWarning = true;
+                warningMsg = `⚠️ <strong>Aviso de concordancia:</strong> Estás presentando a un hombre (${relation}), pero el nombre parece femenino. Asegúrate de usar la forma masculina de los adjetivos (ej: <em>simpático</em>).`;
+            }
+            
+            if (showWarning) {
+                warningBanner.innerHTML = warningMsg;
+                warningBanner.style.display = "block";
+            } else {
+                warningBanner.style.display = "none";
+            }
+        }
+
+        const pronounTransl = gender === "m" ? "He" : "She";
+        const traitText = gender === "m" ? traitVal[0] : traitVal[1];
+        relPreview.innerHTML = `${getTranslationTooltip(intro, gender === "m" ? "This is my (masc)" : "This is my (fem)")} ${getTranslationTooltip(relation, relation)}, se ${getTranslationTooltip("llama", "is named")} ${name}. ${getTranslationTooltip(gender === "m" ? "Él" : "Ella", pronounTransl)} ${getTranslationTooltip("es", "is")} ${getTranslationTooltip(traitText, traitText)}.`;
     };
 
     if (relMember && relName && relTrait) {
         relGenderRadios.forEach(r => r.addEventListener("change", updateRelText));
         [relMember, relName, relTrait].forEach(el => el.addEventListener("input", updateRelText));
-        btnSpeakRel.addEventListener("click", () => speakWord(relPreview.innerText));
+        btnSpeakRel.addEventListener("click", () => speakWord(relPreview.textContent));
         updateRelText(); // initial build
     }
 
@@ -399,82 +533,124 @@ function initSandboxes() {
         const type = homeType.value.split("|")[0]; // "una casa grande"
         const rooms = homeRooms.value;
         const garden = homeGarden.value.split("|")[0]; // "con un jardín precioso"
+        const gardenTransl = homeGarden.value.split("|")[1] || "with garden";
         
         let roomText = rooms == 1 ? "1 dormitorio" : `${rooms} dormitorios`;
 
-        homePreview.innerText = `Yo vivo en ${type}. Tiene ${roomText} y es ${garden}.`;
+        homePreview.innerHTML = `${getTranslationTooltip("Yo", "I")} ${getTranslationTooltip("vivo", "live")} ${getTranslationTooltip("en", "in")} ${getTranslationTooltip(type, type.includes("casa") ? "a house" : "an apartment")}. ${getTranslationTooltip("Tiene", "It has")} ${roomText} y ${getTranslationTooltip("es", "is")} ${getTranslationTooltip(garden, gardenTransl)}.`;
     };
 
     if (homeType && homeRooms && homeGarden) {
         [homeType, homeRooms, homeGarden].forEach(el => el.addEventListener("input", updateHomeText));
-        btnSpeakHome.addEventListener("click", () => speakWord(homePreview.innerText));
+        btnSpeakHome.addEventListener("click", () => speakWord(homePreview.textContent));
         updateHomeText(); // initial build
     }
 
-    // Sandbox 4: Reflexive conjugations
+    // Sandbox 4: Los Verbos (Conjugación Regular)
+    const regSubject = document.getElementById("reg-subject");
+    const regVerbRoot = document.getElementById("reg-verb-root");
+    const regPreview = document.getElementById("reg-preview-text");
+    const btnSpeakRegVerb = document.getElementById("btn-speak-reg-verb");
+
+    const updateRegVerbText = () => {
+        if (!regSubject || !regVerbRoot || !regPreview) return;
+        const subjectInfo = regSubject.value.split("|"); // [Yo, hablo, como, vivo, estudio, trabajo]
+        const verbInfo = regVerbRoot.value.split("|"); // [hablar, español en clase, Spanish in class]
+        
+        let verbIndex = 1; // hablo
+        if (verbInfo[0] === "comer") verbIndex = 2;
+        else if (verbInfo[0] === "vivir") verbIndex = 3;
+        else if (verbInfo[0] === "estudiar") verbIndex = 4;
+        else if (verbInfo[0] === "trabajar") verbIndex = 5;
+
+        const conjugatedVerb = subjectInfo[verbIndex];
+        const subject = subjectInfo[0];
+        const complement = verbInfo[1];
+        const englishTranslation = verbInfo[2];
+
+        regPreview.innerHTML = `${getTranslationTooltip(subject, subject)} ${getTranslationTooltip(conjugatedVerb, verbInfo[0])} ${getTranslationTooltip(complement, englishTranslation)}.`;
+    };
+
+    if (regSubject && regVerbRoot) {
+        [regSubject, regVerbRoot].forEach(el => el.addEventListener("input", updateRegVerbText));
+        btnSpeakRegVerb.addEventListener("click", () => speakWord(regPreview.textContent));
+        updateRegVerbText();
+    }
+
+    // Sandbox 5: Verbos Reflexivos
     const reflexPronoun = document.getElementById("reflex-pronoun");
     const reflexVerb = document.getElementById("reflex-verb");
     const reflexPreview = document.getElementById("reflex-preview-text");
     const btnSpeakReflex = document.getElementById("btn-speak-reflex");
 
     const updateReflexText = () => {
+        if (!reflexPronoun || !reflexVerb || !reflexPreview) return;
         const pronounInfo = reflexPronoun.value.split("|"); // [pronoun, conjug1, conjug2, conjug3]
         const verbVal = reflexVerb.value; // "levantar" or "duchar" or "cepillo"
         
         let verbConjugated = "";
         let ending = " por la mañana.";
 
-        // Choose which index of conjugated verb based on the selection
         let verbIdx = 1;
         if (verbVal === "duchar") verbIdx = 2;
-        else if (verbVal === "cepillo") verbIdx = 3;
+        else if (verbVal === "cepillo" || verbVal === "cepillar") verbIdx = 3;
 
         verbConjugated = pronounInfo[verbIdx];
 
         let subjectStr = "";
+        let pronounTransl = "";
         switch (pronounInfo[0]) {
-            case "me": subjectStr = "Yo me"; break;
-            case "te": subjectStr = "Tú te"; break;
+            case "me": subjectStr = "Yo me"; pronounTransl = "I ... myself"; break;
+            case "te": subjectStr = "Tú te"; pronounTransl = "You ... yourself"; break;
             case "se": 
-                subjectStr = pronounInfo[1] === "levanta" ? "Él/Ella se" : "Ellos/Ellas se"; 
+                if (pronounInfo[1] === "levanta") {
+                     subjectStr = "Él/Ella se"; 
+                     pronounTransl = "He/She ... him/herself";
+                } else {
+                     subjectStr = "Ellos/Ellas se";
+                     pronounTransl = "They ... themselves";
+                }
                 break;
-            case "nos": subjectStr = "Nosotros nos"; break;
+            case "nos": subjectStr = "Nosotros nos"; pronounTransl = "We ... ourselves"; break;
         }
 
-        // special case for brushing teeth
-        if (verbVal === "cepillo") {
+        if (verbVal === "cepillo" || verbVal === "cepillar") {
             ending = " los dientes hoy.";
         }
 
-        reflexPreview.innerText = `${subjectStr} ${verbConjugated}${ending}`;
+        const verbBase = verbVal === "levantar" ? "get up" : (verbVal === "duchar" ? "shower" : "brush teeth");
+        reflexPreview.innerHTML = `${getTranslationTooltip(subjectStr.split(" ")[0], subjectStr.split(" ")[0])} ${getTranslationTooltip(subjectStr.split(" ")[1], pronounTransl)} ${getTranslationTooltip(verbConjugated, verbBase)}${ending.includes("dientes") ? ` ${getTranslationTooltip("los dientes", "the teeth")} ${getTranslationTooltip("hoy", "today")}` : ` ${getTranslationTooltip("por la mañana", "in the morning")}`}.`;
     };
 
     if (reflexPronoun && reflexVerb) {
         [reflexPronoun, reflexVerb].forEach(el => el.addEventListener("input", updateReflexText));
-        btnSpeakReflex.addEventListener("click", () => speakWord(reflexPreview.innerText));
+        btnSpeakReflex.addEventListener("click", () => speakWord(reflexPreview.textContent));
         updateReflexText();
     }
 
-    // Sandbox 5: Gustar Preferences
+    // Sandbox 6: Gustar Preferences
     const gustarWho = document.getElementById("gustar-who");
     const gustarWhat = document.getElementById("gustar-what");
     const gustarPreview = document.getElementById("gustar-preview-text");
     const btnSpeakGustar = document.getElementById("btn-speak-gustar");
 
     const updateGustarText = () => {
+        if (!gustarWho || !gustarWhat || !gustarPreview) return;
         const who = gustarWho.value.split("|")[0]; // "Me gusta"
+        const whoTransl = gustarWho.value.split("|")[1] || "I like";
         const what = gustarWhat.value.split("|")[0]; // "mucho la música española"
+        const whatTransl = gustarWhat.value.split("|")[1] || "Spanish music";
 
-        gustarPreview.innerText = `${who} ${what}.`;
+        gustarPreview.innerHTML = `${getTranslationTooltip(who, whoTransl)} ${getTranslationTooltip(what, whatTransl)}.`;
     };
 
     if (gustarWho && gustarWhat) {
         [gustarWho, gustarWhat].forEach(el => el.addEventListener("input", updateGustarText));
-        btnSpeakGustar.addEventListener("click", () => speakWord(gustarPreview.innerText));
+        btnSpeakGustar.addEventListener("click", () => speakWord(gustarPreview.textContent));
         updateGustarText();
     }
 
-    // Sandbox 6: Routine Builder
+    // Sandbox 7: Routine Builder
     const selMorning = document.getElementById("sel-morning");
     const selAfternoon = document.getElementById("sel-afternoon");
     const selNight = document.getElementById("sel-night");
@@ -482,16 +658,20 @@ function initSandboxes() {
     const btnSpeakRoutine = document.getElementById("btn-speak-routine");
 
     const updateRoutineText = () => {
+        if (!selMorning || !selAfternoon || !selNight || !routinePreview) return;
         const morning = selMorning.value.split("|")[0];
+        const morningTransl = selMorning.value.split("|")[1] || "morning routine";
         const afternoon = selAfternoon.value.split("|")[0];
+        const afternoonTransl = selAfternoon.value.split("|")[1] || "afternoon routine";
         const night = selNight.value.split("|")[0];
+        const nightTransl = selNight.value.split("|")[1] || "night routine";
 
-        routinePreview.innerText = `Por la mañana ${morning}. Por la tarde ${afternoon}. Por la noche ${night}.`;
+        routinePreview.innerHTML = `${getTranslationTooltip("Por la mañana", "In the morning")} ${getTranslationTooltip(morning, morningTransl)}. ${getTranslationTooltip("Por la tarde", "In the afternoon")} ${getTranslationTooltip(afternoon, afternoonTransl)}. ${getTranslationTooltip("Por la noche", "At night")} ${getTranslationTooltip(night, nightTransl)}.`;
     };
 
     if (selMorning && selAfternoon && selNight) {
         [selMorning, selAfternoon, selNight].forEach(el => el.addEventListener("input", updateRoutineText));
-        btnSpeakRoutine.addEventListener("click", () => speakWord(routinePreview.innerText));
+        btnSpeakRoutine.addEventListener("click", () => speakWord(routinePreview.textContent));
         updateRoutineText();
     }
 }
@@ -1028,12 +1208,46 @@ function initQuizzes() {
                             updateUI();
                         } else {
                             summary.querySelector("h4").innerText = "Sigue practicando... ✍️";
-                            summary.querySelector("p").innerHTML += "<br><span style='color: var(--accent-red);'>Necesitas al menos 70% para aprobar.</span>";
+                            summary.querySelector("p").innerHTML = `Respondiste correctamente ${score} de ${cards.length} preguntas (${percent}%).<br><span style='color: var(--accent-red); font-weight: bold;'>Necesitas al menos 70% para aprobar.</span>`;
                             
-                            // Replace continue button with a retry button
-                            const cBtn = summary.querySelector(".primary-btn");
-                            cBtn.innerText = "Reintentar Cuestionario";
-                            cBtn.onclick = () => resetModuleQuiz(m);
+                            // Inject custom buttons inside the summary
+                            let buttonsContainer = summary.querySelector(".quiz-btn-container");
+                            if (!buttonsContainer) {
+                                buttonsContainer = document.createElement("div");
+                                buttonsContainer.className = "quiz-btn-container";
+                                buttonsContainer.style.display = "flex";
+                                buttonsContainer.style.gap = "10px";
+                                buttonsContainer.style.justifyContent = "center";
+                                buttonsContainer.style.marginTop = "15px";
+                                summary.appendChild(buttonsContainer);
+                            }
+                            
+                            // Hide original button
+                            const origBtn = summary.querySelector(".primary-btn:not([id^='btn-retry-'])");
+                            if (origBtn) origBtn.style.display = "none";
+                            
+                            buttonsContainer.innerHTML = `
+                                <button class="primary-btn" id="btn-retry-quiz-${m}">Reintentar Cuestionario</button>
+                                <button class="secondary-btn" id="btn-review-module-${m}">📚 Repasar Lección</button>
+                            `;
+                            
+                            buttonsContainer.querySelector(`#btn-retry-quiz-${m}`).addEventListener("click", () => {
+                                buttonsContainer.remove();
+                                if (origBtn) origBtn.style.display = "inline-block";
+                                resetModuleQuiz(m);
+                            });
+
+                            buttonsContainer.querySelector(`#btn-review-module-${m}`).addEventListener("click", () => {
+                                buttonsContainer.remove();
+                                if (origBtn) origBtn.style.display = "inline-block";
+                                resetModuleQuiz(m);
+                                
+                                // Redirect to first theory tab of the module
+                                const subtabKeys = ["saludos-vocab", "familia-arbol", "casa-vocab", "rutina-verbos", "gustos-vocab"];
+                                const targetSubtab = subtabKeys[m - 1];
+                                const subtabBtn = document.querySelector(`.subnav-btn[data-subtab="${targetSubtab}"]`);
+                                if (subtabBtn) subtabBtn.click();
+                            });
                         }
                     }
                 }, 2000);
@@ -1081,6 +1295,10 @@ function resetModuleQuiz(moduleNum) {
     const options = quizContainer.querySelectorAll(".quiz-opt");
     const statusDots = quizContainer.querySelectorAll(".quiz-status-dots .dot");
     const summary = quizContainer.querySelector(".quiz-result-summary");
+    const buttonsContainer = summary.querySelector(".quiz-btn-container");
+    if (buttonsContainer) buttonsContainer.remove();
+    const origBtn = summary.querySelector(".primary-btn");
+    if (origBtn) origBtn.style.display = "inline-block";
 
     summary.style.display = "none";
     quizContainer.querySelector(".quiz-status-dots").style.display = "flex";
@@ -1726,4 +1944,108 @@ function showPracticeResults() {
             if (dashboardTab) dashboardTab.click();
         });
     }
+}
+
+// --- Module 2: Como Se Dice Game Logic ---
+function checkComoSeDice(btn, isCorrect, feedbackMsg) {
+    const feedback = document.getElementById("comosedice-feedback");
+    const nextBtn = document.getElementById("comosedice-next-btn");
+    const container = document.getElementById("comosedice-game-container");
+    const activeCard = container.querySelector(".comosedice-card.active-card");
+
+    if (!feedback || !nextBtn || !container || !activeCard) return;
+
+    // Disable options in this card
+    activeCard.querySelectorAll(".cs-opt").forEach(opt => {
+        opt.disabled = true;
+        if (opt.getAttribute("data-correct") === "true") {
+            opt.style.borderColor = "var(--accent-teal)";
+            opt.style.color = "var(--accent-teal)";
+            opt.style.background = "rgba(20, 184, 166, 0.1)";
+        } else {
+            opt.style.opacity = "0.5";
+        }
+    });
+
+    if (isCorrect) {
+        feedback.innerHTML = `✓ ${feedbackMsg}`;
+        feedback.className = "feedback-msg correct";
+        speakWord(btn.innerText.replace("🔊", "").trim());
+        activeCard.style.borderColor = "var(--accent-teal)";
+    } else {
+        feedback.innerHTML = `❌ ${feedbackMsg}`;
+        feedback.className = "feedback-msg incorrect";
+        speakWord("Incorrecto.");
+        btn.style.borderColor = "var(--accent-red)";
+        btn.style.color = "var(--accent-red)";
+        btn.style.background = "rgba(244, 63, 94, 0.1)";
+        btn.style.opacity = "1";
+    }
+
+    nextBtn.style.display = "block";
+
+    // Hook up next button
+    nextBtn.onclick = () => {
+        feedback.innerHTML = "";
+        feedback.className = "feedback-msg";
+        nextBtn.style.display = "none";
+        
+        // Hide current card, show next card
+        const currentId = activeCard.id; // e.g. cs-q1
+        const currentNum = parseInt(currentId.replace("cs-q", ""));
+        const nextNum = currentNum + 1;
+        const nextCard = document.getElementById(`cs-q${nextNum}`);
+
+        if (nextCard) {
+            activeCard.classList.remove("active-card");
+            activeCard.style.display = "none";
+            nextCard.classList.add("active-card");
+            nextCard.style.display = "block";
+        } else {
+            // Game complete!
+            container.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 15px; text-align: center;">🎉</div>
+                <h4 style="color: var(--accent-teal); font-size: 1.4rem; margin-bottom: 10px; text-align: center;">¡Práctica Completada!</h4>
+                <p style="margin-bottom: 20px; color: var(--text-secondary); text-align: center;">Has traducido todas las frases del ejercicio con éxito.</p>
+                <button class="primary-btn" id="btn-restart-comosedice" style="margin: 0 auto; display: block;">Volver a Jugar</button>
+            `;
+            speakWord("¡Felicidades! Has completado el ejercicio.");
+            
+            container.querySelector("#btn-restart-comosedice").addEventListener("click", () => {
+                // Reset the container HTML
+                container.innerHTML = `
+                    <!-- Question 1 -->
+                    <div class="comosedice-card active-card" id="cs-q1" style="margin-bottom: 25px;">
+                        <h4>Traduce: "My grandmother is very kind."</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <button class="option-btn cs-opt" data-correct="false" onclick="checkComoSeDice(this, false, '¡Cuidado! Abuelo es masculino. Debes usar abuela.')">Mi abuelo es muy amable.</button>
+                            <button class="option-btn cs-opt" data-correct="true" onclick="checkComoSeDice(this, true, '¡Excelente! Abuela y amable concuerdan correctamente.')">Mi abuela es muy amable. 🔊</button>
+                            <button class="option-btn cs-opt" data-correct="false" onclick="checkComoSeDice(this, false, '¡Incorrecto! Abuela es singular y no concuerda con son.')">Mis abuela son amable.</button>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="comosedice-card" id="cs-q2" style="margin-bottom: 25px; display: none;">
+                        <h4>Traduce: "He has two brothers."</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <button class="option-btn cs-opt" data-correct="true" onclick="checkComoSeDice(this, true, '¡Excelente! Tener se usa para posesión de familia.')">Él tiene dos hermanos. 🔊</button>
+                            <button class="option-btn cs-opt" data-correct="false" onclick="checkComoSeDice(this, false, '¡Incorrecto! Son es del verbo Ser, no indica posesión.')">Él son dos hermanos.</button>
+                            <button class="option-btn cs-opt" data-correct="false" onclick="checkComoSeDice(this, false, '¡Incorrecto! Es es del verbo Ser, no indica posesión.')">Él es dos hermanos.</button>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="comosedice-card" id="cs-q3" style="margin-bottom: 25px; display: none;">
+                        <h4>Traduce: "This is my sister."</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <button class="option-btn cs-opt" data-correct="false" onclick="checkComoSeDice(this, false, '¡Cuidado! Este es masculino, pero hermana es femenino.')">Este es mi hermana.</button>
+                            <button class="option-btn cs-opt" data-correct="false" onclick="checkComoSeDice(this, false, '¡Cuidado! Hermano es masculino, pero nos referimos a mi hermana.')">Esta es mi hermano.</button>
+                            <button class="option-btn cs-opt" data-correct="true" onclick="checkComoSeDice(this, true, '¡Excelente! Esta concuerda con hermana.')">Esta es mi hermana. 🔊</button>
+                        </div>
+                    </div>
+                `;
+                nextBtn.style.display = "none";
+            });
+        }
+    };
 }

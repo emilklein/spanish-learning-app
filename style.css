@@ -2044,3 +2044,194 @@ code {
     gap: 4px;
     font-weight: bold;
 }
+
+/* ==========================================================================
+   ACCESSIBILITY & FLIP CARDS REDESIGN (A11Y & PEDAGOGICAL OPTIMIZATIONS)
+   ========================================================================== */
+
+/* 1. Translation Tooltips */
+.vocab-tooltip {
+    position: relative;
+    border-bottom: 1px dashed var(--accent-orange);
+    cursor: help;
+    display: inline-block;
+}
+
+.vocab-tooltip::after {
+    content: attr(data-translate);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a;
+    color: #cbd5e1;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.vocab-tooltip:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+/* 2. Daltonism-Friendly Shape Cues */
+.quiz-opt.correct-choice::after {
+    content: " ✓ (Correcto)";
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.quiz-opt.wrong-choice::after {
+    content: " ✗ (Incorrecto)";
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+/* 3. Contrast improvements for Orange and Red Text on dark background */
+.accent-orange-text {
+    color: #ff914d !important;
+}
+
+.accent-red-text {
+    color: #ff5e7e !important;
+}
+
+.warning-banner {
+    background: rgba(234, 179, 8, 0.1);
+    border-left: 4px solid var(--accent-gold);
+    color: var(--accent-gold);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 0.88rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 4. Flip Cards Component for Vocab (Módulo 3) */
+.flip-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.flip-card-wrapper {
+    height: 200px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card-wrapper.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-premium);
+}
+
+.flip-card-front {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.flip-card-front .emoji {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.flip-card-front .spanish-word {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+.flip-card-front .speak-btn-card {
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--accent-orange);
+    cursor: pointer;
+}
+
+.flip-card-back {
+    background-color: var(--bg-card-hover);
+    color: var(--text-primary);
+    transform: rotateY(180deg);
+    text-align: center;
+}
+
+.flip-card-back .english-word {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+}
+
+.flip-card-back .example-sentence {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Room filter buttons style */
+.room-filter-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.room-filter-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition-smooth);
+}
+
+.room-filter-btn.active, .room-filter-btn:hover {
+    background: var(--accent-teal);
+    border-color: var(--accent-teal);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.3);
+}
