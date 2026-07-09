@@ -2276,3 +2276,245 @@ code {
     opacity: 1;
     transform: translateX(-50%) translateY(-2px);
 }
+
+/* ==========================================================================
+   6. Lectura Pane Styles
+   ========================================================================== */
+.lectura-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.lectura-header-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 16px 24px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-premium);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.lectura-header-meta h3 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--accent-orange);
+    margin: 0;
+}
+
+.badge-nivel {
+    background: rgba(20, 184, 166, 0.15);
+    color: var(--accent-teal);
+    border: 1px solid var(--accent-teal);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.lectura-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.lectura-texto-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow-premium);
+}
+
+.card-header-icon {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.lectura-texto-body {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text-primary);
+    text-align: justify;
+}
+
+.lectura-texto-body p {
+    margin-bottom: 24px;
+    text-indent: 20px;
+    position: relative;
+    padding-right: 35px;
+    transition: var(--transition-smooth);
+}
+
+.lectura-texto-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* Speaker icon for each paragraph */
+.paragraph-speak-btn {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: var(--transition-smooth);
+}
+
+.paragraph-speak-btn:hover {
+    background: var(--accent-orange);
+    color: #ffffff;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+}
+
+.lectura-interacciones {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    box-shadow: var(--shadow-premium);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 400px;
+}
+
+/* Vocab List Style */
+.vocab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.vocab-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.vocab-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+}
+
+.vocab-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: 10px;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.vocab-item-row:hover {
+    border-color: var(--accent-teal);
+    background: rgba(20, 184, 166, 0.05);
+    transform: translateX(4px);
+}
+
+.vocab-word-side {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vocab-word-side strong {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.vocab-word-side .speaker-icon {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    transition: var(--transition-smooth);
+}
+
+.vocab-item-row:hover .speaker-icon {
+    color: var(--accent-teal);
+}
+
+.vocab-trans-side {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Quiz styling in Reading */
+.quiz-feedback-box {
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+}
+
+.quiz-feedback-box.correct {
+    background: rgba(20, 184, 166, 0.15);
+    border: 1px solid var(--accent-teal);
+    color: var(--accent-teal);
+}
+
+.quiz-feedback-box.incorrect {
+    background: rgba(253, 224, 71, 0.15);
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+}
+
+/* Media Query for mobile responsive */
+@media (max-width: 900px) {
+    .lectura-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.quiz-questions-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.quiz-questions-list-wrapper::-webkit-scrollbar {
+    width: 4px;
+}
+
+.quiz-questions-list-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+}

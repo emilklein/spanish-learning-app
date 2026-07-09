@@ -10,7 +10,8 @@ const state = {
         familia: 0,
         casa: 0,
         rutina: 0,
-        gustos: 0
+        gustos: 0,
+        lectura: 0
     },
     // Global setting for text-to-speech auto playback
     ttsActive: true,
@@ -225,6 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initChatbot();
     initModal();
     initInfinitePractice();
+    initLectura();
     updateUI();
     setupDictionaryTranslator();
 });
@@ -464,11 +466,12 @@ function initTabNavigation() {
 }
 
 function isModuleLocked(moduleName) {
-    if (moduleName === "dashboard" || moduleName === "saludos" || moduleName === "practica") return false;
+    if (moduleName === "dashboard" || moduleName === "saludos" || moduleName === "practica" || moduleName === "lectura") return false;
     if (moduleName === "familia") return state.progress.saludos < 100;
     if (moduleName === "casa") return state.progress.familia < 100;
     if (moduleName === "rutina") return state.progress.casa < 100;
     if (moduleName === "gustos") return state.progress.rutina < 100;
+    if (moduleName === "lectura") return state.progress.gustos < 100;
     return true;
 }
 
@@ -1410,7 +1413,7 @@ function initModal() {
     if (restartBtn) {
         restartBtn.addEventListener("click", () => {
             if (confirm("¿Estás seguro/a de que quieres reiniciar todo tu progreso? Esto borrará tu avance actual.")) {
-                state.progress = { saludos: 0, familia: 0, casa: 0, rutina: 0, gustos: 0 };
+                state.progress = { saludos: 0, familia: 0, casa: 0, rutina: 0, gustos: 0, lectura: 0 };
                 saveProgress();
                 modal.classList.remove("active");
                 
@@ -1446,7 +1449,7 @@ function loadProgress() {
 
 // --- UI Sync & Progress Bar Updating ---
 function updateUI() {
-    const modKeys = ["saludos", "familia", "casa", "rutina", "gustos"];
+    const modKeys = ["saludos", "familia", "casa", "rutina", "gustos", "lectura"];
     let totalScore = 0;
     
     modKeys.forEach((key, idx) => {
@@ -2335,7 +2338,38 @@ const translationDictionary = {
     "hermanas": "sisters",
     "padres": "parents",
     "tíos": "uncles / aunts & uncles",
-    "primos": "cousins"
+    "primos": "cousins",
+    "almacenar": "to store",
+    "alquilar": "to rent",
+    "ascensor": "lift / elevator",
+    "bañera": "bathtub",
+    "cuál": "which one",
+    "dueño": "owner (masc)",
+    "dueña": "owner (fem)",
+    "edificio": "building",
+    "escaleras": "stairs",
+    "esquina": "corner",
+    "estantería": "bookshelf",
+    "estanterías": "bookshelves",
+    "estrecho": "narrow (masc)",
+    "estrecha": "narrow (fem)",
+    "firmar": "to sign",
+    "habitación": "room / bedroom",
+    "habitaciones": "rooms / bedrooms",
+    "ilusión": "excitement / anticipation",
+    "inmobiliaria": "estate agency",
+    "mascota": "pet",
+    "mudanza": "house move",
+    "mudarse": "to move house",
+    "muralla": "wall (outside)",
+    "pared": "wall (inside)",
+    "pareja": "couple / pair",
+    "planta": "floor / plant",
+    "subir": "to go up / to climb",
+    "tendero": "clothes airer",
+    "ubicación": "location",
+    "último": "last (masc)",
+    "última": "last (fem)"
 };
 
 function setupDictionaryTranslator() {
@@ -2391,5 +2425,381 @@ function wrapTextNodes(node) {
         // Recursively wrap children, skipping existing spans, links, and buttons
         const children = Array.from(node.childNodes);
         children.forEach(child => wrapTextNodes(child));
+    }
+}
+
+// --- Interactive Reading module ---
+function initLectura() {
+    // Fallback data in case fetch fails (CORS with file://)
+    const fallbackLecturaData = {
+      "id": "unidad-buscando-casa",
+      "titulo": "Buscando una casa",
+      "nivel": "Principiante / Intermedio Bajo",
+      "texto": [
+        "Dos meses después de su viaje a Londres, María y Antonio deciden mudarse a la ciudad de Ávila y alquilar un apartamento juntos.",
+        "Visitan la ciudad durante tres días para ver algunos apartamentos y decidir cuál quieren alquilar. Primero, van a ver un apartamento que está en la cuarta planta de un edificio. Su primera impresión es que el interior es muy pequeño. Tiene dos habitaciones dobles, un baño con ducha (pero sin bañera), una cocina muy estrecha, un salón y una terraza pequeña con suficiente espacio para un tendero de ropa y una silla. A Antonio le gusta la ubicación del apartamento porque está muy cerca de la farmacia donde trabajará. Sin embargo, el edificio no tiene ascensor. Los dos deciden que hay demasiadas escaleras para subir cada día y que el apartamento es demasiado pequeño para ellos.",
+        "Esa tarde, visitan un segundo apartamento que está más lejos del trabajo de Antonio. Las habitaciones son pequeñas pero el salón es muy grande y tiene tres sofás, unas estanterías y una televisión grande en la pared. La cocina es rectangular y tiene una mesa de comedor en la esquina. A María le gusta mucho este piso porque también hay una piscina comunal. Sin embargo, Antonio piensa que está demasiado lejos de la farmacia y no quiere tener que conducir al trabajo cada día. Además, el apartamento es muy caro porque cuesta setecientos cincuenta euros por mes.",
+        "El segundo día del viaje, van a visitar una casa cerca de la famosa muralla medieval de Ávila. Tiene dos habitaciones dobles, una habitación pequeña convertida en oficina, un salón, una cocina y un comedor en plano abierto y una terraza detrás de la casa. Además, tiene un garaje con espacio para aparcar un coche y para almacenar algunas cosas. En total, cuesta seiscientos euros por mes así que es más barato que el último apartamento que visitaron. A María y a Antonio les encanta la casa, ya que es perfecta para ellos. También está un poco lejos de la farmacia, pero Antonio decide que conducirá a su trabajo cada día, ya que hay un garaje para aparcar su coche en la casa. Además, María podrá tener una mascota y está muy contenta porque ella quiere adoptar un gatito o dos.",
+        "El siguiente día, van a la oficina de la inmobiliaria para firmar el contrato de alquiler. Allí conocen a los dueños, una pareja muy amable que tienen unos sesenta años. Deciden mudarse a Ávila el seis de noviembre de ese año.",
+        "Los dos amigos vuelven a su pueblo, Los Girasoles, con mucha ilusión sobre su nueva casa y la mudanza a Ávila dentro de unos meses."
+      ],
+      "vocabulario": [
+        {"palabra": "Almacenar", "traduccion": "to store"},
+        {"palabra": "Alquilar", "traduccion": "to rent"},
+        {"palabra": "Ascensor (m.)", "traduccion": "lift, elevator"},
+        {"palabra": "Bañera (f.)", "traduccion": "bathtub"},
+        {"palabra": "Cuál", "traduccion": "which one"},
+        {"palabra": "Dueño/a", "traduccion": "owner"},
+        {"palabra": "Edificio (m.)", "traduccion": "building"},
+        {"palabra": "Escaleras (f.)", "traduccion": "stairs"},
+        {"palabra": "Esquina (f.)", "traduccion": "corner"},
+        {"palabra": "Estantería (f.)", "traduccion": "bookshelf"},
+        {"palabra": "Estrecho/a", "traduccion": "narrow"},
+        {"palabra": "Firmar", "traduccion": "to sign"},
+        {"palabra": "Habitación (f.)", "traduccion": "room, bedroom"},
+        {"palabra": "Ilusión (f.)", "traduccion": "excitement / anticipation"},
+        {"palabra": "Inmobiliaria (f.)", "traduccion": "estate agency"},
+        {"palabra": "Mascota (f.)", "traduccion": "pet"},
+        {"palabra": "Mudanza (f.)", "traduccion": "house move"},
+        {"palabra": "Mudarse", "traduccion": "to move house"},
+        {"palabra": "Muralla (f.)", "traduccion": "wall (outside)"},
+        {"palabra": "Pared (f.)", "traduccion": "wall (inside)"},
+        {"palabra": "Pareja (f.)", "traduccion": "couple, pair"},
+        {"palabra": "Planta (f.)", "traduccion": "floor, plant"},
+        {"palabra": "Sin embargo", "traduccion": "however"},
+        {"palabra": "Subir", "traduccion": "to go up, to climb"},
+        {"palabra": "Tendero de ropa", "traduccion": "clothes airer"},
+        {"palabra": "Ubicación (f.)", "traduccion": "location"},
+        {"palabra": "Último/a", "traduccion": "last"}
+      ],
+      "ejercicios": [
+        {
+          "pregunta": "¿Por qué deciden María y Antonio no alquilar el primer apartamento?",
+          "opciones": [
+            "Porque está demasiado lejos de la farmacia.",
+            "Porque es muy caro y cuesta setecientos cincuenta euros.",
+            "Porque no tiene ascensor, el interior es pequeño y tiene muchas escaleras."
+          ],
+          "respuesta_correcta": 2
+        },
+        {
+          "pregunta": "¿Qué ventaja principal tiene el segundo apartamento para María?",
+          "opciones": [
+            "Tiene una piscina comunal.",
+            "Está muy cerca de la farmacia de Antonio.",
+            "Tiene un garaje privado para el coche."
+          ],
+          "respuesta_correcta": 0
+        },
+        {
+          "pregunta": "¿Cuánto cuesta la casa que deciden alquilar cerca de la muralla?",
+          "opciones": [
+            "750 euros al mes.",
+            "600 euros al mes.",
+            "500 euros al mes."
+          ],
+          "respuesta_correcta": 1
+        },
+        {
+          "pregunta": "¿Por qué está contenta María con la casa de la muralla?",
+          "opciones": [
+            "Porque tiene tres sofás muy grandes en el salón.",
+            "Porque está justo al lado de la farmacia.",
+            "Porque podrá tener una mascota y adoptar un gatito o dos."
+          ],
+          "respuesta_correcta": 2
+        },
+        {
+          "pregunta": "¿Cuándo tienen planeado mudarse a la ciudad de Ávila?",
+          "opciones": [
+            "El seis de noviembre.",
+            "El tres de diciembre.",
+            "En dos meses exactamente de viaje a Londres."
+          ],
+          "respuesta_correcta": 0
+        }
+      ]
+    };
+
+    fetch("src/data/lectura-casa.json")
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
+        .then(data => {
+            setupLecturaContent(data);
+        })
+        .catch(err => {
+            console.warn("CORS/Fetch error when reading json. Using fallback local data.", err);
+            setupLecturaContent(fallbackLecturaData);
+        });
+}
+
+function setupLecturaContent(data) {
+    state.lecturaData = data;
+    state.lecturaCurrentQIndex = 0;
+    state.lecturaCorrectCount = 0;
+
+    // Set UI Meta
+    const tituloEl = document.getElementById("lectura-titulo");
+    const nivelEl = document.getElementById("lectura-nivel");
+    if (tituloEl) tituloEl.textContent = data.titulo;
+    if (nivelEl) nivelEl.textContent = data.nivel;
+
+    // Render Text (with tooltip logic)
+    const textoBodyEl = document.getElementById("lectura-texto-content");
+    if (textoBodyEl) {
+        textoBodyEl.innerHTML = "";
+        
+        data.texto.forEach((parrafo) => {
+            const p = document.createElement("p");
+            p.className = "lectura-paragraph";
+            
+            p.innerHTML = annotateVocabulary(parrafo, data.vocabulario);
+
+            // Add speaker button for this paragraph
+            const speakBtn = document.createElement("button");
+            speakBtn.className = "paragraph-speak-btn";
+            speakBtn.innerHTML = "🔊";
+            speakBtn.title = "Pronunciar párrafo completo";
+            speakBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                speakWord(p.textContent.replace(/🔊/g, "").trim());
+            });
+            p.appendChild(speakBtn);
+            
+            textoBodyEl.appendChild(p);
+        });
+    }
+
+    // Render Vocabulary List
+    const vocabListEl = document.getElementById("lectura-vocab-list");
+    if (vocabListEl) {
+        vocabListEl.innerHTML = "";
+        data.vocabulario.forEach(vocab => {
+            const row = document.createElement("div");
+            row.className = "vocab-item-row";
+            row.setAttribute("data-speak", vocab.palabra);
+            
+            row.innerHTML = `
+                <div class="vocab-word-side">
+                    <span class="speaker-icon">🔊</span>
+                    <strong>${vocab.palabra}</strong>
+                </div>
+                <div class="vocab-trans-side">${vocab.traduccion}</div>
+            `;
+            
+            row.addEventListener("click", () => {
+                speakWord(vocab.palabra);
+            });
+            
+            vocabListEl.appendChild(row);
+        });
+    }
+
+    // Render Exercise Questions (all at once)
+    state.lecturaAnswers = null;
+    renderLecturaQuestions();
+    
+    // Wire up restart button
+    const restartBtn = document.getElementById("btn-restart-lectura");
+    if (restartBtn) {
+        restartBtn.onclick = () => {
+            state.lecturaAnswers = Array(state.lecturaData.ejercicios.length).fill(null);
+            renderLecturaQuestions();
+        };
+    }
+}
+
+// Tokenise and wrap vocabulary words case insensitively
+function annotateVocabulary(text, vocabList) {
+    const vocabMap = {};
+    vocabList.forEach(v => {
+        const words = cleanVocabWord(v.palabra);
+        words.forEach(w => {
+            vocabMap[w] = v.traduccion;
+        });
+    });
+
+    const regex = /([a-zA-ZáéíóúüñÁÉÍÓÚÜÑíóúñ]+)/g;
+    const parts = text.split(regex);
+    
+    return parts.map(part => {
+        if (regex.test(part)) {
+            const lowerWord = part.toLowerCase();
+            if (vocabMap[lowerWord]) {
+                return `<span class="vocab-tooltip" data-translate="${vocabMap[lowerWord]}">${part}</span>`;
+            }
+            
+            let singular = lowerWord;
+            if (lowerWord.endsWith("s") && lowerWord.length > 3) {
+                singular = lowerWord.slice(0, -1);
+                if (vocabMap[singular]) {
+                    return `<span class="vocab-tooltip" data-translate="${vocabMap[singular]}">${part}</span>`;
+                }
+            }
+        }
+        return part;
+    }).join("");
+}
+
+function cleanVocabWord(word) {
+    const cleaned = [];
+    const base = word.toLowerCase().replace(/\s*\(.*\)\s*/g, "").trim();
+    if (base.includes("/")) {
+        const parts = base.split("/");
+        if (parts.length === 2 && parts[1].length === 1) {
+            const root = parts[0].slice(0, -1);
+            cleaned.push(parts[0]);
+            cleaned.push(root + parts[1]);
+        } else {
+            parts.forEach(p => cleaned.push(p.trim()));
+        }
+    } else {
+        cleaned.push(base);
+    }
+    return cleaned;
+}
+
+function renderLecturaQuestions() {
+    const data = state.lecturaData;
+    if (!data || !data.ejercicios) return;
+
+    const listEl = document.getElementById("lectura-questions-list");
+    if (!listEl) return;
+
+    listEl.innerHTML = "";
+    
+    if (!state.lecturaAnswers) {
+        state.lecturaAnswers = Array(data.ejercicios.length).fill(null);
+    }
+
+    data.ejercicios.forEach((ejercicio, qIdx) => {
+        const qCard = document.createElement("div");
+        qCard.className = "quiz-question-card active";
+        qCard.style.marginBottom = "20px";
+        qCard.style.padding = "16px";
+        qCard.style.background = "var(--bg-dark)";
+        qCard.style.border = "1px solid var(--border-color)";
+        qCard.style.borderRadius = "12px";
+
+        const qTitle = document.createElement("div");
+        qTitle.className = "question-title";
+        qTitle.style.fontSize = "1.05rem";
+        qTitle.style.marginBottom = "12px";
+        qTitle.textContent = `${qIdx + 1}. ${ejercicio.pregunta}`;
+        qCard.appendChild(qTitle);
+
+        const optionsList = document.createElement("div");
+        optionsList.className = "quiz-options-list";
+
+        ejercicio.opciones.forEach((optText, optIdx) => {
+            const btn = document.createElement("button");
+            btn.className = "quiz-opt";
+            btn.textContent = optText;
+            btn.style.padding = "10px 15px";
+            btn.style.fontSize = "0.95rem";
+
+            if (state.lecturaAnswers[qIdx] === true) {
+                btn.disabled = true;
+                if (optIdx === ejercicio.respuesta_correcta) {
+                    btn.classList.add("correct-choice");
+                }
+            } else if (state.lecturaAnswers[qIdx] === optIdx) {
+                btn.classList.add("wrong-choice");
+                btn.disabled = true;
+            }
+
+            btn.addEventListener("click", () => handleLecturaAnswer(qIdx, optIdx, btn, qCard));
+            optionsList.appendChild(btn);
+        });
+
+        qCard.appendChild(optionsList);
+
+        const feedbackBox = document.createElement("div");
+        feedbackBox.className = "quiz-feedback-box";
+        feedbackBox.style.display = "none";
+        feedbackBox.style.marginTop = "10px";
+        feedbackBox.style.padding = "8px 12px";
+        feedbackBox.style.fontSize = "0.95rem";
+        qCard.appendChild(feedbackBox);
+
+        listEl.appendChild(qCard);
+    });
+
+    updateLecturaScore();
+}
+
+function handleLecturaAnswer(qIdx, optIdx, buttonEl, qCard) {
+    const data = state.lecturaData;
+    const ejercicio = data.ejercicios[qIdx];
+    const buttons = qCard.querySelectorAll(".quiz-opt");
+    const feedbackBox = qCard.querySelector(".quiz-feedback-box");
+
+    if (optIdx === ejercicio.respuesta_correcta) {
+        state.lecturaAnswers[qIdx] = true;
+        
+        buttons.forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove("wrong-choice");
+        });
+        buttonEl.classList.add("correct-choice");
+
+        if (feedbackBox) {
+            feedbackBox.className = "quiz-feedback-box correct";
+            feedbackBox.innerHTML = "🎉 ¡Excelente! Respuesta correcta.";
+            feedbackBox.style.display = "block";
+        }
+
+        speakWord("Excelente");
+        updateLecturaScore();
+    } else {
+        state.lecturaAnswers[qIdx] = optIdx;
+        buttonEl.classList.add("wrong-choice");
+        buttonEl.disabled = true;
+
+        if (feedbackBox) {
+            feedbackBox.className = "quiz-feedback-box incorrect";
+            feedbackBox.innerHTML = "❌ Inténtalo de nuevo.";
+            feedbackBox.style.display = "block";
+        }
+
+        speakWord("Inténtalo de nuevo");
+        
+        setTimeout(() => {
+            if (state.lecturaAnswers[qIdx] !== true && feedbackBox) {
+                feedbackBox.style.display = "none";
+            }
+        }, 1500);
+    }
+}
+
+function updateLecturaScore() {
+    const data = state.lecturaData;
+    if (!data || !data.ejercicios) return;
+
+    const totalQ = data.ejercicios.length;
+    const correctCount = state.lecturaAnswers.filter(ans => ans === true).length;
+
+    const scoreInd = document.getElementById("lectura-score-indicator");
+    if (scoreInd) {
+        scoreInd.innerText = `🎯 Resueltas: ${correctCount} / ${totalQ}`;
+    }
+
+    const msg = document.getElementById("lectura-result-message");
+    if (msg) {
+        if (correctCount === totalQ) {
+            msg.innerHTML = "🎉 <strong>¡Excelente trabajo!</strong> Has respondido todas las preguntas correctamente.";
+            msg.style.color = "var(--accent-teal)";
+            
+            if (state.progress.lectura < 100) {
+                state.progress.lectura = 100;
+                saveProgress();
+                updateUI();
+            }
+        } else {
+            msg.innerHTML = `Preguntas correctas: <strong>${correctCount} de ${totalQ}</strong>. Responde todas para completar la lección.`;
+            msg.style.color = "var(--text-secondary)";
+        }
     }
 }
