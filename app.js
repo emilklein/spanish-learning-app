@@ -11,6 +11,7 @@ const state = {
         casa: 0,
         rutina: 0,
         gustos: 0,
+        preterito: 0,
         lectura: 0
     },
     // Global setting for text-to-speech auto playback
@@ -227,6 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initModal();
     initInfinitePractice();
     initLectura();
+    initPreteritoBuilder();
     updateUI();
     setupDictionaryTranslator();
 });
@@ -466,13 +468,8 @@ function initTabNavigation() {
 }
 
 function isModuleLocked(moduleName) {
-    if (moduleName === "dashboard" || moduleName === "saludos" || moduleName === "practica" || moduleName === "lectura") return false;
-    if (moduleName === "familia") return state.progress.saludos < 100;
-    if (moduleName === "casa") return state.progress.familia < 100;
-    if (moduleName === "rutina") return state.progress.casa < 100;
-    if (moduleName === "gustos") return state.progress.rutina < 100;
-    if (moduleName === "lectura") return state.progress.gustos < 100;
-    return true;
+    // All modules are unlocked to allow students to choose their path freely
+    return false;
 }
 
 // --- Flashcards ---
@@ -1193,8 +1190,8 @@ function processChatbotLogic(nextStep, userText) {
 
 // --- Quiz Engines ---
 function initQuizzes() {
-    // We have 5 modules, each has a quiz at the end of their tabs.
-    for (let m = 1; m <= 5; m++) {
+    // We have 6 modules, each has a quiz at the end of their tabs.
+    for (let m = 1; m <= 6; m++) {
         const quizContainer = document.getElementById(`quiz-module${m}`);
         if (!quizContainer) continue;
 
@@ -1273,7 +1270,7 @@ function initQuizzes() {
                         if (percent >= 70) {
                             summary.querySelector("h4").innerText = "¡Excelente trabajo! 🎉";
                             // Set progress to 100% for this module
-                            const modKeys = ["saludos", "familia", "casa", "rutina", "gustos"];
+                            const modKeys = ["saludos", "familia", "casa", "rutina", "gustos", "preterito"];
                             const currentModKey = modKeys[m - 1];
                             
                             state.progress[currentModKey] = 100;
@@ -1316,7 +1313,7 @@ function initQuizzes() {
                                 resetModuleQuiz(m);
                                 
                                 // Redirect to first theory tab of the module
-                                const subtabKeys = ["saludos-vocab", "familia-arbol", "casa-vocab", "rutina-verbos", "gustos-vocab"];
+                                const subtabKeys = ["saludos-vocab", "familia-arbol", "casa-vocab", "rutina-verbos", "gustos-vocab", "preterito-vocab"];
                                 const targetSubtab = subtabKeys[m - 1];
                                 const subtabBtn = document.querySelector(`.subnav-btn[data-subtab="${targetSubtab}"]`);
                                 if (subtabBtn) subtabBtn.click();
@@ -1331,7 +1328,7 @@ function initQuizzes() {
         const compBtn = quizContainer.querySelector("#btn-complete-m" + m);
         if (compBtn) {
             compBtn.addEventListener("click", () => {
-                const modKeys = ["saludos", "familia", "casa", "rutina", "gustos"];
+                const modKeys = ["saludos", "familia", "casa", "rutina", "gustos", "preterito"];
                 const nextModIndex = m; // equivalent to m+1 label in 0-index
                 
                 if (nextModIndex < modKeys.length) {
@@ -1344,7 +1341,7 @@ function initQuizzes() {
 
     // Set up course final button (Diploma popup)
     const btnCompleteCourse = document.getElementById("btn-complete-course");
-    const testQuizContainer = document.getElementById(`quiz-module5`);
+    const testQuizContainer = document.getElementById(`quiz-module6`);
     if (btnCompleteCourse && testQuizContainer && testQuizContainer.dataset.diplomaInitialized !== "true") {
         testQuizContainer.dataset.diplomaInitialized = "true";
         btnCompleteCourse.addEventListener("click", () => {
@@ -1413,12 +1410,12 @@ function initModal() {
     if (restartBtn) {
         restartBtn.addEventListener("click", () => {
             if (confirm("¿Estás seguro/a de que quieres reiniciar todo tu progreso? Esto borrará tu avance actual.")) {
-                state.progress = { saludos: 0, familia: 0, casa: 0, rutina: 0, gustos: 0, lectura: 0 };
+                state.progress = { saludos: 0, familia: 0, casa: 0, rutina: 0, gustos: 0, preterito: 0, lectura: 0 };
                 saveProgress();
                 modal.classList.remove("active");
                 
                 // Reset quiz views too
-                for (let i = 1; i <= 5; i++) {
+                for (let i = 1; i <= 6; i++) {
                     resetModuleQuiz(i);
                 }
                 
@@ -1440,7 +1437,8 @@ function loadProgress() {
     const saved = localStorage.getItem("hola_spanish_progress");
     if (saved) {
         try {
-            state.progress = JSON.parse(saved);
+            const parsed = JSON.parse(saved);
+            state.progress = Object.assign({}, state.progress, parsed);
         } catch(e) {
             console.error("Error loading progress", e);
         }
@@ -1449,7 +1447,7 @@ function loadProgress() {
 
 // --- UI Sync & Progress Bar Updating ---
 function updateUI() {
-    const modKeys = ["saludos", "familia", "casa", "rutina", "gustos", "lectura"];
+    const modKeys = ["saludos", "familia", "casa", "rutina", "gustos", "preterito", "lectura"];
     let totalScore = 0;
     
     modKeys.forEach((key, idx) => {
@@ -2802,4 +2800,101 @@ function updateLecturaScore() {
             msg.style.color = "var(--text-secondary)";
         }
     }
+}
+
+// --- Pretérito Indefinido Sentence Builder ---
+const preteritoConjugations = {
+    hablar: { Yo: "hablé", Tú: "hablaste", "Él/Ella": "habló", Nosotros: "hablamos", "Ellos/Ellas": "hablaron" },
+    comer: { Yo: "comí", Tú: "comiste", "Él/Ella": "comió", Nosotros: "comimos", "Ellos/Ellas": "comieron" },
+    vivir: { Yo: "viví", Tú: "viviste", "Él/Ella": "vivió", Nosotros: "vivimos", "Ellos/Ellas": "vivieron" },
+    ir: { Yo: "fui", Tú: "fuiste", "Él/Ella": "fue", Nosotros: "fuimos", "Ellos/Ellas": "fueron" },
+    hacer: { Yo: "hice", Tú: "hiciste", "Él/Ella": "hizo", Nosotros: "hicimos", "Ellos/Ellas": "hicieron" },
+    tener: { Yo: "tuve", Tú: "tuviste", "Él/Ella": "tuvo", Nosotros: "tuvimos", "Ellos/Ellas": "tuvieron" },
+    estar: { Yo: "estuve", Tú: "estuviste", "Él/Ella": "estuvo", Nosotros: "estuvimos", "Ellos/Ellas": "estuvieron" }
+};
+
+const preteritoVerbDetails = {
+    hablar: { pastEn: "spoke", baseEn: "speak" },
+    comer: { pastEn: "ate", baseEn: "eat" },
+    vivir: { pastEn: "lived", baseEn: "live" },
+    hacer: { pastEn: "did", baseEn: "do" },
+    ir: { pastEn: "went", baseEn: "go" },
+    tener: { pastEn: "had", baseEn: "have" },
+    estar: { pastEn: { Yo: "was", Tú: "were", "Él/Ella": "was", Nosotros: "were", "Ellos/Ellas": "were" }, baseEn: "be" }
+};
+
+const preteritoPronounsEn = {
+    Yo: "I",
+    Tú: "you",
+    "Él/Ella": "he/she",
+    Nosotros: "we",
+    "Ellos/Ellas": "they"
+};
+
+function initPreteritoBuilder() {
+    const sType = document.getElementById("past-sentence-type");
+    const sSubject = document.getElementById("past-subject");
+    const sVerb = document.getElementById("past-verb");
+    const previewEs = document.getElementById("past-preview-es");
+    const previewEn = document.getElementById("past-preview-en");
+    const speakBtn = document.getElementById("btn-speak-past");
+
+    if (!sType || !sSubject || !sVerb || !previewEs || !previewEn || !speakBtn) return;
+
+    const updateSentence = () => {
+        const type = sType.value;
+        const subject = sSubject.value;
+        const verbParts = sVerb.value.split("|"); // [verb, complementEs, complementEn]
+        const verb = verbParts[0];
+        const compEs = verbParts[1];
+        const compEn = verbParts[2];
+
+        const conjVerb = preteritoConjugations[verb][subject];
+        const details = preteritoVerbDetails[verb];
+        const subjectEn = preteritoPronounsEn[subject];
+
+        let sentenceEs = "";
+        let sentenceEn = "";
+
+        if (type === "affirmative") {
+            sentenceEs = `${subject} ${conjVerb} ${compEs}.`;
+            let pastVerbEn = "";
+            if (verb === "estar") {
+                pastVerbEn = details.pastEn[subject];
+            } else {
+                pastVerbEn = details.pastEn;
+            }
+            sentenceEn = `${subjectEn} ${pastVerbEn} ${compEn}.`;
+        } else if (type === "negative") {
+            sentenceEs = `${subject} no ${conjVerb} ${compEs}.`;
+            if (verb === "estar") {
+                const pastVerbEn = details.pastEn[subject];
+                sentenceEn = `${subjectEn} ${pastVerbEn} not ${compEn}.`;
+            } else {
+                sentenceEn = `${subjectEn} did not ${details.baseEn} ${compEn}.`;
+            }
+        } else if (type === "question") {
+            sentenceEs = `¿${subject} ${conjVerb} ${compEs}?`;
+            if (verb === "estar") {
+                const pastVerbEn = details.pastEn[subject];
+                const capitalizedVerb = pastVerbEn.charAt(0).toUpperCase() + pastVerbEn.slice(1);
+                sentenceEn = `${capitalizedVerb} ${subjectEn.toLowerCase()} ${compEn}?`;
+            } else {
+                sentenceEn = `Did ${subjectEn.toLowerCase()} ${details.baseEn} ${compEn}?`;
+            }
+        }
+
+        previewEs.innerText = sentenceEs;
+        previewEn.innerText = sentenceEn;
+    };
+
+    sType.addEventListener("change", updateSentence);
+    sSubject.addEventListener("change", updateSentence);
+    sVerb.addEventListener("change", updateSentence);
+
+    speakBtn.addEventListener("click", () => {
+        speakWord(previewEs.innerText);
+    });
+
+    updateSentence();
 }

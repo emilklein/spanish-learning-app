@@ -74,13 +74,17 @@
                 <span class="tab-icon">❤️</span>
                 <span class="tab-label">5. Gustos y Más</span>
             </button>
+            <button class="nav-tab" data-tab="preterito" id="tab-preterito">
+                <span class="tab-icon">⏳</span>
+                <span class="tab-label">6. El Pasado</span>
+            </button>
             <button class="nav-tab" data-tab="practica" id="tab-practica">
                 <span class="tab-icon">🏋️‍♂️</span>
                 <span class="tab-label">Práctica</span>
             </button>
             <button class="nav-tab" data-tab="lectura" id="tab-lectura">
                 <span class="tab-icon">📖</span>
-                <span class="tab-label">Lectura</span>
+                <span class="tab-label">7. Lectura</span>
             </button>
         </nav>
 
@@ -126,72 +130,86 @@
                     </div>
 
                     <!-- Mod 2 Card -->
-                    <div class="module-card locked" data-module="familia" id="mod-card-familia">
+                    <div class="module-card" data-module="familia" id="mod-card-familia">
                         <div class="module-badge">Lección 2</div>
                         <h4>La Familia y Amigos</h4>
                         <p>Aprende el árbol genealógico, a describir a tus seres queridos y presentarlos formal e informalmente en español.</p>
                         <div class="module-footer">
                             <div class="module-progress">
-                                <span class="status-label" id="status-label-familia">Bloqueado 🔒</span>
+                                <span class="status-label" id="status-label-familia">Pendiente</span>
                                 <div class="mini-bar"><div class="fill" id="fill-familia" style="width: 0%;"></div></div>
                             </div>
-                            <button class="start-btn" id="btn-start-familia" disabled onclick="document.getElementById('tab-familia').click()">Bloqueado</button>
+                            <button class="start-btn" id="btn-start-familia" onclick="document.getElementById('tab-familia').click()">Entrar</button>
                         </div>
                     </div>
 
                     <!-- Mod 3 Card -->
-                    <div class="module-card locked" data-module="casa" id="mod-card-casa">
+                    <div class="module-card" data-module="casa" id="mod-card-casa">
                         <div class="module-badge">Lección 3</div>
                         <h4>La Casa y Muebles</h4>
                         <p>Describe tu casa y ubica los muebles de forma interactiva.</p>
                         <div class="module-footer">
                             <div class="module-progress">
-                                <span class="status-label" id="status-label-casa">Bloqueado 🔒</span>
+                                <span class="status-label" id="status-label-casa">Pendiente</span>
                                 <div class="mini-bar"><div class="fill" id="fill-casa" style="width: 0%;"></div></div>
                             </div>
-                            <button class="start-btn" id="btn-start-casa" disabled onclick="document.getElementById('tab-casa').click()">Bloqueado</button>
+                            <button class="start-btn" id="btn-start-casa" onclick="document.getElementById('tab-casa').click()">Entrar</button>
                         </div>
                     </div>
 
                     <!-- Mod 4 Card -->
-                    <div class="module-card locked" data-module="rutina" id="mod-card-rutina">
+                    <div class="module-card" data-module="rutina" id="mod-card-rutina">
                         <div class="module-badge">Lección 4</div>
                         <h4>Verbos y Rutinas Simples</h4>
                         <p>Aprende las conjugaciones regulares en presente de los verbos -ar, -er, -ir y describe tus actividades cotidianas sin complicaciones.</p>
                         <div class="module-footer">
                             <div class="module-progress">
-                                <span class="status-label" id="status-label-rutina">Bloqueado 🔒</span>
+                                <span class="status-label" id="status-label-rutina">Pendiente</span>
                                 <div class="mini-bar"><div class="fill" id="fill-rutina" style="width: 0%;"></div></div>
                             </div>
-                            <button class="start-btn" id="btn-start-rutina" disabled onclick="document.getElementById('tab-rutina').click()">Bloqueado</button>
+                            <button class="start-btn" id="btn-start-rutina" onclick="document.getElementById('tab-rutina').click()">Entrar</button>
                         </div>
                     </div>
 
                     <!-- Mod 5 Card -->
-                    <div class="module-card locked" data-module="gustos" id="mod-card-gustos">
+                    <div class="module-card" data-module="gustos" id="mod-card-gustos">
                         <div class="module-badge">Lección 5</div>
                         <h4>Gustos y Verbos Reflexivos</h4>
                         <p>Aprende a expresar lo que te gusta, domina los verbos reflexivos avanzados y conversa con Sofía en un chat interactivo.</p>
                         <div class="module-footer">
                             <div class="module-progress">
-                                <span class="status-label" id="status-label-gustos">Bloqueado 🔒</span>
+                                <span class="status-label" id="status-label-gustos">Pendiente</span>
                                 <div class="mini-bar"><div class="fill" id="fill-gustos" style="width: 0%;"></div></div>
                             </div>
-                            <button class="start-btn" id="btn-start-gustos" disabled onclick="document.getElementById('tab-gustos').click()">Bloqueado</button>
+                            <button class="start-btn" id="btn-start-gustos" onclick="document.getElementById('tab-gustos').click()">Entrar</button>
                         </div>
                     </div>
 
                     <!-- Mod 6 Card -->
-                    <div class="module-card locked" data-module="lectura" id="mod-card-lectura">
-                        <div class="module-badge">Lección 6 - Lectura</div>
+                    <div class="module-card" data-module="preterito" id="mod-card-preterito">
+                        <div class="module-badge">Lección 6</div>
+                        <h4>El Pasado Simple</h4>
+                        <p>Aprende el pretérito indefinido: verbos regulares, verbos irregulares muy comunes, y aprende a hacer oraciones afirmativas, negativas y preguntas.</p>
+                        <div class="module-footer">
+                            <div class="module-progress">
+                                <span class="status-label" id="status-label-preterito">Pendiente</span>
+                                <div class="mini-bar"><div class="fill" id="fill-preterito" style="width: 0%;"></div></div>
+                            </div>
+                            <button class="start-btn" id="btn-start-preterito" onclick="document.getElementById('tab-preterito').click()">Entrar</button>
+                        </div>
+                    </div>
+
+                    <!-- Mod 7 Card -->
+                    <div class="module-card" data-module="lectura" id="mod-card-lectura">
+                        <div class="module-badge">Lección 7 - Lectura</div>
                         <h4>Buscando una casa</h4>
                         <p>Lee la historia de María y Antonio buscando su nuevo hogar en Ávila y responde a las preguntas interactivas para comprobar tu comprensión.</p>
                         <div class="module-footer">
                             <div class="module-progress">
-                                <span class="status-label" id="status-label-lectura">Bloqueado 🔒</span>
+                                <span class="status-label" id="status-label-lectura">Pendiente</span>
                                 <div class="mini-bar"><div class="fill" id="fill-lectura" style="width: 0%;"></div></div>
                             </div>
-                            <button class="start-btn" id="btn-start-lectura" disabled onclick="document.getElementById('tab-lectura').click()">Bloqueado</button>
+                            <button class="start-btn" id="btn-start-lectura" onclick="document.getElementById('tab-lectura').click()">Entrar</button>
                         </div>
                     </div>
                 </div>
@@ -1916,6 +1934,461 @@
                                         <button class="quiz-opt" data-correct="true">azul</button>
                                         <button class="quiz-opt" data-correct="false">amarillo</button>
                                         <button class="quiz-opt" data-correct="false">rojo</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <div class="quiz-status-dots">
+                                    <span class="dot active"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="quiz-result-summary" style="display: none;">
+                                    <h4>🎉 ¡Buen trabajo! 🎉</h4>
+                                    <p>Has completado con éxito la Lección 5.</p>
+                                    <button class="primary-btn" id="btn-complete-m5">Siguiente Módulo: Lección 6 ➡️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: PRETERITO INDEFINIDO -->
+            <section id="pane-preterito" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Módulo 6: El Pasado - Pretérito Indefinido</h2>
+                    <p>Learn to express completed past actions, conjugate common regular/irregular verbs, and construct sentences.</p>
+                </div>
+
+                <div class="module-subnav">
+                    <button class="subnav-btn active" data-subtab="preterito-vocab">1. Introducción y Verbos</button>
+                    <button class="subnav-btn" data-subtab="preterito-uso">2. Uso y Marcadores</button>
+                    <button class="subnav-btn" data-subtab="preterito-builder">3. Creador de Frases</button>
+                    <button class="subnav-btn" data-subtab="preterito-review">4. Resumen</button>
+                    <button class="subnav-btn" data-subtab="preterito-quiz">5. Cuestionario</button>
+                </div>
+
+                <div class="subtab-content">
+                    <!-- SUBTAB 6.1: Introducción y Verbos -->
+                    <div id="subpane-preterito-vocab" class="subtab-pane active">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>The Simple Past Tense (Pretérito Indefinido)</h3>
+                                <p>We use the <strong>Pretérito Indefinido</strong> in Spanish to talk about actions that happened and were completely finished in the past. It corresponds to the English <strong>Simple Past</strong> (e.g., <em>I walked</em>, <em>he ate</em>, <em>they lived</em>).</p>
+                                <p>Regular verbs follow strict rules based on their endings (<strong>-ar</strong>, <strong>-er</strong>, <strong>-ir</strong>). Note that <strong>-er</strong> and <strong>-ir</strong> verbs share the exact same past endings!</p>
+
+                                <div class="grammar-box mt-2">
+                                    <h5>Endings for Regular Verbs:</h5>
+                                    <table class="grammar-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>-AR (hablar - to speak)</th>
+                                                <th>-ER (comer - to eat)</th>
+                                                <th>-IR (vivir - to live)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-speak="Yo hablé, yo comí, yo viví">
+                                                <td><strong>Yo</strong> (I)</td>
+                                                <td>habl<strong>é</strong> <span class="translation-note">(I spoke)</span></td>
+                                                <td>com<strong>í</strong> <span class="translation-note">(I ate)</span></td>
+                                                <td>viv<strong>í</strong> <span class="translation-note">(I lived)</span></td>
+                                            </tr>
+                                            <tr data-speak="Tú hablaste, tú comiste, tú viviste">
+                                                <td><strong>Tú</strong> (You)</td>
+                                                <td>habl<strong>aste</strong> <span class="translation-note">(you spoke)</span></td>
+                                                <td>com<strong>iste</strong> <span class="translation-note">(you ate)</span></td>
+                                                <td>viv<strong>iste</strong> <span class="translation-note">(you lived)</span></td>
+                                            </tr>
+                                            <tr data-speak="Él o ella habló, comió, vivió">
+                                                <td><strong>Él/Ella</strong> (He/She)</td>
+                                                <td>habl<strong>ó</strong> <span class="translation-note">(he/she spoke)</span></td>
+                                                <td>com<strong>ió</strong> <span class="translation-note">(he/she ate)</span></td>
+                                                <td>viv<strong>ió</strong> <span class="translation-note">(he/she lived)</span></td>
+                                            </tr>
+                                            <tr data-speak="Nosotros hablamos, comimos, vivimos">
+                                                <td><strong>Nosotros/as</strong> (We)</td>
+                                                <td>habl<strong>amos</strong> <span class="translation-note">(we spoke)</span></td>
+                                                <td>com<strong>imos</strong> <span class="translation-note">(we ate)</span></td>
+                                                <td>viv<strong>imos</strong> <span class="translation-note">(we lived)</span></td>
+                                            </tr>
+                                            <tr data-speak="Ellos o ellas hablaron, comieron, vivieron">
+                                                <td><strong>Ellos/as</strong> (They)</td>
+                                                <td>habl<strong>aron</strong> <span class="translation-note">(they spoke)</span></td>
+                                                <td>com<strong>ieron</strong> <span class="translation-note">(they ate)</span></td>
+                                                <td>viv<strong>ieron</strong> <span class="translation-note">(they lived)</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="lesson-explanation">
+                                <h3>Most Frequent Irregular Verbs</h3>
+                                <p>Some of the most common Spanish verbs are irregular in the past. They do not follow the standard endings and must be memorized. Let's study the top 4 most frequent ones:</p>
+                                
+                                <div class="grammar-box mt-2">
+                                    <h5>Common Irregulars (Ser/Ir, Hacer, Tener, Estar):</h5>
+                                    <table class="grammar-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Ser / Ir (to be / to go)</th>
+                                                <th>Hacer (to do/make)</th>
+                                                <th>Tener (to have)</th>
+                                                <th>Estar (to be - location)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-speak="Yo fui, yo hice, yo tuve, yo estuve">
+                                                <td><strong>Yo</strong></td>
+                                                <td><strong>fui</strong> <span class="translation-note">(I was/went)</span></td>
+                                                <td><strong>hice</strong> <span class="translation-note">(I did)</span></td>
+                                                <td><strong>tuve</strong> <span class="translation-note">(I had)</span></td>
+                                                <td><strong>estuve</strong> <span class="translation-note">(I was)</span></td>
+                                            </tr>
+                                            <tr data-speak="Tú fuiste, tú hiciste, tú tuviste, tú estuviste">
+                                                <td><strong>Tú</strong></td>
+                                                <td><strong>fuiste</strong> <span class="translation-note">(you were/went)</span></td>
+                                                <td><strong>hiciste</strong> <span class="translation-note">(you did)</span></td>
+                                                <td><strong>tuviste</strong> <span class="translation-note">(you had)</span></td>
+                                                <td><strong>estuviste</strong> <span class="translation-note">(you were)</span></td>
+                                            </tr>
+                                            <tr data-speak="Él o ella fue, hizo, tuvo, estuvo">
+                                                <td><strong>Él/Ella</strong></td>
+                                                <td><strong>fue</strong> <span class="translation-note">(he/she was/went)</span></td>
+                                                <td><strong>hizo</strong> <span class="translation-note">(he/she did)</span></td>
+                                                <td><strong>tuvo</strong> <span class="translation-note">(he/she had)</span></td>
+                                                <td><strong>estuvo</strong> <span class="translation-note">(he/she was)</span></td>
+                                            </tr>
+                                            <tr data-speak="Nosotros fuimos, hicimos, tuvimos, estuvimos">
+                                                <td><strong>Nosotros/as</strong></td>
+                                                <td><strong>fuimos</strong> <span class="translation-note">(we were/went)</span></td>
+                                                <td><strong>hicimos</strong> <span class="translation-note">(we did)</span></td>
+                                                <td><strong>tuvimos</strong> <span class="translation-note">(we had)</span></td>
+                                                <td><strong>estuvimos</strong> <span class="translation-note">(we were)</span></td>
+                                            </tr>
+                                            <tr data-speak="Ellos o ellas fueron, hicieron, tuvieron, estuvieron">
+                                                <td><strong>Ellos/as</strong></td>
+                                                <td><strong>fueron</strong> <span class="translation-note">(they were/went)</span></td>
+                                                <td><strong>hicieron</strong> <span class="translation-note">(they did)</span></td>
+                                                <td><strong>tuvieron</strong> <span class="translation-note">(they had)</span></td>
+                                                <td><strong>estuvieron</strong> <span class="translation-note">(they were)</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="instruction-box mt-2">
+                                    <p>💡 <strong>Note:</strong> <em>Ser</em> (to be) and <em>Ir</em> (to go) share the exact same forms in the simple past! You will easily understand which verb it is based on context: <em>"Yo fui al cine"</em> (I went to the cinema) vs. <em>"Yo fui feliz"</em> (I was happy).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 6.2: Uso y Marcadores -->
+                    <div id="subpane-preterito-uso" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>When to use the Pretérito Indefinido</h3>
+                                <p>Use this past tense when the action you are describing:</p>
+                                <ul>
+                                    <li>🏁 Had a clear, completed end in the past.</li>
+                                    <li>⏱️ Occurred at a specific moment or duration that is already finished.</li>
+                                    <li>📉 Was a single event or a chain of completed events (e.g., <em>"Yesterday I woke up, ate, and went to school"</em>).</li>
+                                </ul>
+
+                                <h3 class="subsection-title mt-3">Time Markers (Marcadores Temporales)</h3>
+                                <p>To indicate that an action belongs to the completed past, Spanish speakers use time markers. Click on any card below to hear the Spanish pronunciation and learn its meaning:</p>
+                            </div>
+
+                            <div class="flashcards-grid">
+                                <div class="flashcard">
+                                    <div class="card-inner">
+                                        <div class="card-front">
+                                            <span class="card-sound" data-speak="ayer">🔊</span>
+                                            <div class="card-main-word">ayer</div>
+                                            <div class="card-category">Marcador básico</div>
+                                        </div>
+                                        <div class="card-back">
+                                            <div class="card-translation">yesterday</div>
+                                            <p class="card-use">Refers to the day before today.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard">
+                                    <div class="card-inner">
+                                        <div class="card-front">
+                                            <span class="card-sound" data-speak="anoche">🔊</span>
+                                            <div class="card-main-word">anoche</div>
+                                            <div class="card-category">De noche</div>
+                                        </div>
+                                        <div class="card-back">
+                                            <div class="card-translation">last night</div>
+                                            <p class="card-use">Refers to the night of yesterday.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard">
+                                    <div class="card-inner">
+                                        <div class="card-front">
+                                            <span class="card-sound" data-speak="la semana pasada">🔊</span>
+                                            <div class="card-main-word">la semana pasada</div>
+                                            <div class="card-category">Semanal</div>
+                                        </div>
+                                        <div class="card-back">
+                                            <div class="card-translation">last week</div>
+                                            <p class="card-use">Refers to the previous week.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard">
+                                    <div class="card-inner">
+                                        <div class="card-front">
+                                            <span class="card-sound" data-speak="el año pasado">🔊</span>
+                                            <div class="card-main-word">el año pasado</div>
+                                            <div class="card-category">Anual</div>
+                                        </div>
+                                        <div class="card-back">
+                                            <div class="card-translation">last year</div>
+                                            <p class="card-use">Refers to the previous year.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard">
+                                    <div class="card-inner">
+                                        <div class="card-front">
+                                            <span class="card-sound" data-speak="hace dos días">🔊</span>
+                                            <div class="card-main-word">hace dos días</div>
+                                            <div class="card-category">Hace + tiempo</div>
+                                        </div>
+                                        <div class="card-back">
+                                            <div class="card-translation">two days ago</div>
+                                            <p class="card-use">Use "hace" + time duration to mean "... ago".</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard">
+                                    <div class="card-inner">
+                                        <div class="card-front">
+                                            <span class="card-sound" data-speak="el lunes pasado">🔊</span>
+                                            <div class="card-main-word">el lunes pasado</div>
+                                            <div class="card-category">Día específico</div>
+                                        </div>
+                                        <div class="card-back">
+                                            <div class="card-translation">last Monday</div>
+                                            <p class="card-use">Replace "lunes" with any weekday.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 6.3: Creador de Frases -->
+                    <div id="subpane-preterito-builder" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>Building Sentences in the Past</h3>
+                                <p>Learn step-by-step how to construct sentences in the simple past:</p>
+                                <ul>
+                                    <li>🟢 <strong>Affirmative:</strong> <code>Subject + Past Verb + Complement</code>.<br>
+                                        <em>"Yo hablé con mis amigos."</em> (I spoke with my friends).
+                                    </li>
+                                    <li>🔴 <strong>Negative:</strong> <code>Subject + NO + Past Verb + Complement</code>.<br>
+                                        <em>"Tú no comiste pizza."</em> (You did not eat pizza).
+                                    </li>
+                                    <li>🔵 <strong>Questions:</strong> Wrap the sentence in <code>¿ ?</code> with rising tone.<br>
+                                        <em>"¿Nosotros fuimos a la playa?"</em> (Did we go to the beach?).
+                                    </li>
+                                </ul>
+                                <p>Use the simulator on the right to select different subjects, verbs, and sentence types. It will show the correct conjugations and word order, along with English translations!</p>
+                            </div>
+
+                            <div class="interactive-game-box">
+                                <div class="game-card">
+                                    <h3>Creador de Frases en Pasado</h3>
+                                    <p>Select settings to generate a correct sentence in the past tense:</p>
+
+                                    <div class="form-group">
+                                        <label for="past-sentence-type">Sentence Type (Tipo de oración):</label>
+                                        <select id="past-sentence-type" class="input-styled">
+                                            <option value="affirmative">🟢 Afirmativa (Affirmative)</option>
+                                            <option value="negative">🔴 Negativa (Negative)</option>
+                                            <option value="question">🔵 Pregunta (Question)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="past-subject">Subject (Sujeto):</label>
+                                        <select id="past-subject" class="input-styled">
+                                            <option value="Yo">Yo (I)</option>
+                                            <option value="Tú">Tú (You)</option>
+                                            <option value="Él/Ella">Él / Ella (He / She)</option>
+                                            <option value="Nosotros">Nosotros/as (We)</option>
+                                            <option value="Ellos/Ellas">Ellos / Ellas (They)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="past-verb">Action & Verb (Acción y Verbo):</label>
+                                        <select id="past-verb" class="input-styled">
+                                            <option value="hablar|con mis amigos ayer|with my friends yesterday">hablar (to speak) con amigos</option>
+                                            <option value="comer|una pizza rica anoche|a delicious pizza last night">comer (to eat) pizza</option>
+                                            <option value="vivir|en España hace un año|in Spain a year ago">vivir (to live) en España</option>
+                                            <option value="hacer|ejercicio en el parque el sábado|exercise in the park on Saturday">hacer (to do/make) ejercicio</option>
+                                            <option value="ir|a la playa el fin de semana pasado|to the beach last weekend">ir (to go) a la playa</option>
+                                            <option value="tener|un día excelente ayer|an excellent day yesterday">tener (to have) un buen día</option>
+                                            <option value="estar|en la escuela ayer por la mañana|at school yesterday morning">estar (to be - location) en la escuela</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="sandbox-result-box">
+                                        <h4 style="color: var(--accent-orange); margin-bottom: 5px;">Spanish (Español):</h4>
+                                        <p id="past-preview-es" class="preview-text" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 10px;">Yo hablé con mis amigos ayer.</p>
+                                        
+                                        <h4 style="color: var(--text-secondary); margin-bottom: 5px;">English (Traducción):</h4>
+                                        <p id="past-preview-en" class="preview-text" style="font-size: 1rem; color: var(--text-secondary); font-style: italic; margin-bottom: 15px;">I spoke with my friends yesterday.</p>
+                                        
+                                        <button class="speaker-btn" id="btn-speak-past">
+                                            🔊 Escuchar Oración (Listen)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 6.4: Resumen -->
+                    <div id="subpane-preterito-review" class="subtab-pane">
+                        <div class="grid-2-col">
+                            <div class="lesson-explanation">
+                                <h3>Summary: Grammar Cheat Sheet</h3>
+                                <p>Review these golden rules to master the simple past tense in Spanish:</p>
+                                <div class="grammar-box mt-2">
+                                    <h4 style="color: var(--accent-gold); margin-bottom: 10px;">🔑 Key Rules to Remember:</h4>
+                                    <ul style="margin-left: 20px;">
+                                        <li style="margin-bottom: 8px;"><strong>Regular -ER and -IR verbs</strong> share exactly the same endings in the past tense: <em>-í, -iste, -ió, -imos, -ieron</em>.</li>
+                                        <li style="margin-bottom: 8px;"><strong>Accents matter!</strong> The 1st person (Yo) and 3rd person (Él/Ella) regular forms have accents on the final vowel (<em>habl<strong>é</strong></em>, <em>habl<strong>ó</strong></em>). Without accents, they mean different things! (e.g. <em>hablo</em> = I speak [present]).</li>
+                                        <li style="margin-bottom: 8px;"><strong>Ser & Ir</strong> are identical in the past (fui, fuiste, fue, fuimos, fueron). Use context (going to a place vs. being something) to know the difference.</li>
+                                        <li style="margin-bottom: 8px;"><strong>Negations:</strong> Put <code>no</code> directly before the verb. <em>"Yo no fui"</em> = I did not go / I was not.</li>
+                                        <li style="margin-bottom: 8px;"><strong>Questions:</strong> Simply add <code>¿?</code>. Word order remains the same, e.g. <em>"¿Tú comiste?"</em>.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="lesson-explanation">
+                                <h3>Let's Practice!</h3>
+                                <p>Make sure you understand the difference between the present tense and the past tense. Look at these contrasts:</p>
+                                <table class="grammar-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Present Tense (Routine) 🔊</th>
+                                            <th>Past Tense (Yesterday/Completed) 🔊</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td data-speak="Hoy como una manzana">Hoy como una manzana.<br><span class="translation-note">(Today I eat an apple)</span></td>
+                                            <td data-speak="Ayer comí una manzana">Ayer comí una manzana.<br><span class="translation-note">(Yesterday I ate an apple)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td data-speak="Yo hablo español en clase">Yo hablo español en clase.<br><span class="translation-note">(I speak Spanish in class)</span></td>
+                                            <td data-speak="Ayer hablé español en clase">Ayer hablé español en clase.<br><span class="translation-note">(Yesterday I spoke Spanish in class)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td data-speak="Nosotros vamos al parque">Nosotros vamos al parque.<br><span class="translation-note">(We go to the park)</span></td>
+                                            <td data-speak="El sábado fuimos al parque">El sábado fuimos al parque.<br><span class="translation-note">(On Saturday we went to the park)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td data-speak="Él hace la comida">Él hace la comida.<br><span class="translation-note">(He makes the food)</span></td>
+                                            <td data-speak="Anoche hizo la comida">Anoche hizo la comida.<br><span class="translation-note">(Last night he made the food)</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button class="primary-btn mt-3" style="width: 100%;" onclick="document.querySelector('[data-subtab=\'preterito-quiz\']').click()">¡Ir al Cuestionario! ➡️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 6.5: Cuestionario -->
+                    <div id="subpane-preterito-quiz" class="subtab-pane">
+                        <div class="quiz-container" id="quiz-module6">
+                            <h3>Cuestionario de Pretérito Indefinido</h3>
+                            <p>Answer these questions to test your knowledge of the past tense and unlock your diploma!</p>
+                            
+                            <div class="exercise-header-meta">
+                                <span>Pregunta <span class="current-q-num">1</span> de 6</span>
+                                <span class="lives-indicator">🎯 Aciertos: 0</span>
+                            </div>
+                            <div class="exercise-progress-wrapper">
+                                <div class="exercise-progress-fill" style="width: 16.66%;"></div>
+                            </div>
+
+                            <div class="quiz-questions-wrapper">
+                                <!-- Q1 -->
+                                <div class="quiz-question-card active" data-q="1">
+                                    <div class="question-header">Pregunta 1 de 6</div>
+                                    <div class="question-title">¿Cuál es la forma correcta del verbo "hablar" para la persona "Yo" en pasado?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">hablé</button>
+                                        <button class="quiz-opt" data-correct="false">hablo</button>
+                                        <button class="quiz-opt" data-correct="false">hablaste</button>
+                                    </div>
+                                </div>
+                                <!-- Q2 -->
+                                <div class="quiz-question-card" data-q="2">
+                                    <div class="question-header">Pregunta 2 de 6</div>
+                                    <div class="question-title">Completa: "Ayer yo ________ una pizza deliciosa con mi familia." (comer)</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="false">comió</button>
+                                        <button class="quiz-opt" data-correct="true">comí</button>
+                                        <button class="quiz-opt" data-correct="false">comiste</button>
+                                    </div>
+                                </div>
+                                <!-- Q3 -->
+                                <div class="quiz-question-card" data-q="3">
+                                    <div class="question-header">Pregunta 3 de 6</div>
+                                    <div class="question-title">Traduce al español: "We did not go to the beach last week."</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">Nosotros no fuimos a la playa la semana pasada.</button>
+                                        <button class="quiz-opt" data-correct="false">Nosotros no fuimos a la playa ayer.</button>
+                                        <button class="quiz-opt" data-correct="false">Nosotros no vamos a la playa la semana pasada.</button>
+                                    </div>
+                                </div>
+                                <!-- Q4 -->
+                                <div class="quiz-question-card" data-q="4">
+                                    <div class="question-header">Pregunta 4 de 6</div>
+                                    <div class="question-title">Completa la pregunta: "¿Qué ________ tú ayer por la tarde?" (hacer - to do)</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">hiciste</button>
+                                        <button class="quiz-opt" data-correct="false">hizo</button>
+                                        <button class="quiz-opt" data-correct="false">haces</button>
+                                    </div>
+                                </div>
+                                <!-- Q5 -->
+                                <div class="quiz-question-card" data-q="5">
+                                    <div class="question-header">Pregunta 5 de 6</div>
+                                    <div class="question-title">Completa la oración: "El año pasado, mis primos ________ en España por tres meses." (estar)</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">estuvieron</button>
+                                        <button class="quiz-opt" data-correct="false">estuviste</button>
+                                        <button class="quiz-opt" data-correct="false">estamos</button>
+                                    </div>
+                                </div>
+                                <!-- Q6 -->
+                                <div class="quiz-question-card" data-q="6">
+                                    <div class="question-header">Pregunta 6 de 6</div>
+                                    <div class="question-title">¿Qué significa "fui al supermercado" en inglés?</div>
+                                    <div class="quiz-options-list">
+                                        <button class="quiz-opt" data-correct="true">I went to the supermarket</button>
+                                        <button class="quiz-opt" data-correct="false">I was a supermarket</button>
+                                        <button class="quiz-opt" data-correct="false">They went to the supermarket</button>
                                     </div>
                                 </div>
                             </div>
